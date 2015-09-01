@@ -1,0 +1,15 @@
+syntax: glob
+Bin/*
+bin/*
+Build/*
+build/*
+*.exe
+*.dll
+*.pdb
+*.vcxproj.user
+*.ncb
+*.suo
+*.aps
+ipch/*
+*.sdf
+*.opensdf
