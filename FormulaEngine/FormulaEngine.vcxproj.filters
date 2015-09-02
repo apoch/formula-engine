@@ -5,85 +5,94 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Formula Engine">
+      <UniqueIdentifier>{72121e11-adfa-4b92-9886-2f0f993b3151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Support Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
+      <Filter>Support Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Formula.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TokenPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PropertyBag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Actions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scriptable.h">
-      <Filter>Header Files</Filter>
+      <Filter>Support Header Files</Filter>
     </ClInclude>
     <ClInclude Include="picojson.h">
-      <Filter>Header Files</Filter>
+      <Filter>Support Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actions.h">
+      <Filter>Formula Engine</Filter>
     </ClInclude>
     <ClInclude Include="DeserializerFactory.h">
-      <Filter>Header Files</Filter>
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyBag.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Scriptable.h">
+      <Filter>Formula Engine</Filter>
     </ClInclude>
     <ClInclude Include="ScriptWorld.h">
-      <Filter>Header Files</Filter>
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenPool.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FormulaEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Formula.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Parser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TokenPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyBag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Actions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scriptable.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Formula Engine</Filter>
     </ClCompile>
     <ClCompile Include="DeserializerFactory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyBag.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Scriptable.cpp">
+      <Filter>Formula Engine</Filter>
     </ClCompile>
     <ClCompile Include="ScriptWorld.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TokenPool.cpp">
+      <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EntryPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -89,13 +89,14 @@
     <ClInclude Include="ScriptWorld.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tests.h" />
     <ClInclude Include="TokenPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="DeserializerFactory.cpp" />
     <ClCompile Include="Formula.cpp" />
-    <ClCompile Include="FormulaEngine.cpp" />
+    <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PropertyBag.cpp" />
@@ -105,6 +106,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="TokenPool.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
