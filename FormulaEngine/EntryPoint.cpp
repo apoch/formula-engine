@@ -6,8 +6,7 @@
 #include "Tests.h"
 
 
-int _tmain(int argc, _TCHAR* argv[])
-{
+int _tmain(int argc, _TCHAR* argv[]) {
 	TestsRunAll();
 
 	return 0;

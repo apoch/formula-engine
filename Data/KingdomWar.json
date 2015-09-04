@@ -1,0 +1,26 @@
+{
+    "scriptables": [
+        {
+            "name": "Game",
+            "lists": [
+                {
+                    "name": "Kingdoms",
+                    "contents": [
+                        "RedKingdom",
+                        "BlueKingdom"
+                    ]
+                }
+            ]
+        },
+
+        {
+            "name": "RedKingdom",
+            "properties": { "population": "680000.0" }
+        },
+
+        {
+            "name": "BlueKingdom",
+            "properties": { "population": "740000.0" }
+        }
+    ]
+}
