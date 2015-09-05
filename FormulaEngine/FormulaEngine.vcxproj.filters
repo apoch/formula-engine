@@ -103,5 +103,8 @@
     <None Include="..\Data\test.json">
       <Filter>Support Data Files</Filter>
     </None>
+    <None Include="..\Data\KingdomWar.json">
+      <Filter>Support Data Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

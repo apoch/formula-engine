@@ -110,6 +110,7 @@
     <ClCompile Include="TokenPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Data\KingdomWar.json" />
     <None Include="..\Data\test.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

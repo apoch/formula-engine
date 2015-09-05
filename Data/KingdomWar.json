@@ -11,16 +11,164 @@
                     ]
                 }
             ]
+
         },
 
         {
             "name": "RedKingdom",
-            "properties": { "population": "680000.0" }
+            "properties": { "population": "680000.0" },
+            "lists": [
+                {
+                    "name": "Armies",
+                    "contents": [ ]
+                }
+            ],
+            "events": [
+                {
+                    "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "CreateListMember",
+                            "list": "Armies",
+                            "archetype": "Army"
+                        }
+                    ]
+                }
+            ]
         },
 
         {
             "name": "BlueKingdom",
-            "properties": { "population": "740000.0" }
+            "properties": { "population": "740000.0" },
+            "lists": [
+                {
+                    "name": "Armies",
+                    "contents": [ ]
+                }
+            ],
+            "events": [
+                {
+                    "name": "SpawnArmy",
+                    "actions": [
+                        {
+                            "action": "CreateListMember",
+                            "list": "Armies",
+                            "archetype": "Army"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+
+
+    "archetypes": [
+        {
+            "name": "Soldier",
+            "properties": {
+                "Health": "100.0",
+                "Damage": "10.0"
+            },
+            "events": [
+                {
+                    "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "SetProperty",
+                            "property": "Health",
+                            "value": "Random(Health) + 1"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "name": "Platoon",
+            "properties": {
+                "Health": "SumOf(Soldiers:Health)",
+                "Morale": "100.0"
+            },
+            "lists": [
+                {
+                    "name": "Soldiers"
+                }
+            ],
+            "events": [
+                {
+                    "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "RepeatEvent",
+                            "event": "SpawnSoldier",
+                            "count": "25"
+                        },
+                        {
+                            "action": "SetProperty",
+                            "property": "Morale",
+                            "value": "Random(Morale / 2) + (Morale / 2)"
+                        }
+                    ]
+                },
+                {
+                    "name": "SpawnSoldier",
+                    "actions": [
+                        {
+                            "action": "CreateListMember",
+                            "list": "Soldiers",
+                            "archetype": "Soldier"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "name": "Division",
+            "properties": {
+                "Strength": "SumOf(Platoons:Morale) * SumOf(Platoons:Health)"
+            },
+            "lists": [
+                {
+                    "name": "Platoons"
+                }
+            ],
+            "events": [
+                {
+                    "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "CreateListMember",
+                            "list": "Platoons",
+                            "archetype": "Platoon"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "name": "Army",
+            "properties": {
+                "Power": "SumOf(Divisions:Strength)"
+            },
+            "lists": [
+                {
+                    "name": "Divisions"
+                }
+            ],
+            "events": [
+                {
+                    "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "CreateListMember",
+                            "list": "Divisions",
+                            "archetype": "Division"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
