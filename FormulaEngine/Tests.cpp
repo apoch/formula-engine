@@ -124,7 +124,7 @@ static void TestDeserialization() {
 	ScriptWorld world;
 	DeserializerFactory factory;
 
-	factory.LoadFileIntoScriptWorld("data\\test.json", &world);
+	factory.LoadFileIntoScriptWorld("Data\\test.json", &world);
 
 	unsigned computedToken = world.GetTokenPool().AddToken("computed");
 	unsigned testToken = world.GetTokenPool().AddToken("test");

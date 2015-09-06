@@ -9,6 +9,12 @@
 #include "Parser.h"
 
 
+
+typedef void (ScriptWorld::*RegistrationFunc)(const std::string &, Scriptable &&);
+typedef Scriptable * (ScriptWorld::*LookupFunc)(unsigned);
+
+
+
 static void LoadArrayOfProperties(const picojson::value & proparray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
 	auto & props = proparray.get<picojson::object>();
 	for(auto & prop : props) {
@@ -23,7 +29,7 @@ static void LoadArrayOfProperties(const picojson::value & proparray, ScriptWorld
 }
 
 
-static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * world, FormulaParser * parser) {
+static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * world, RegistrationFunc func, LookupFunc lookup, FormulaParser * parser) {
 	if(!node.is<picojson::array>())
 		return;
 
@@ -45,7 +51,7 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 		if(propsiter != obj.end() && propsiter->second.is<picojson::object>())
 			LoadArrayOfProperties(propsiter->second, world, parser, &instance);
 
-		world->AddScriptable(name, std::move(instance));
+		(world->*(func))(name, std::move(instance));
 	}
 
 	for(auto & scriptable : scriptables) {
@@ -60,7 +66,7 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 
 		const std::string & name = nameiter->second.get<std::string>();
 
-		Scriptable * instance = world->GetScriptable(world->GetTokenPool().AddToken(name));
+		Scriptable * instance = (world->*(lookup))(world->GetTokenPool().AddToken(name));
 		if(!instance)
 			continue;
 
@@ -119,7 +125,9 @@ void DeserializerFactory::LoadFileIntoScriptWorld(const char filename[], ScriptW
 	auto & parsedobject = outvalue.get<picojson::object>();
 	for(auto & pair : parsedobject) {
 		if(pair.first == "scriptables")
-			LoadArrayOfScriptables(pair.second, world, &parser);
+			LoadArrayOfScriptables(pair.second, world, &ScriptWorld::AddScriptable, &ScriptWorld::GetScriptable, &parser);
+		else if(pair.first == "archetypes")
+			LoadArrayOfScriptables(pair.second, world, &ScriptWorld::AddArchetype, &ScriptWorld::GetArchetype, &parser);
 	}
 }
 
