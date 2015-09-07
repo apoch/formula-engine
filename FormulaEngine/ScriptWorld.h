@@ -13,9 +13,14 @@ public:			// Setup interface
 
 public:			// Event pump interface
 	void QueueEvent(unsigned targetToken, const std::string & eventName);
+	void QueueEvent(Scriptable * scriptable, unsigned eventToken);
+
 	void QueueBroadcastEvent(const std::string & eventName);
 
-	void DispatchEvents();
+	bool DispatchEvents();
+
+public:			// Debugging interface
+	void DumpOverview() const;
 
 private:		// Internal helpers
 	void DispatchEvent(Scriptable * target, unsigned eventToken);
@@ -23,6 +28,8 @@ private:		// Internal helpers
 private:		// Internal structures
 	struct Event {
 		unsigned nameToken;
+		Scriptable * directTarget;
+
 		unsigned targetToken;
 	};
 

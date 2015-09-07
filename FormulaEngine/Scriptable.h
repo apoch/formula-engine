@@ -18,6 +18,8 @@ public:			// Component accessors
 	const ScopedPropertyBag & GetScopes() const		{ return m_scopes; }
 	ScopedPropertyBag & GetScopes()					{ return m_scopes; }
 
+	EventHandlerSet & GetEvents()					{ return m_eventHandlers; }
+
 public:			// Membership notification interface
 	void OnListMembershipAdded(unsigned listToken, IActionPerformer * owner) const;
 	void OnListMembershipRemoved(unsigned listToken, IActionPerformer * owner) const;
@@ -30,6 +32,7 @@ private:		// Internal helper structures
 
 private:		// Internal state
 	ScopedPropertyBag m_scopes;
+	EventHandlerSet   m_eventHandlers;
 
 	mutable std::vector<Membership> m_listMemberships;
 };

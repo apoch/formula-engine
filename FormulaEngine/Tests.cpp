@@ -7,6 +7,7 @@
 #include "Parser.h"
 #include "PropertyBag.h"
 #include "TokenPool.h"
+#include "EventHandler.h"
 #include "Scriptable.h"
 #include "ScriptWorld.h"
 #include "DeserializerFactory.h"
@@ -67,14 +68,14 @@ static void TestActionSets() {
 	FormulaPropertyBag eventbag;
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
 
-	ScopedPropertyBag statsbag;
-	statsbag.GetProperties().Set(pool.AddToken("health"), 100.0);
+	Scriptable scriptable;
+	scriptable.GetScopes().GetProperties().Set(pool.AddToken("health"), 100.0);
 
 
-	actions.Execute(&statsbag, pool.AddToken("event"), &eventbag);
+	actions.Execute(nullptr, &scriptable, pool.AddToken("event"), &eventbag);
 
 
-	double val = statsbag.ResolveNumber(statsbag, 0, pool.AddToken("health")).value;
+	double val = scriptable.GetScopes().ResolveNumber(scriptable.GetScopes(), 0, pool.AddToken("health")).value;
 	assert(val == 90.0);
 }
 
@@ -111,7 +112,7 @@ static void TestListsAndFunctions() {
 
 	ActionSet actions;
 	actions.AddActionListAddEntry(pool.AddToken("testlist"), twobagalso);
-	actions.Execute(&test.GetScopes(), 0, nullptr);
+	actions.Execute(nullptr, &test, 0, nullptr);
 
 	double val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 	assert(val3 == 42.0);

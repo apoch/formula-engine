@@ -3,6 +3,7 @@
 #include "Formula.h"
 #include "Actions.h"
 #include "PropertyBag.h"
+#include "EventHandler.h"
 #include "Scriptable.h"
 #include "TokenPool.h"
 #include "ScriptWorld.h"
@@ -13,6 +14,85 @@
 typedef void (ScriptWorld::*RegistrationFunc)(const std::string &, Scriptable &&);
 typedef Scriptable * (ScriptWorld::*LookupFunc)(unsigned);
 
+
+static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
+	auto & events = eventarray.get<picojson::array>();
+	for(auto & evententry : events) {
+		if(!evententry.is<picojson::object>())
+			continue;
+
+		auto & obj = evententry.get<picojson::object>();
+
+		auto nameiter = obj.find("name");
+		if(nameiter == obj.end() || !nameiter->second.is<std::string>())
+			continue;
+
+		const std::string & name = nameiter->second.get<std::string>();
+
+		auto actioniter = obj.find("actions");
+		if(actioniter == obj.end() || !actioniter->second.is<picojson::array>())
+			continue;
+
+		ActionSet actions;
+		for(auto & actionentry : actioniter->second.get<picojson::array>()) {
+			if(!actionentry.is<picojson::object>())
+				continue;
+
+			auto & action = actionentry.get<picojson::object>();
+			auto actionkeyiter = action.find("action");
+			if(actionkeyiter == action.end() || !actionkeyiter->second.is<std::string>())
+				continue;
+
+			const std::string & actionkey = actionkeyiter->second.get<std::string>();
+			if(actionkey == "CreateListMember") {
+				// TODO - implement list member creation
+				auto listiter = action.find("list");
+				if(listiter == action.end() | !listiter->second.is<std::string>())
+					continue;
+
+				auto archetypeiter = action.find("archetype");
+				if(archetypeiter == action.end() || !archetypeiter->second.is<std::string>())
+					continue;
+
+				unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
+				unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
+
+				actions.AddActionListSpawnEntry(listToken, archetypeToken);
+			}
+			else if(actionkey == "SetProperty") {
+				auto propiter = action.find("property");
+				if(propiter == action.end() || !propiter->second.is<std::string>())
+					continue;
+
+				auto valiter = action.find("value");
+				if(valiter == action.end() || !valiter->second.is<std::string>())
+					continue;
+
+				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
+				auto & payload = valiter->second.get<std::string>();
+
+				actions.AddActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool()));
+			}
+			else if(actionkey == "RepeatEvent") {
+				auto eventiter = action.find("event");
+				if(eventiter == action.end() || !eventiter->second.is<std::string>())
+					continue;
+
+				auto payloaditer = action.find("count");
+				if(payloaditer == action.end() || !payloaditer->second.is<std::string>())
+					continue;
+
+				unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
+				auto & payload = payloaditer->second.get<std::string>();
+
+				actions.AddActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()));
+			}
+		}
+
+		unsigned eventToken = world->GetTokenPool().AddToken(name);
+		scriptable->GetEvents().AddHandler(eventToken, std::move(actions));
+	}
+}
 
 
 static void LoadArrayOfProperties(const picojson::value & proparray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
@@ -50,6 +130,10 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 		auto propsiter = obj.find("properties");
 		if(propsiter != obj.end() && propsiter->second.is<picojson::object>())
 			LoadArrayOfProperties(propsiter->second, world, parser, &instance);
+
+		auto eventiter = obj.find("events");
+		if(eventiter != obj.end() && eventiter->second.is<picojson::array>())
+			LoadArrayOfEvents(eventiter->second, world, parser, &instance);
 
 		(world->*(func))(name, std::move(instance));
 	}

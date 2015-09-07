@@ -48,7 +48,7 @@
             ],
             "events": [
                 {
-                    "name": "SpawnArmy",
+                    "name": "OnCreate",
                     "actions": [
                         {
                             "action": "CreateListMember",
@@ -138,6 +138,16 @@
                     "name": "OnCreate",
                     "actions": [
                         {
+                            "action": "RepeatEvent",
+                            "event": "SpawnPlatoon",
+                            "count": "40"
+                        }
+                    ]
+                },
+                {
+                    "name": "SpawnPlatoon",
+                    "actions": [
+                        {
                             "action": "CreateListMember",
                             "list": "Platoons",
                             "archetype": "Platoon"
@@ -160,6 +170,16 @@
             "events": [
                 {
                     "name": "OnCreate",
+                    "actions": [
+                        {
+                            "action": "RepeatEvent",
+                            "event": "SpawnDivision",
+                            "count": "20"
+                        }
+                    ]
+                },
+                {
+                    "name": "SpawnDivision",
                     "actions": [
                         {
                             "action": "CreateListMember",

@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="Actions.h" />
     <ClInclude Include="DeserializerFactory.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Parser.h" />
@@ -95,6 +96,7 @@
   <ItemGroup>
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="DeserializerFactory.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="Functions.cpp" />

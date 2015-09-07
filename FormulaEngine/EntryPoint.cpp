@@ -13,15 +13,13 @@
 #include "Parser.h"
 #include "PropertyBag.h"
 #include "TokenPool.h"
+#include "EventHandler.h"
 #include "Scriptable.h"
 #include "ScriptWorld.h"
 #include "DeserializerFactory.h"
 
 
 static void SimulationRunKingdomWar() {
-	TokenPool pool;
-	FormulaParser parser;
-
 	ScriptWorld world;
 	DeserializerFactory factory;
 
@@ -29,14 +27,14 @@ static void SimulationRunKingdomWar() {
 
 	world.QueueBroadcastEvent("OnCreate");
 
-	world.DispatchEvents();
+	while(world.DispatchEvents());
 }
 
 
 
 
 int _tmain(int argc, _TCHAR* argv[]) {
-	TestsRunAll();
+	//TestsRunAll();
 
 	SimulationRunKingdomWar();
 

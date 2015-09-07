@@ -12,3 +12,13 @@ unsigned TokenPool::AddToken(const std::string & token) {
 	return m_pool.size();
 }
 
+
+const std::string & TokenPool::GetToken(unsigned token) const {
+	assert(token != 0);
+	
+	unsigned index = token - 1;
+	assert(index < m_pool.size());
+
+	return m_pool[index];
+}
+

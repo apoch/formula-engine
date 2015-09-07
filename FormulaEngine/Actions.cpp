@@ -1,8 +1,22 @@
 #include "stdafx.h"
+
 #include "Formula.h"
+#include "TokenPool.h"
 #include "Actions.h"
 #include "PropertyBag.h"
+#include "EventHandler.h"
+#include "Scriptable.h"
+#include "ScriptWorld.h"
 
+
+void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter) {
+	ActionRecord rec;
+	rec.action = ACTION_CODE_EVENT_REPEAT;
+	rec.targetToken = eventToken;
+	rec.payload = std::move(counter);
+
+	m_actions.emplace_back(rec);
+}
 
 void ActionSet::AddActionSetProperty(unsigned targetToken, Formula && payload) {
 	ActionRecord rec;
@@ -31,9 +45,18 @@ void ActionSet::AddActionListAddEntry(unsigned listToken, const Scriptable & ent
 	m_actions.emplace_back(rec);
 }
 
-ResultCode ActionSet::Execute(IActionPerformer * targetBag, unsigned contextScope, IPropertyBag * optionalContext) const {
+void ActionSet::AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken) {
+	ActionRecord rec;
+	rec.action = ACTION_CODE_LIST_SPAWN;
+	rec.targetToken = listToken;
+	rec.archetypeToken = archetypeToken;
+
+	m_actions.emplace_back(rec);
+}
+
+ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, IPropertyBag * optionalContext) const {
 	ScopedPropertyBag scopes;
-	scopes.GetScopes().AddScope(0, targetBag->GetProperties());
+	scopes.GetScopes().AddScope(0, target->GetScopes().GetProperties());
 	if(optionalContext)
 		scopes.GetScopes().AddScope(contextScope, *optionalContext);
 
@@ -43,18 +66,35 @@ ResultCode ActionSet::Execute(IActionPerformer * targetBag, unsigned contextScop
 			{
 				Result result = action.payload.Evaluate(&scopes);
 				if(result.code == RESULT_CODE_OK)
-					targetBag->SetProperty(action.targetToken, result.value);
+					target->GetScopes().SetProperty(action.targetToken, result.value);
 				else
 					return result.code;
 			}
 			break;
 
 		case ACTION_CODE_SET_FORMULA:
-			targetBag->SetFormula(action.targetToken, action.payload);
+			target->GetScopes().SetFormula(action.targetToken, action.payload);
 			break;
 
 		case ACTION_CODE_LIST_ADD:
-			targetBag->ListAddEntry(action.targetToken, *action.entry);
+			target->GetScopes().ListAddEntry(action.targetToken, *action.entry);
+			break;
+
+		case ACTION_CODE_LIST_SPAWN:
+			std::cout << "Foo" << std::endl;
+			break;
+
+		case ACTION_CODE_EVENT_REPEAT:
+			{
+				Result result = action.payload.Evaluate(&scopes);
+				if(result.code != RESULT_CODE_OK)
+					return result.code;
+
+				unsigned counter = unsigned(result.value);
+				for(unsigned i = 0; i < counter; ++i) {
+					world->QueueEvent(target, action.targetToken);
+				}
+			}
 			break;
 
 		default:

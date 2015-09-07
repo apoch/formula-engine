@@ -3,6 +3,7 @@
 #include "Formula.h"
 #include "Actions.h"
 #include "PropertyBag.h"
+#include "EventHandler.h"
 #include "Scriptable.h"
 #include "TokenPool.h"
 #include "ScriptWorld.h"
@@ -27,12 +28,15 @@ void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptab
 
 
 void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken) {
-	// TODO - implement events
+	target->GetEvents().TriggerHandlers(this, eventToken, target);
 }
 
 
-void ScriptWorld::DispatchEvents() {
+bool ScriptWorld::DispatchEvents() {
+	bool dispatched = false;
+
 	while(!m_eventQueue.empty()) {
+		dispatched = true;
 		std::vector<Event> tempqueue = std::move(m_eventQueue);
 		for(Event e : tempqueue) {
 			if(e.targetToken) {
@@ -47,6 +51,15 @@ void ScriptWorld::DispatchEvents() {
 			}
 		}
 	}
+
+	return dispatched;
+}
+
+
+void ScriptWorld::DumpOverview() const {
+	std::cout << "----- Scripting world " << this << " -----\n";
+	std::cout << "Contains " << m_scriptables.size() << " objects and " << m_archetypes.size() << " archetypes\n";
+	std::cout << "----- End world -----" << std::endl;
 }
 
 
@@ -76,7 +89,15 @@ void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName
 	Event e;
 	e.nameToken = m_tokens.AddToken(eventName);
 	e.targetToken = targetToken;
+	e.directTarget = nullptr;
 
 	m_eventQueue.push_back(e);
 }
 
+void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken) {
+	Event e;
+	e.nameToken = eventToken;
+	e.directTarget = target;
+
+	m_eventQueue.push_back(e);
+}

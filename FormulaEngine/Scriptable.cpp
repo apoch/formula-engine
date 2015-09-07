@@ -3,13 +3,15 @@
 #include "Formula.h"
 #include "Actions.h"
 #include "PropertyBag.h"
+#include "EventHandler.h"
 #include "Scriptable.h"
 
 
 
 Scriptable::Scriptable(Scriptable && other)
 	: m_scopes(std::move(other.m_scopes)),
-	  m_listMemberships(std::move(other.m_listMemberships))
+	  m_listMemberships(std::move(other.m_listMemberships)),
+	  m_eventHandlers(std::move(other.m_eventHandlers))
 { }
 
 Scriptable::~Scriptable() {
