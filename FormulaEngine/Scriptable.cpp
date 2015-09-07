@@ -20,6 +20,14 @@ Scriptable::~Scriptable() {
 }
 
 
+Scriptable * Scriptable::Instantiate() const {
+	Scriptable * clone = new Scriptable;
+	clone->m_eventHandlers = m_eventHandlers;
+	clone->m_scopes.InstantiateFrom(m_scopes);
+
+	return clone;
+}
+
 
 void Scriptable::OnListMembershipAdded(unsigned listToken, IActionPerformer * owner) const {
 	Membership membership;

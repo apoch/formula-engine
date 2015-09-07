@@ -20,6 +20,9 @@ public:			// Component accessors
 
 	EventHandlerSet & GetEvents()					{ return m_eventHandlers; }
 
+public:			// Archetype support
+	Scriptable * Instantiate() const;
+
 public:			// Membership notification interface
 	void OnListMembershipAdded(unsigned listToken, IActionPerformer * owner) const;
 	void OnListMembershipRemoved(unsigned listToken, IActionPerformer * owner) const;

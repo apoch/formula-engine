@@ -81,7 +81,12 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 			break;
 
 		case ACTION_CODE_LIST_SPAWN:
-			std::cout << "Foo" << std::endl;
+			{
+				Scriptable * instance = world->InstantiateArchetype(action.archetypeToken);
+				if(instance) {
+					target->GetScopes().ListAddEntry(action.targetToken, *instance);
+				}
+			}
 			break;
 
 		case ACTION_CODE_EVENT_REPEAT:

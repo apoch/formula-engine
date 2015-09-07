@@ -114,6 +114,13 @@ ScopedPropertyBag::~ScopedPropertyBag() {
 	}
 }
 
+
+void ScopedPropertyBag::InstantiateFrom(const ScopedPropertyBag & other) {
+	m_resolver = other.m_resolver;
+	m_thisBag = other.m_thisBag;
+}
+
+
 void ScopedPropertyBag::ListAddEntry(unsigned listToken, const Scriptable & entry) {
 	m_lists[listToken].push_back(&entry);
 	entry.OnListMembershipAdded(listToken, this);

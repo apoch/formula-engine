@@ -67,6 +67,9 @@ private:		// Non-copyable
 public:			// Configuration interface
 	ScopeResolver & GetScopes()						{ return m_resolver; }
 	FormulaPropertyBag & GetProperties()			{ return m_thisBag; }
+
+public:			// Archetype support
+	void InstantiateFrom(const ScopedPropertyBag & other);
 	
 public:			// IActionPerformer interface
 	void SetProperty(unsigned token, double value) override;

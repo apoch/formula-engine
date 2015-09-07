@@ -2,6 +2,9 @@
 
 
 class ScriptWorld {
+public:			// Destruction
+	~ScriptWorld();
+
 public:			// Setup interface
 	void AddScriptable(const std::string & name, Scriptable && scriptable);
 	void AddArchetype(const std::string & name, Scriptable && archetype);
@@ -10,6 +13,8 @@ public:			// Setup interface
 	Scriptable * GetScriptable(unsigned token);
 
 	TokenPool & GetTokenPool()			{ return m_tokens; }
+
+	Scriptable * InstantiateArchetype(unsigned token);
 
 public:			// Event pump interface
 	void QueueEvent(unsigned targetToken, const std::string & eventName);
@@ -39,6 +44,7 @@ private:		// Internal state
 	std::map<unsigned, Scriptable> m_archetypes;
 
 	std::vector<Event> m_eventQueue;
+	std::vector<Scriptable *> m_instances;
 };
 
 

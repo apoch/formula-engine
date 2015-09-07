@@ -28,6 +28,8 @@ static void SimulationRunKingdomWar() {
 	world.QueueBroadcastEvent("OnCreate");
 
 	while(world.DispatchEvents());
+
+	world.DumpOverview();
 }
 
 

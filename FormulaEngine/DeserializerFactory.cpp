@@ -45,7 +45,6 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 
 			const std::string & actionkey = actionkeyiter->second.get<std::string>();
 			if(actionkey == "CreateListMember") {
-				// TODO - implement list member creation
 				auto listiter = action.find("list");
 				if(listiter == action.end() | !listiter->second.is<std::string>())
 					continue;
