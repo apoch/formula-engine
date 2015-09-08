@@ -19,6 +19,9 @@
     <Filter Include="Support Data Files">
       <UniqueIdentifier>{265136a2-b4f8-4b40-ba92-61b646db6522}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Engine">
+      <UniqueIdentifier>{9192f23c-0e36-4c09-bfcc-ebc59a0091ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -63,6 +66,15 @@
     <ClInclude Include="EventHandler.h">
       <Filter>Formula Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\GameEngine\Map.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameEngine\Unit.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameEngine\SubMap.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -103,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="EventHandler.cpp">
       <Filter>Formula Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameEngine\Map.cpp">
+      <Filter>Game Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
