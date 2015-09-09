@@ -8,7 +8,7 @@ The Formula Engine is designed to operate around a small yet highly composable s
 
 By using these primitives judiciously, it is possible to express quite rich game systems and game logic without needing heavy bindings from engine code to script code. Moreover, the project aims to demonstrate a moderately detailed simulation using these tools alongside a stripped-down grid-based game engine.
 
-Code is exclusively C++11; data is exclusively JSON. Examples of the input scripts can be found in the [`Data` directory](./tree/master/Data). Compiler is assumed to be Visual Studio 2013 or newer; if you'd like to see other compilers supported, I would gladly take a pull request!
+Code is exclusively C++11; data is exclusively JSON. Examples of the input scripts can be found in the [`Data` directory](./Data/). Compiler is assumed to be Visual Studio 2013 or newer; if you'd like to see other compilers supported, I would gladly take a pull request!
 
 <br>
 
