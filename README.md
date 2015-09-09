@@ -24,10 +24,16 @@ Groups of properties are implemented as so-called "bags" and the code for them c
 ### Entities and Lists
 Entities are primarily used as groupings of properties, although they are also used as targets of Events. They are organized into Lists as a mechanism of representing ownership or composition. Entities do not carry much behavior of their own; they are mostly there for organizational purposes.
 
+The class `ScopedPropertyBag` implements support for both sets of properties (inside of optional, named _scopes_) and lists (each of which must have a unique name). This class lives in `PropertyBag.h` and `PropertyBag.cpp`.
+
+Entities are generally implemented in terms of the class `Scriptable`, which exists in `Scriptable.h` and `Scriptable.cpp`. `Scriptables` combine the storage of properties (via a `ScopedPropertyBag`) as well as responding to _events_ (see below).
+
 <br>
 
 ### Events and Actions
 When the game engine detects that something has occurred which might be of interest to a script, it propagates an _event_. In response to these events, entities may fire a sequence of _actions_. Unlike most traditional game scripting models, actions are not a rich set of verbs exposed by the game engine. Instead, actions fall into a relatively small set of highly generic behaviors that modify critical data used by the game engine itself.
+
+Event handling is implemented inside `EventHandler.h` and `EventHandler.cpp`. The specific actions of each _event handler_ are represented by the `ActionSet` class, which predictably can be found in `Actions.h` and `Actions.cpp`.
 
 <br>
 
