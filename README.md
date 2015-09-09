@@ -1,4 +1,4 @@
-## formula-engine: a simple, powerful scripting approach for games
+## formula-engine: a simple scripting approach for games
 
 The Formula Engine is designed to operate around a small yet highly composable set of primitives. These are:
 
