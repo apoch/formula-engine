@@ -1,21 +1,4 @@
-## formula-engine: a simple scripting approach for games
-
-The Formula Engine is designed to operate around a small yet highly composable set of primitives. These are:
-
- * Properties, which are defined by Formulas
- * Entities, which can be organized into Lists
- * Events, as well as Actions (which are performed in response to events)
-
-By using these primitives judiciously, it is possible to express quite rich game systems and game logic without needing heavy bindings from engine code to script code. Moreover, the project aims to demonstrate a moderately detailed simulation using these tools alongside a stripped-down grid-based game engine.
-
-Code is exclusively C++11; data is exclusively JSON. Examples of the input scripts can be found in the `Data` directory.
-
-<br>
-
-### Properties and Formulas
-Properties are simply numeric data, either statically defined or dynamically computed. Static properties are useful for describing data-driven aspects of a design. Dynamic properties are expressed in terms of _formulas_, which are simply arithmetic expressions such as `1 + (health * 4)`.
-
-The implementation of f## formula-engine: a simple scripting approach for games
+## formula-engine: a scripting approach for games
 
 The Formula Engine is designed to operate around a small yet highly composable set of primitives. These are:
 
