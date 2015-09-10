@@ -75,6 +75,9 @@
     <ClInclude Include="..\GameEngine\SubMap.h">
       <Filter>Game Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="..\GameEngine\Map.cpp">
       <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

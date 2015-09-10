@@ -1,3 +1,22 @@
+//
+// FormulaEngine Project
+// By Mike Lewis - 2015
+//
+// Unit test suite
+//
+// This module implements various unit tests for elements
+// of the FormulaEngine library. Testing is predominantly
+// intended to be for catching regressions, so coverage
+// is imperfect and most tests are some loose variant of
+// integration tests in reality. There's also not really
+// any harness to speak of, just basic assertions.
+//
+// Additional tests may be added over time as the surface
+// of the APIs grows and shifts, but mostly for this code
+// testing is of limited application, so it doesn't get a
+// ton of attention.
+//
+
 #include "stdafx.h"
 
 #include "Tests.h"
@@ -13,6 +32,20 @@
 #include "DeserializerFactory.h"
 
 
+namespace Tests {
+
+
+//
+// Basic test for the SimpleFormulaBag class
+//
+// Tests the functionality of Formulas, TokenPools,
+// FormulaParsers, and SimplePropertyBags. Combines
+// the aforementioned objects to evaluate a simple
+// formula-based property.
+//
+// Asserts that evaluation succeeds and the result
+// value is the expected number.
+//
 static void TestSimpleFormulaBag() {
 	TokenPool pool;
 	FormulaParser parser;
@@ -27,6 +60,16 @@ static void TestSimpleFormulaBag() {
 	assert(res.value == 42.0);
 }
 
+//
+// Basic test for the FormulaPropertyBag class
+//
+// Computes dependent, named property values using
+// a FormulaPropertyBag. Also incidentally tests
+// Formulas, TokenPools, and FormulaParsers.
+//
+// Asserts that evaluation results in the expected
+// number value.
+//
 static void TestFormulas() {
 	TokenPool pool;
 	FormulaParser parser;
@@ -40,6 +83,15 @@ static void TestFormulas() {
 	assert(val == 42.0);
 }
 
+//
+// Basic test for the ScopedPropertyBag class
+//
+// Wraps some named properties in scopes and checks
+// that the results are sane.
+//
+// Asserts that the result of evaluation matches
+// the expected numeric value.
+//
 static void TestScopedBag() {
 	TokenPool pool;
 	FormulaParser parser;
@@ -58,6 +110,17 @@ static void TestScopedBag() {
 	assert(val == 90.0);
 }
 
+//
+// Basic test of the ActionSet class
+//
+// Makes sure that actions can be applied to Scriptables
+// correctly and cleanly. Incidentally tests TokenPool,
+// FormulaParser, Formula, FormulaPropertyBag, and a bit
+// of Scriptable.
+//
+// Asserts that the result of action execution is the
+// expected numeric value.
+//
 static void TestActionSets() {
 	TokenPool pool;
 	FormulaParser parser;
@@ -139,7 +202,7 @@ static void TestDeserialization() {
 }
 
 
-void TestsRunAll() {
+void RunAll() {
 	TestSimpleFormulaBag();
 	TestFormulas();
 	TestScopedBag();
@@ -148,4 +211,6 @@ void TestsRunAll() {
 	TestDeserialization();
 }
 
+
+}
 

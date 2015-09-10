@@ -121,6 +121,7 @@
     <ClInclude Include="PropertyBag.h" />
     <ClInclude Include="Scriptable.h" />
     <ClInclude Include="ScriptWorld.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tests.h" />
@@ -138,6 +139,7 @@
     <ClCompile Include="PropertyBag.cpp" />
     <ClCompile Include="Scriptable.cpp" />
     <ClCompile Include="ScriptWorld.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Unchecked|Win32'">Create</PrecompiledHeader>
