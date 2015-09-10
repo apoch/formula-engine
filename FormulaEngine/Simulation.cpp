@@ -18,7 +18,7 @@
 namespace Simulation {
 
 
-void SimulationRunKingdomWar() {
+void RunKingdomWar() {
 	const unsigned worldWidth = 20;
 	const unsigned worldHeight = 20;
 
