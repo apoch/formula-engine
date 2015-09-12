@@ -24,12 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Support Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Support Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="picojson.h">
       <Filter>Support Header Files</Filter>
     </ClInclude>
@@ -78,11 +72,11 @@
     <ClInclude Include="Simulation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pch.h">
+      <Filter>Support Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Actions.cpp">
       <Filter>Formula Engine</Filter>
     </ClCompile>
@@ -123,6 +117,9 @@
       <Filter>Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

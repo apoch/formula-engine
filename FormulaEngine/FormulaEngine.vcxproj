@@ -73,6 +73,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -85,6 +86,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,6 +101,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,13 +120,12 @@
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="Pch.h" />
     <ClInclude Include="picojson.h" />
     <ClInclude Include="PropertyBag.h" />
     <ClInclude Include="Scriptable.h" />
     <ClInclude Include="ScriptWorld.h" />
     <ClInclude Include="Simulation.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="Tests.h" />
     <ClInclude Include="TokenPool.h" />
   </ItemGroup>
@@ -136,15 +138,15 @@
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="PropertyBag.cpp" />
-    <ClCompile Include="Scriptable.cpp" />
-    <ClCompile Include="ScriptWorld.cpp" />
-    <ClCompile Include="Simulation.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Unchecked|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PropertyBag.cpp" />
+    <ClCompile Include="Scriptable.cpp" />
+    <ClCompile Include="ScriptWorld.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Tests.cpp" />
     <ClCompile Include="TokenPool.cpp" />
   </ItemGroup>

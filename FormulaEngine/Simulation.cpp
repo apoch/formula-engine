@@ -1,4 +1,16 @@
-#include "stdafx.h"
+//
+// FormulaEngine Project
+// By Mike Lewis - 2015
+//
+// Simulation drivers/high level implementation
+//
+// This module contains the logic needed to drive the
+// remaining library/engine code through complete life
+// cycles of a simulation.
+//
+
+
+#include "Pch.h"
 
 #include "Formula.h"
 #include "Actions.h"
@@ -18,6 +30,11 @@
 namespace Simulation {
 
 
+//
+// Set up the engine preconditions and drive a complete
+// simulation of the "Kingdom War" example. See comments
+// in KingdomWar.JSON in the Data directory for details.
+//
 void RunKingdomWar() {
 	const unsigned worldWidth = 20;
 	const unsigned worldHeight = 20;
@@ -46,5 +63,6 @@ void RunKingdomWar() {
 }
 
 
-}
+} // Simulation namespace
+
 

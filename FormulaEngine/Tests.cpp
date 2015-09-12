@@ -17,7 +17,7 @@
 // ton of attention.
 //
 
-#include "stdafx.h"
+#include "Pch.h"
 
 #include "Tests.h"
 
@@ -32,8 +32,8 @@
 #include "DeserializerFactory.h"
 
 
-namespace Tests {
 
+namespace {
 
 //
 // Basic test for the SimpleFormulaBag class
@@ -46,7 +46,7 @@ namespace Tests {
 // Asserts that evaluation succeeds and the result
 // value is the expected number.
 //
-static void TestSimpleFormulaBag() {
+void TestSimpleFormulaBag() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -70,7 +70,7 @@ static void TestSimpleFormulaBag() {
 // Asserts that evaluation results in the expected
 // number value.
 //
-static void TestFormulas() {
+void TestFormulas() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -92,7 +92,7 @@ static void TestFormulas() {
 // Asserts that the result of evaluation matches
 // the expected numeric value.
 //
-static void TestScopedBag() {
+void TestScopedBag() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -121,7 +121,7 @@ static void TestScopedBag() {
 // Asserts that the result of action execution is the
 // expected numeric value.
 //
-static void TestActionSets() {
+void TestActionSets() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -142,7 +142,16 @@ static void TestActionSets() {
 	assert(val == 90.0);
 }
 
-static void TestListsAndFunctions() {
+//
+// Basic test of entity lists, and functions that operate on them
+//
+// Makes sure that fuctions are evaluated correctly when fed
+// entity lists, and that lists update as expected when member
+// objects are destructed.
+//
+// Asserts that list-based computations yield expected values.
+//
+void TestListsAndFunctions() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -181,7 +190,17 @@ static void TestListsAndFunctions() {
 	assert(val3 == 42.0);
 }
 
-static void TestDeserialization() {
+//
+// Basic test of deserialization mechanisms
+//
+// Loads a test JSON file from disk and tests that the
+// world it contains evaluates formulas as expected.
+//
+// Asserts that the deserialzed world contains a
+// particular expected entity, and that computed
+// properties of that entity have expected values.
+//
+void TestDeserialization() {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -202,6 +221,16 @@ static void TestDeserialization() {
 }
 
 
+} // Anonymous internal namespace
+
+
+
+namespace Tests {
+
+
+//
+// Externally visible API for invoking the complete test suite
+//
 void RunAll() {
 	TestSimpleFormulaBag();
 	TestFormulas();
@@ -212,5 +241,6 @@ void RunAll() {
 }
 
 
-}
+} // Tests namespace
+
 
