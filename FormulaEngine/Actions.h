@@ -23,6 +23,7 @@ class ActionSet {
 public:			// Setup interface
 	void AddActionSetProperty(unsigned targetToken, Formula && payload);
 	void AddActionSetFormula(unsigned targetToken, Formula && payload);
+	void AddActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && payload);
 
 	void AddActionListAddEntry(unsigned listToken, const Scriptable & entry);
 	void AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken);
@@ -36,6 +37,7 @@ private:		// Internal helper structures
 	enum ActionCode {
 		ACTION_CODE_SET_PROPERTY,
 		ACTION_CODE_SET_FORMULA,
+		ACTION_CODE_SET_GOAL_STATE,
 		ACTION_CODE_LIST_ADD,
 		ACTION_CODE_LIST_SPAWN,
 		ACTION_CODE_EVENT_REPEAT,
@@ -43,6 +45,7 @@ private:		// Internal helper structures
 
 	struct ActionRecord {
 		ActionCode action;
+		unsigned   targetScope;
 		unsigned   targetToken;
 		unsigned   archetypeToken;
 

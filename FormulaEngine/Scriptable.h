@@ -24,6 +24,8 @@ public:			// Component accessors
 
 public:			// Archetype support
 	void AddBinding(unsigned bindingToken);
+	IEngineBinding * GetBinding(unsigned bindingToken);
+
 	void BindAll(IEngineBinder * binder);
 
 	Scriptable * Instantiate() const;

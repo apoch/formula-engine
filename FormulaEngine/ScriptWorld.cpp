@@ -107,6 +107,8 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token) {
 	Scriptable * instance = archetype->Instantiate();
 	m_instances.push_back(instance);
 
+	instance->BindAll(m_binder);
+
 	QueueEvent(instance, m_tokens->AddToken("OnCreate"));
 
 	return instance;

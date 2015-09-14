@@ -76,6 +76,12 @@
                             "action": "SetProperty",
                             "property": "Health",
                             "value": "Random(Health) + 1"
+                        },
+                        {
+                            "action": "SetGoalState",
+                            "binding": "Unit",
+                            "property": "RedColor",
+                            "value": "1.0"
                         }
                     ]
                 }

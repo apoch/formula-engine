@@ -7,6 +7,7 @@
 #include "EventHandler.h"
 #include "Scriptable.h"
 #include "ScriptWorld.h"
+#include "EngineBind.h"
 
 
 void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter) {
@@ -14,6 +15,16 @@ void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter) {
 	rec.action = ACTION_CODE_EVENT_REPEAT;
 	rec.targetToken = eventToken;
 	rec.payload = std::move(counter);
+
+	m_actions.emplace_back(rec);
+}
+
+void ActionSet::AddActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && payload) {
+	ActionRecord rec;
+	rec.action = ACTION_CODE_SET_GOAL_STATE;
+	rec.targetScope = scopeToken;
+	rec.targetToken = targetToken;
+	rec.payload = std::move(payload);
 
 	m_actions.emplace_back(rec);
 }
@@ -74,6 +85,19 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 
 		case ACTION_CODE_SET_FORMULA:
 			target->GetScopes().SetFormula(action.targetToken, action.payload);
+			break;
+
+		case ACTION_CODE_SET_GOAL_STATE:
+			{
+				Result result = action.payload.Evaluate(&scopes);
+				if(result.code == RESULT_CODE_OK) {
+					IEngineBinding * binding = target->GetBinding(action.targetScope);
+					if(binding)
+						binding->SetGoalState(action.targetToken, result.value);
+				}
+				else
+					return result.code;
+			}
 			break;
 
 		case ACTION_CODE_LIST_ADD:

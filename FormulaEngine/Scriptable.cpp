@@ -38,11 +38,20 @@ void Scriptable::BindAll(IEngineBinder * binder) {
 	}
 }
 
+IEngineBinding * Scriptable::GetBinding(unsigned token) {
+	auto iter = m_bindings.find(token);
+	if(iter == m_bindings.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 
 Scriptable * Scriptable::Instantiate() const {
 	Scriptable * clone = new Scriptable;
 	clone->m_eventHandlers = m_eventHandlers;
 	clone->m_scopes.InstantiateFrom(m_scopes);
+	clone->m_bindings = m_bindings;
 
 	return clone;
 }

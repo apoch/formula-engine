@@ -16,6 +16,19 @@ typedef void (ScriptWorld::*RegistrationFunc)(const std::string &, Scriptable &&
 typedef Scriptable * (ScriptWorld::*LookupFunc)(unsigned);
 
 
+static void LoadArrayOfBindings(const picojson::value & bindarray, ScriptWorld * world, Scriptable * scriptable) {
+	auto & bindings = bindarray.get<picojson::array>();
+	for(auto & binding : bindings) {
+		if(!binding.is<std::string>())
+			continue;
+
+		const std::string & bindingstr = binding.get<std::string>();
+		unsigned bindingtoken = world->GetTokenPool().AddToken(bindingstr);
+
+		scriptable->AddBinding(bindingtoken);
+	}
+}
+
 static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
 	auto & events = eventarray.get<picojson::array>();
 	for(auto & evententry : events) {
@@ -47,7 +60,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 			const std::string & actionkey = actionkeyiter->second.get<std::string>();
 			if(actionkey == "CreateListMember") {
 				auto listiter = action.find("list");
-				if(listiter == action.end() | !listiter->second.is<std::string>())
+				if(listiter == action.end() || !listiter->second.is<std::string>())
 					continue;
 
 				auto archetypeiter = action.find("archetype");
@@ -58,6 +71,25 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
 
 				actions.AddActionListSpawnEntry(listToken, archetypeToken);
+			}
+			else if(actionkey == "SetGoalState") {
+				auto binditer = action.find("binding");
+				if(binditer == action.end() || !binditer->second.is<std::string>())
+					continue;
+
+				auto propiter = action.find("property");
+				if(propiter == action.end() || !propiter->second.is<std::string>())
+					continue;
+
+				auto valiter = action.find("value");
+				if(valiter == action.end() || !valiter->second.is<std::string>())
+					continue;
+
+				unsigned scopeToken = world->GetTokenPool().AddToken(binditer->second.get<std::string>());
+				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
+				auto & payload = valiter->second.get<std::string>();
+
+				actions.AddActionSetGoalState(scopeToken, targetToken, parser->Parse(payload, &world->GetTokenPool()));
 			}
 			else if(actionkey == "SetProperty") {
 				auto propiter = action.find("property");
@@ -134,6 +166,10 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 		auto eventiter = obj.find("events");
 		if(eventiter != obj.end() && eventiter->second.is<picojson::array>())
 			LoadArrayOfEvents(eventiter->second, world, parser, &instance);
+
+		auto binditer = obj.find("bindings");
+		if(binditer != obj.end() && binditer->second.is<picojson::array>())
+			LoadArrayOfBindings(binditer->second, world, &instance);
 
 		(world->*(func))(name, std::move(instance));
 	}

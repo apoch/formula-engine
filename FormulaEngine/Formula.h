@@ -47,6 +47,7 @@ public:			// Move semantics
 	Formula & operator = (Formula && other);
 
 public:			// Friendships
+	friend class FunctionRandom;
 	friend class FunctionSumOfList;
 
 public:			// Enumerations
