@@ -1,23 +1,18 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
+//
+// FormulaEngine Project
+// By Mike Lewis - 2015
+//
+// Precompiled header
+//
+// Commonly used but rarely changed headers can be included
+// here for more optimal build times. See your compiler's
+// documentation on precompiled headers for details on how
+// this works and how to port it around to new compilers.
 //
 
 #pragma once
 
-// Including SDKDDKVer.h defines the highest available Windows platform.
-
-// If you wish to build your application for a previous Windows platform, include WinSDKVer.h and
-// set the _WIN32_WINNT macro to the platform you wish to support before including SDKDDKVer.h.
-
-#include <SDKDDKVer.h>
-
-
-
-#include <stdio.h>
-#include <tchar.h>
-
-
+// C++ standard library includes
 #include <vector>
 #include <string>
 #include <map>
@@ -27,5 +22,7 @@
 #include <fstream>
 #include <cassert>
 
+
+// Third party library includes
 #include "PicoJSON.h"
 
