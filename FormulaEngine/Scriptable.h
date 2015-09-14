@@ -2,6 +2,8 @@
 
 
 struct IActionPerformer;
+struct IEngineBinder;
+struct IEngineBinding;
 
 
 class Scriptable {
@@ -21,6 +23,9 @@ public:			// Component accessors
 	EventHandlerSet & GetEvents()					{ return m_eventHandlers; }
 
 public:			// Archetype support
+	void AddBinding(unsigned bindingToken);
+	void BindAll(IEngineBinder * binder);
+
 	Scriptable * Instantiate() const;
 
 public:			// Membership notification interface
@@ -36,6 +41,8 @@ private:		// Internal helper structures
 private:		// Internal state
 	ScopedPropertyBag m_scopes;
 	EventHandlerSet   m_eventHandlers;
+
+	std::map<unsigned, IEngineBinding *> m_bindings;
 
 	mutable std::vector<Membership> m_listMemberships;
 };

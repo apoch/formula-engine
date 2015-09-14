@@ -75,6 +75,12 @@
     <ClInclude Include="Pch.h">
       <Filter>Support Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EngineBind.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameEngine\ScriptBind.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actions.cpp">
@@ -121,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="Pch.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameEngine\ScriptBind.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameEngine\Unit.cpp">
+      <Filter>Game Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

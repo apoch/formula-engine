@@ -204,7 +204,7 @@ void TestDeserialization() {
 	TokenPool pool;
 	FormulaParser parser;
 
-	ScriptWorld world;
+	ScriptWorld world(&pool, nullptr);
 	DeserializerFactory factory;
 
 	factory.LoadFileIntoScriptWorld("Data\\test.json", &world);

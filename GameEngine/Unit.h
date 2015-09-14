@@ -29,6 +29,9 @@ public:			// Coordinates
 	
 	bool MoveDirection(Direction dir);
 
+public:			// Dummy tests
+	void SetRedColor(double red);
+
 private:		// Internal state
 	Coords m_location;
 };

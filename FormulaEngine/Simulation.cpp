@@ -21,10 +21,12 @@
 #include "Scriptable.h"
 #include "ScriptWorld.h"
 #include "DeserializerFactory.h"
+#include "EngineBind.h"
 
 #include "../GameEngine/Map.h"
 #include "../GameEngine/Unit.h"
 #include "../GameEngine/SubMap.h"
+#include "../GameEngine/ScriptBind.h"
 
 
 namespace Simulation {
@@ -50,7 +52,10 @@ void RunKingdomWar() {
 		}
 	}
 
-	ScriptWorld world;
+	TokenPool pool;
+	Game::Binder binder(&pool);
+
+	ScriptWorld world(&pool, &binder);
 	DeserializerFactory factory;
 
 	factory.LoadFileIntoScriptWorld("Data\\KingdomWar.json", &world);

@@ -6,17 +6,36 @@
 #include "EventHandler.h"
 #include "Scriptable.h"
 
+#include "EngineBind.h"
+
 
 
 Scriptable::Scriptable(Scriptable && other)
 	: m_scopes(std::move(other.m_scopes)),
 	  m_listMemberships(std::move(other.m_listMemberships)),
-	  m_eventHandlers(std::move(other.m_eventHandlers))
+	  m_eventHandlers(std::move(other.m_eventHandlers)),
+	  m_bindings(std::move(other.m_bindings))
 { }
 
 Scriptable::~Scriptable() {
 	for(auto & membership : m_listMemberships)
 		membership.owner->ListRemoveEntry(membership.token, *this);
+}
+
+
+void Scriptable::AddBinding(unsigned bindingToken) {
+	assert(m_bindings.find(bindingToken) == m_bindings.end());
+
+	m_bindings[bindingToken] = nullptr;
+}
+
+
+void Scriptable::BindAll(IEngineBinder * binder) {
+	for(auto & pair : m_bindings) {
+		if(pair.second == nullptr) {
+			pair.second = binder->CreateBinding(pair.first);
+		}
+	}
 }
 
 

@@ -1,8 +1,11 @@
 #pragma once
 
+struct IEngineBinder;
+
 
 class ScriptWorld {
-public:			// Destruction
+public:			// Construction and destruction
+	ScriptWorld(TokenPool * pool, IEngineBinder * binder);
 	~ScriptWorld();
 
 public:			// Setup interface
@@ -12,7 +15,7 @@ public:			// Setup interface
 	Scriptable * GetArchetype(unsigned token);
 	Scriptable * GetScriptable(unsigned token);
 
-	TokenPool & GetTokenPool()			{ return m_tokens; }
+	TokenPool & GetTokenPool()			{ return *m_tokens; }
 
 	Scriptable * InstantiateArchetype(unsigned token);
 
@@ -39,12 +42,14 @@ private:		// Internal structures
 	};
 
 private:		// Internal state
-	TokenPool m_tokens;
+	TokenPool * m_tokens;
 	std::map<unsigned, Scriptable> m_scriptables;
 	std::map<unsigned, Scriptable> m_archetypes;
 
 	std::vector<Event> m_eventQueue;
 	std::vector<Scriptable *> m_instances;
+
+	IEngineBinder * m_binder;
 };
 
 

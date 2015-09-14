@@ -10,6 +10,14 @@
 
 
 
+ScriptWorld::ScriptWorld(TokenPool * pool, IEngineBinder * binder)
+	: m_binder(binder),
+	  m_tokens(pool)
+{
+	assert(m_tokens != nullptr);
+}
+
+
 ScriptWorld::~ScriptWorld() {
 	for(auto & instance : m_instances)
 		delete instance;
@@ -18,7 +26,7 @@ ScriptWorld::~ScriptWorld() {
 
 
 void ScriptWorld::AddArchetype(const std::string & name, Scriptable && archetype) {
-	unsigned token = m_tokens.AddToken(name);
+	unsigned token = m_tokens->AddToken(name);
 	assert(m_archetypes.find(token) == m_archetypes.end());
 
 	m_archetypes.emplace(std::make_pair(token, std::move(archetype)));
@@ -26,7 +34,7 @@ void ScriptWorld::AddArchetype(const std::string & name, Scriptable && archetype
 
 
 void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptable) {
-	unsigned token = m_tokens.AddToken(name);
+	unsigned token = m_tokens->AddToken(name);
 	assert(m_scriptables.find(token) == m_scriptables.end());
 		
 	m_scriptables.emplace(std::make_pair(token, std::move(scriptable)));
@@ -99,7 +107,7 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token) {
 	Scriptable * instance = archetype->Instantiate();
 	m_instances.push_back(instance);
 
-	QueueEvent(instance, m_tokens.AddToken("OnCreate"));
+	QueueEvent(instance, m_tokens->AddToken("OnCreate"));
 
 	return instance;
 }
@@ -111,7 +119,7 @@ void ScriptWorld::QueueBroadcastEvent(const std::string & eventName) {
 
 void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName) {
 	Event e;
-	e.nameToken = m_tokens.AddToken(eventName);
+	e.nameToken = m_tokens->AddToken(eventName);
 	e.targetToken = targetToken;
 	e.directTarget = nullptr;
 

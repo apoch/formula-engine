@@ -112,10 +112,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\GameEngine\Map.h" />
+    <ClInclude Include="..\GameEngine\ScriptBind.h" />
     <ClInclude Include="..\GameEngine\SubMap.h" />
     <ClInclude Include="..\GameEngine\Unit.h" />
     <ClInclude Include="Actions.h" />
     <ClInclude Include="DeserializerFactory.h" />
+    <ClInclude Include="EngineBind.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Functions.h" />
@@ -131,6 +133,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\GameEngine\Map.cpp" />
+    <ClCompile Include="..\GameEngine\ScriptBind.cpp" />
+    <ClCompile Include="..\GameEngine\Unit.cpp" />
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="DeserializerFactory.cpp" />
     <ClCompile Include="EventHandler.cpp" />
