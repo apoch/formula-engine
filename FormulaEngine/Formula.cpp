@@ -71,18 +71,36 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 	if(left.code != RESULT_CODE_OK)
 		return left;
 
-	Result ret;
-	ret.code = RESULT_CODE_OK;
-
-	switch(op) {
-	case OPERATOR_ADD:			ret.value = left.value + right.value;		return ret;
-	case OPERATOR_SUBTRACT:		ret.value = left.value - right.value;		return ret;
-	case OPERATOR_MULTIPLY:		ret.value = left.value * right.value;		return ret;
-	case OPERATOR_DIVIDE:		ret.value = left.value / right.value;		return ret;
+	if(left.type != right.type) {
+		Result err;
+		err.code = RESULT_CODE_TYPE_ERROR;
+		return err;
 	}
 
-	ret.code = RESULT_CODE_SYNTAX_ERROR;
-	ret.value = 0.0;
+	Result ret;
+	ret.code = RESULT_CODE_OK;
+	ret.type = left.type;
+
+	switch(op) {
+	case OPERATOR_ADD:			ret.value = left.value + right.value;		break;
+	case OPERATOR_SUBTRACT:		ret.value = left.value - right.value;		break;
+	case OPERATOR_MULTIPLY:		ret.value = left.value * right.value;		break;
+	case OPERATOR_DIVIDE:		ret.value = left.value / right.value;		break;
+	default:
+		ret.code = RESULT_CODE_SYNTAX_ERROR;
+		ret.value = 0.0;
+		return ret;
+	}
+
+	if(left.type == RESULT_TYPE_VECTOR2) {
+		switch(op) {
+		case OPERATOR_ADD:			ret.value2 = left.value2 + right.value2;		break;
+		case OPERATOR_SUBTRACT:		ret.value2 = left.value2 - right.value2;		break;
+		case OPERATOR_MULTIPLY:		ret.value2 = left.value2 * right.value2;		break;
+		case OPERATOR_DIVIDE:		ret.value2 = left.value2 / right.value2;		break;
+		}
+	}
+
 	return ret;
 }
 

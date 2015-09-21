@@ -231,12 +231,21 @@ void TestDeserialization() {
 //
 void TestVectors() {
 	FormulaParser parser;
-	Formula formula = parser.Parse("Vec(2, 8)", nullptr);
 
+	Formula formula = parser.Parse("Vec(2, 8)", nullptr);
 	Result res = formula.Evaluate(nullptr);
 	assert(res.code == RESULT_CODE_OK);
+	assert(res.type == RESULT_TYPE_VECTOR2);
 	assert(res.value == 2.0);
 	assert(res.value2 == 8.0);
+
+
+	Formula summation = parser.Parse("Vec(1, 7) + Vec(1, 1)", nullptr);
+	Result sum = summation.Evaluate(nullptr);
+	assert(sum.code == RESULT_CODE_OK);
+	assert(sum.type == RESULT_TYPE_VECTOR2);
+	assert(sum.value == 2.0);
+	assert(sum.value2 == 8.0);
 }
 
 

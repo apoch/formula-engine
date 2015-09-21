@@ -6,10 +6,17 @@ enum ResultCode {
 	RESULT_CODE_OK,
 	RESULT_CODE_SYNTAX_ERROR,
 	RESULT_CODE_MISSING_DEFINITION,
+	RESULT_CODE_TYPE_ERROR,
+};
+
+enum ResultType {
+	RESULT_TYPE_SCALAR,
+	RESULT_TYPE_VECTOR2,
 };
 
 struct Result {
 	ResultCode code;
+	ResultType type   = RESULT_TYPE_SCALAR;
 	double     value  = 0.0;
 	double     value2 = 0.0;
 };

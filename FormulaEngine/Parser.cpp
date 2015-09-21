@@ -57,7 +57,11 @@ Formula FormulaParser::Parse(const std::string & formula, TokenPool * tokenPool)
 			return Formula();
 		}
 
-		ret.Push(GetOperatorFromToken(m_tokenStack.back().op));
+		if(m_tokenStack.back().op)
+			ret.Push(GetOperatorFromToken(m_tokenStack.back().op));
+		else
+			ret.Push(*m_tokenStack.back().eval);
+
 		m_tokenStack.pop_back();
 	}
 
@@ -88,15 +92,18 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 		formula->Push(value);
 	}
 	else if(**iter == ',') {
+		++(*iter);
+
 		while(!m_tokenStack.empty() && m_tokenStack.back().op != '(') {
-			formula->Push(GetOperatorFromToken(m_tokenStack.back().op));
+			if(m_tokenStack.back().op)
+				formula->Push(GetOperatorFromToken(m_tokenStack.back().op));
+			else
+				formula->Push(*m_tokenStack.back().eval);
 			m_tokenStack.pop_back();
 		}
 
 		if(m_tokenStack.empty())
 			return false;
-
-		m_tokenStack.pop_back();
 	}
 	else if(**iter == '(') {
 		Token t;
@@ -108,7 +115,10 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 		++(*iter);
 
 		while(!m_tokenStack.empty() && m_tokenStack.back().op != '(') {
-			formula->Push(GetOperatorFromToken(m_tokenStack.back().op));
+			if(m_tokenStack.back().op)
+				formula->Push(GetOperatorFromToken(m_tokenStack.back().op));
+			else
+				formula->Push(*m_tokenStack.back().eval);
 			m_tokenStack.pop_back();
 		}
 
@@ -152,6 +162,9 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 				break;
 
 			if(**iter == '(' || **iter == ')')
+				break;
+
+			if(**iter == ',')
 				break;
 
 			++(*iter);

@@ -86,9 +86,12 @@ public:			// ITerminalEvaluator interface
 		if(yparam.code != RESULT_CODE_OK)
 			return yparam;
 
+		// These are inverted because parameters to the function are
+		// obtained in reverse order, due to internal notation.
 		ret.code = RESULT_CODE_OK;
-		ret.value = xparam.value;
-		ret.value2 = yparam.value;
+		ret.type = RESULT_TYPE_VECTOR2;
+		ret.value = yparam.value;
+		ret.value2 = xparam.value;
 		return ret;
 	}
 } s_functionVector;
