@@ -87,14 +87,17 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 
 		formula->Push(value);
 	}
-	// TODO - multiparameter function support
-	/* else if(isComma()) {
-		// Until the token at the top of the stack is a left parenthesis, pop
-		// operators off the stack onto the output queue. If no left parentheses
-		// are encountered, either the separator was misplaced or parentheses
-		// were mismatched.
+	else if(**iter == ',') {
+		while(!m_tokenStack.empty() && m_tokenStack.back().op != '(') {
+			formula->Push(GetOperatorFromToken(m_tokenStack.back().op));
+			m_tokenStack.pop_back();
+		}
+
+		if(m_tokenStack.empty())
+			return false;
+
+		m_tokenStack.pop_back();
 	}
-	*/
 	else if(**iter == '(') {
 		Token t;
 		t.op = '(';

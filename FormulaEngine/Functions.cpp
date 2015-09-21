@@ -69,6 +69,31 @@ public:			// ITerminalEvaluator interface
 } s_functionSumOfList;
 
 
+static class FunctionVector : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+
+		--(*pindex);
+
+		Result xparam = termSource.EvaluateSubexpression(context, pindex);
+		if(xparam.code != RESULT_CODE_OK)
+			return xparam;
+
+		--(*pindex);
+
+		Result yparam = termSource.EvaluateSubexpression(context, pindex);
+		if(yparam.code != RESULT_CODE_OK)
+			return yparam;
+
+		ret.code = RESULT_CODE_OK;
+		ret.value = xparam.value;
+		ret.value2 = yparam.value;
+		return ret;
+	}
+} s_functionVector;
+
+
 
 const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 	if(!std::strcmp(str, "SumOf"))
@@ -76,6 +101,9 @@ const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 
 	if(!std::strcmp(str, "Random"))
 		return &s_functionRandom;
+
+	if(!std::strcmp(str, "Vec"))
+		return &s_functionVector;
 
 	return nullptr;
 }

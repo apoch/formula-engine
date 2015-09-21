@@ -28,13 +28,13 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	//
 	// Optionally run the test suite
 	//
-	//Tests::RunAll();
+	Tests::RunAll();
 
 
 	//
 	// Run the simulation
 	//
-	Simulation::RunKingdomWar();
+	//Simulation::RunKingdomWar();
 
 
 

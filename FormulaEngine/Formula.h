@@ -10,7 +10,8 @@ enum ResultCode {
 
 struct Result {
 	ResultCode code;
-	double     value;
+	double     value  = 0.0;
+	double     value2 = 0.0;
 };
 
 struct ListResult {
@@ -49,6 +50,7 @@ public:			// Move semantics
 public:			// Friendships
 	friend class FunctionRandom;
 	friend class FunctionSumOfList;
+	friend class FunctionVector;
 
 public:			// Enumerations
 	enum Operator {

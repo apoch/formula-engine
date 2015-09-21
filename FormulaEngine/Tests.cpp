@@ -220,6 +220,26 @@ void TestDeserialization() {
 	assert(val == 42.0);
 }
 
+//
+// Basic test of vector functions
+//
+// Evaluates simple formulas containing vector operations
+// and ensures that they return correct results.
+//
+// Asserts that the results from vector operations are
+// expected values and success codes.
+//
+void TestVectors() {
+	FormulaParser parser;
+	Formula formula = parser.Parse("Vec(2, 8)", nullptr);
+
+	Result res = formula.Evaluate(nullptr);
+	assert(res.code == RESULT_CODE_OK);
+	assert(res.value == 2.0);
+	assert(res.value2 == 8.0);
+}
+
+
 
 } // Anonymous internal namespace
 
@@ -238,6 +258,7 @@ void RunAll() {
 	TestActionSets();
 	TestListsAndFunctions();
 	TestDeserialization();
+	TestVectors();
 }
 
 
