@@ -22,19 +22,18 @@
 //
 // Entry point for the program
 //
-int _tmain(int argc, _TCHAR* argv[]) {
-	
+int _tmain() {
 	
 	//
 	// Optionally run the test suite
 	//
-	Tests::RunAll();
+	//Tests::RunAll();
 
 
 	//
 	// Run the simulation
 	//
-	//Simulation::RunKingdomWar();
+	Simulation::RunKingdomWar();
 
 
 

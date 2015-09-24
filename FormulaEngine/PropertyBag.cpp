@@ -16,8 +16,12 @@ Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigne
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
 	ret.value = 0.0;
 
-	if(scope != 0)
+	if(scope != 0) {
+		if(&context != this)
+			return context.ResolveNumber(context, scope, token);
+
 		return ret;
+	}
 
 	auto iter = m_bag.find(token);
 	if(iter != m_bag.end()) {
@@ -29,6 +33,10 @@ Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigne
 }
 
 ListResult SimplePropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	((void)(context));
+	((void)(scope));
+	((void)(token));
+
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
 	return ret;
@@ -36,6 +44,16 @@ ListResult SimplePropertyBag::ResolveList(const IFormulaContext & context, unsig
 
 
 
+
+void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, ScopedPropertyBag * scopes) const {
+	for(auto & pair : m_bag) {
+		Result result = pair.second.Evaluate(scopes);
+		if(result.code != RESULT_CODE_OK)
+			std::cout << "FAIL\n";
+
+		bag->Set(pair.first, result.value);
+	}
+}
 
 void FormulaPropertyBag::Set(unsigned token, Formula && formula) {
 	m_bag[token] = std::move(formula);
@@ -59,6 +77,10 @@ Result FormulaPropertyBag::ResolveNumber(const IFormulaContext & context, unsign
 }
 
 ListResult FormulaPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	((void)(context));
+	((void)(scope));
+	((void)(token));
+
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
 	return ret;

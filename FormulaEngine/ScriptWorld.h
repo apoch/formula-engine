@@ -17,11 +17,11 @@ public:			// Setup interface
 
 	TokenPool & GetTokenPool()			{ return *m_tokens; }
 
-	Scriptable * InstantiateArchetype(unsigned token);
+	Scriptable * InstantiateArchetype(unsigned token, IPropertyBag * paramBag);
 
 public:			// Event pump interface
 	void QueueEvent(unsigned targetToken, const std::string & eventName);
-	void QueueEvent(Scriptable * scriptable, unsigned eventToken);
+	void QueueEvent(Scriptable * scriptable, unsigned eventToken, IPropertyBag * paramBag);
 
 	void QueueBroadcastEvent(const std::string & eventName);
 
@@ -31,7 +31,7 @@ public:			// Debugging interface
 	void DumpOverview() const;
 
 private:		// Internal helpers
-	void DispatchEvent(Scriptable * target, unsigned eventToken);
+	void DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag);
 
 private:		// Internal structures
 	struct Event {
@@ -39,6 +39,8 @@ private:		// Internal structures
 		Scriptable * directTarget;
 
 		unsigned targetToken;
+
+		IPropertyBag * parameterBag = nullptr;
 	};
 
 private:		// Internal state

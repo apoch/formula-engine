@@ -71,6 +71,7 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 	if(left.code != RESULT_CODE_OK)
 		return left;
 
+	// TODO - allow mismatched type for scaling vectors via mul/div?
 	if(left.type != right.type) {
 		Result err;
 		err.code = RESULT_CODE_TYPE_ERROR;
@@ -96,7 +97,7 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 		switch(op) {
 		case OPERATOR_ADD:			ret.value2 = left.value2 + right.value2;		break;
 		case OPERATOR_SUBTRACT:		ret.value2 = left.value2 - right.value2;		break;
-		case OPERATOR_MULTIPLY:		ret.value2 = left.value2 * right.value2;		break;
+		case OPERATOR_MULTIPLY:		ret.value2 = left.value2 * right.value2;		break;	// TODO - what does it mean to mul/div a vec2?
 		case OPERATOR_DIVIDE:		ret.value2 = left.value2 / right.value2;		break;
 		}
 	}

@@ -81,6 +81,7 @@ void TestFormulas() {
 	double val = fbag.ResolveNumber(fbag, 0, pool.AddToken("beta")).value;
 
 	assert(val == 42.0);
+	((void)(val));
 }
 
 //
@@ -108,6 +109,7 @@ void TestScopedBag() {
 	double val = modifiedHealth.Evaluate(&scopes).value;
 
 	assert(val == 90.0);
+	((void)(val));
 }
 
 //
@@ -140,6 +142,7 @@ void TestActionSets() {
 
 	double val = scriptable.GetScopes().ResolveNumber(scriptable.GetScopes(), 0, pool.AddToken("health")).value;
 	assert(val == 90.0);
+	((void)(val));
 }
 
 //
@@ -174,10 +177,12 @@ void TestListsAndFunctions() {
 
 		double val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 		assert(val1 == 42.0);
+		((void)(val1));
 	}
 
 	double val2 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 	assert(val2 == 40.0);
+	((void)(val2));
 
 	Scriptable twobagalso;
 	twobagalso.GetScopes().GetProperties().Set(pool.AddToken("value"), 2.0);
@@ -188,6 +193,7 @@ void TestListsAndFunctions() {
 
 	double val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 	assert(val3 == 42.0);
+	((void)(val3));
 }
 
 //
@@ -218,6 +224,7 @@ void TestDeserialization() {
 	double val = scopes.ResolveNumber(scopes, 0, computedToken).value;
 
 	assert(val == 42.0);
+	((void)(val));
 }
 
 //

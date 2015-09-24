@@ -5,7 +5,8 @@
 
 
 Map::Map(unsigned width, unsigned height) {
-
+	((void)(width));
+	((void)(height));
 }
 
 

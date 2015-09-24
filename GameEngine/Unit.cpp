@@ -3,6 +3,15 @@
 #include "Unit.h"
 
 
+unsigned s_hackRed = 0;
+unsigned s_hackBlue = 0;
+
+
 void Unit::SetRedColor(double red) {
-	//std::cout << "Setting unit red value to " << red << "\n";
+	if(red > 0.0)
+		++s_hackRed;
+	else
+		++s_hackBlue;
 }
+
+

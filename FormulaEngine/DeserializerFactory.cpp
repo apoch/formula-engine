@@ -67,10 +67,21 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				if(archetypeiter == action.end() || !archetypeiter->second.is<std::string>())
 					continue;
 
+				FormulaPropertyBag * parambagptr = nullptr;
+				auto paramsiter = action.find("params");
+				if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
+					parambagptr = new FormulaPropertyBag;
+
+					auto params = paramsiter->second.get<picojson::object>();
+					for(auto & param : params) {
+						parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
+					}
+				}
+
 				unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
 				unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
 
-				actions.AddActionListSpawnEntry(listToken, archetypeToken);
+				actions.AddActionListSpawnEntry(listToken, archetypeToken, parambagptr);
 			}
 			else if(actionkey == "SetGoalState") {
 				auto binditer = action.find("binding");
@@ -117,7 +128,18 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
 				auto & payload = payloaditer->second.get<std::string>();
 
-				actions.AddActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()));
+				FormulaPropertyBag * parambagptr = nullptr;
+				auto paramsiter = action.find("params");
+				if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
+					parambagptr = new FormulaPropertyBag;
+
+					auto params = paramsiter->second.get<picojson::object>();
+					for(auto & param : params) {
+						parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
+					}
+				}
+
+				actions.AddActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()), parambagptr);
 			}
 		}
 

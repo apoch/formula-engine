@@ -36,6 +36,9 @@ public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 
+public:			// Utility routines
+	void Flatten(SimplePropertyBag * bag, ScopedPropertyBag * scopes) const;
+
 private:		// Internal state
 	std::map<unsigned, Formula> m_bag;
 };

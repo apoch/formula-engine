@@ -29,6 +29,10 @@
 #include "../GameEngine/ScriptBind.h"
 
 
+extern unsigned s_hackRed;
+extern unsigned s_hackBlue;
+
+
 namespace Simulation {
 
 
@@ -65,6 +69,8 @@ void RunKingdomWar() {
 	while(world.DispatchEvents());
 
 	world.DumpOverview();
+
+	std::cout << "RED: " << s_hackRed << "   BLUE: " << s_hackBlue << std::endl;
 }
 
 

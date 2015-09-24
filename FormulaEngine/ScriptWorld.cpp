@@ -42,8 +42,8 @@ void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptab
 
 
 
-void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken) {
-	target->GetEvents().TriggerHandlers(this, eventToken, target);
+void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag) {
+	target->GetEvents().TriggerHandlers(this, eventToken, target, paramBag);
 }
 
 
@@ -57,16 +57,18 @@ bool ScriptWorld::DispatchEvents() {
 			if(e.targetToken) {
 				Scriptable * scriptable = GetScriptable(e.targetToken);
 				if(scriptable)
-					DispatchEvent(scriptable, e.nameToken);
+					DispatchEvent(scriptable, e.nameToken, e.parameterBag);
 			}
 			else if(e.directTarget) {
-				DispatchEvent(e.directTarget, e.nameToken);
+				DispatchEvent(e.directTarget, e.nameToken, e.parameterBag);
 			}
 			else {
 				for(auto & pair : m_scriptables) {
-					DispatchEvent(&pair.second, e.nameToken);
+					DispatchEvent(&pair.second, e.nameToken, e.parameterBag);
 				}
 			}
+
+			delete e.parameterBag;
 		}
 	}
 
@@ -99,7 +101,7 @@ Scriptable * ScriptWorld::GetScriptable(unsigned token) {
 }
 
 
-Scriptable * ScriptWorld::InstantiateArchetype(unsigned token) {
+Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IPropertyBag * paramBag) {
 	Scriptable * archetype = GetArchetype(token);
 	if(!archetype)
 		return nullptr;
@@ -109,7 +111,7 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token) {
 
 	instance->BindAll(m_binder);
 
-	QueueEvent(instance, m_tokens->AddToken("OnCreate"));
+	QueueEvent(instance, m_tokens->AddToken("OnCreate"), paramBag);
 
 	return instance;
 }
@@ -124,15 +126,17 @@ void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName
 	e.nameToken = m_tokens->AddToken(eventName);
 	e.targetToken = targetToken;
 	e.directTarget = nullptr;
+	e.parameterBag = nullptr;
 
 	m_eventQueue.push_back(e);
 }
 
-void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken) {
+void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IPropertyBag * bag) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = 0;
 	e.directTarget = target;
+	e.parameterBag = bag;
 
 	m_eventQueue.push_back(e);
 }

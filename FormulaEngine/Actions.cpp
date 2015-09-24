@@ -10,11 +10,38 @@
 #include "EngineBind.h"
 
 
-void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter) {
+
+ActionSet::ActionSet(ActionSet && other) {
+	m_actions = std::move(other.m_actions);
+	m_ownedBags = std::move(other.m_ownedBags);
+}
+
+ActionSet::ActionSet(const ActionSet & other)
+	: m_actions(other.m_actions)
+{
+	for(auto & action : m_actions) {
+		if(action.bag) {
+			action.bag = new FormulaPropertyBag(*action.bag);
+			m_ownedBags.push_back(action.bag);
+		}
+	}
+}
+
+ActionSet::~ActionSet() {
+	for(auto & bag : m_ownedBags)
+		delete bag;
+}
+
+
+void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter, FormulaPropertyBag * bag) {
 	ActionRecord rec;
 	rec.action = ACTION_CODE_EVENT_REPEAT;
 	rec.targetToken = eventToken;
 	rec.payload = std::move(counter);
+	rec.bag = bag;
+
+	if(bag)
+		m_ownedBags.push_back(bag);
 
 	m_actions.emplace_back(rec);
 }
@@ -56,16 +83,20 @@ void ActionSet::AddActionListAddEntry(unsigned listToken, const Scriptable & ent
 	m_actions.emplace_back(rec);
 }
 
-void ActionSet::AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken) {
+void ActionSet::AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * bag) {
 	ActionRecord rec;
 	rec.action = ACTION_CODE_LIST_SPAWN;
 	rec.targetToken = listToken;
 	rec.archetypeToken = archetypeToken;
+	rec.bag = bag;
+
+	if(bag)
+		m_ownedBags.push_back(bag);
 
 	m_actions.emplace_back(rec);
 }
 
-ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, IPropertyBag * optionalContext) const {
+ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
 	ScopedPropertyBag scopes;
 	scopes.GetScopes().AddScope(0, target->GetScopes().GetProperties());
 	if(optionalContext)
@@ -106,7 +137,13 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 
 		case ACTION_CODE_LIST_SPAWN:
 			{
-				Scriptable * instance = world->InstantiateArchetype(action.archetypeToken);
+				SimplePropertyBag * bagptr = nullptr;
+				if(action.bag) {
+					bagptr = new SimplePropertyBag;
+					action.bag->Flatten(bagptr, &scopes);
+				}
+
+				Scriptable * instance = world->InstantiateArchetype(action.archetypeToken, bagptr);
 				if(instance) {
 					target->GetScopes().ListAddEntry(action.targetToken, *instance);
 				}
@@ -121,7 +158,13 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 
 				unsigned counter = unsigned(result.value);
 				for(unsigned i = 0; i < counter; ++i) {
-					world->QueueEvent(target, action.targetToken);
+					SimplePropertyBag * bagptr = nullptr;
+					if(action.bag) {
+						bagptr = new SimplePropertyBag;
+						action.bag->Flatten(bagptr, &scopes);
+					}
+
+					world->QueueEvent(target, action.targetToken, bagptr);
 				}
 			}
 			break;

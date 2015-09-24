@@ -14,10 +14,11 @@ void EventHandlerSet::AddHandler(unsigned eventToken, ActionSet && actions) {
 	m_eventHandlers.emplace(std::make_pair(eventToken, std::move(actions)));
 }
 
-void EventHandlerSet::TriggerHandlers(ScriptWorld * world, unsigned eventToken, Scriptable * target) {
+void EventHandlerSet::TriggerHandlers(ScriptWorld * world, unsigned eventToken, Scriptable * target, const IPropertyBag * paramBag) {
+	unsigned magic = world->GetTokenPool().AddToken("event");
 	auto range = m_eventHandlers.equal_range(eventToken);
 	for(auto iter = range.first; iter != range.second; ++iter) {
-		iter->second.Execute(world, target, 0, nullptr);
+		iter->second.Execute(world, target, magic, paramBag);
 	}
 }
 

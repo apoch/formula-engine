@@ -28,6 +28,8 @@ struct ListResult {
 
 
 struct IFormulaContext {
+	virtual ~IFormulaContext() { }
+
 	virtual Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const = 0;
 	virtual ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const = 0;
 };

@@ -29,7 +29,10 @@
                         {
                             "action": "CreateListMember",
                             "list": "Armies",
-                            "archetype": "Army"
+                            "archetype": "Army",
+                            "params": {
+                                "RedTeam": "1.0"
+                            }
                         }
                     ]
                 }
@@ -52,7 +55,10 @@
                         {
                             "action": "CreateListMember",
                             "list": "Armies",
-                            "archetype": "Army"
+                            "archetype": "Army",
+                            "params": {
+                                "RedTeam": "0.0"
+                            }
                         }
                     ]
                 }
@@ -81,12 +87,12 @@
                             "action": "SetGoalState",
                             "binding": "Unit",
                             "property": "RedColor",
-                            "value": "1.0"
+                            "value": "event:RedTeam"
                         }
                     ]
                 }
             ],
-            "bindings": [ 
+            "bindings": [
                 "Unit"
             ]
         },
@@ -109,7 +115,10 @@
                         {
                             "action": "RepeatEvent",
                             "event": "SpawnSoldier",
-                            "count": "25"
+                            "count": "25",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         },
                         {
                             "action": "SetProperty",
@@ -124,7 +133,10 @@
                         {
                             "action": "CreateListMember",
                             "list": "Soldiers",
-                            "archetype": "Soldier"
+                            "archetype": "Soldier",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         }
                     ]
                 }
@@ -148,7 +160,10 @@
                         {
                             "action": "RepeatEvent",
                             "event": "SpawnPlatoon",
-                            "count": "40"
+                            "count": "40",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         }
                     ]
                 },
@@ -158,7 +173,10 @@
                         {
                             "action": "CreateListMember",
                             "list": "Platoons",
-                            "archetype": "Platoon"
+                            "archetype": "Platoon",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         }
                     ]
                 }
@@ -182,7 +200,10 @@
                         {
                             "action": "RepeatEvent",
                             "event": "SpawnDivision",
-                            "count": "20"
+                            "count": "20",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         }
                     ]
                 },
@@ -192,7 +213,10 @@
                         {
                             "action": "CreateListMember",
                             "list": "Divisions",
-                            "archetype": "Division"
+                            "archetype": "Division",
+                            "params": { 
+                                "RedTeam": "event:RedTeam"
+                            }
                         }
                     ]
                 }

@@ -3,6 +3,7 @@
 struct IPropertyBag;
 struct IFormulaContext;
 class ScopedPropertyBag;
+class FormulaPropertyBag;
 class Formula;
 class Scriptable;
 class ScriptWorld;
@@ -20,18 +21,26 @@ struct IActionPerformer {
 
 
 class ActionSet {
+public:			// Construction and destruction
+	ActionSet() { }
+	ActionSet(ActionSet && other);
+	ActionSet(const ActionSet & other);
+	~ActionSet();
+
+	ActionSet & operator= (const ActionSet & other) = delete;
+
 public:			// Setup interface
 	void AddActionSetProperty(unsigned targetToken, Formula && payload);
 	void AddActionSetFormula(unsigned targetToken, Formula && payload);
 	void AddActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && payload);
 
 	void AddActionListAddEntry(unsigned listToken, const Scriptable & entry);
-	void AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken);
+	void AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * bag);
 
-	void AddActionEventRepeat(unsigned eventToken, Formula && counter);
+	void AddActionEventRepeat(unsigned eventToken, Formula && counter, FormulaPropertyBag * bag);
 
 public:			// Execution interface
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, IPropertyBag * optionalContext) const;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
 
 private:		// Internal helper structures
 	enum ActionCode {
@@ -51,9 +60,12 @@ private:		// Internal helper structures
 
 		Formula    payload;
 		const Scriptable * entry;
+
+		FormulaPropertyBag * bag = nullptr;
 	};
 
 private:		// Internal state
 	std::vector<ActionRecord> m_actions;
+	std::vector<FormulaPropertyBag *> m_ownedBags;
 };
 
