@@ -20,6 +20,91 @@ struct IActionPerformer {
 };
 
 
+struct IAction {
+	virtual ~IAction() { }
+	virtual IAction * Clone() const = 0;
+	virtual ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const = 0;
+};
+
+
+class ActionEventRepeat : public IAction {
+public:
+	ActionEventRepeat(unsigned eventToken, Formula && repeatFormula, FormulaPropertyBag * parambagptr);
+	~ActionEventRepeat();
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_eventToken;
+	Formula m_repeatFormula;
+	FormulaPropertyBag * m_paramBag;
+};
+
+
+class ActionSetProperty : public IAction {
+public:
+	ActionSetProperty(unsigned targetToken, Formula && payload);
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_targetToken;
+	Formula m_payload;
+};
+
+class ActionSetFormula : public IAction {
+public:
+	ActionSetFormula(unsigned targetToken, Formula && payload);
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_targetToken;
+	Formula m_payload;
+};
+
+class ActionListAddEntry : public IAction {
+public:
+	ActionListAddEntry(unsigned listToken, const Scriptable & scriptable);
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_listToken;
+	const Scriptable * m_scriptable;
+};
+
+class ActionListSpawnEntry : public IAction {
+public:
+	ActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * paramBagPtr);
+	~ActionListSpawnEntry();
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_listToken;
+	unsigned m_archetypeToken;
+	FormulaPropertyBag * m_paramBag;
+};
+
+class ActionSetGoalState : public IAction {
+public:
+	ActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && formula);
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_scopeToken;
+	unsigned m_targetToken;
+	Formula m_formula;
+};
+
+
+
 class ActionSet {
 public:			// Construction and destruction
 	ActionSet() { }
@@ -30,42 +115,12 @@ public:			// Construction and destruction
 	ActionSet & operator= (const ActionSet & other) = delete;
 
 public:			// Setup interface
-	void AddActionSetProperty(unsigned targetToken, Formula && payload);
-	void AddActionSetFormula(unsigned targetToken, Formula && payload);
-	void AddActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && payload);
-
-	void AddActionListAddEntry(unsigned listToken, const Scriptable & entry);
-	void AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * bag);
-
-	void AddActionEventRepeat(unsigned eventToken, Formula && counter, FormulaPropertyBag * bag);
+	void AddAction(IAction * action);
 
 public:			// Execution interface
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
 
-private:		// Internal helper structures
-	enum ActionCode {
-		ACTION_CODE_SET_PROPERTY,
-		ACTION_CODE_SET_FORMULA,
-		ACTION_CODE_SET_GOAL_STATE,
-		ACTION_CODE_LIST_ADD,
-		ACTION_CODE_LIST_SPAWN,
-		ACTION_CODE_EVENT_REPEAT,
-	};
-
-	struct ActionRecord {
-		ActionCode action;
-		unsigned   targetScope;
-		unsigned   targetToken;
-		unsigned   archetypeToken;
-
-		Formula    payload;
-		const Scriptable * entry;
-
-		FormulaPropertyBag * bag = nullptr;
-	};
-
 private:		// Internal state
-	std::vector<ActionRecord> m_actions;
-	std::vector<FormulaPropertyBag *> m_ownedBags;
+	std::vector<IAction *> m_actions;
 };
 

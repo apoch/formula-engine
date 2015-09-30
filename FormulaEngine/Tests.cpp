@@ -128,7 +128,7 @@ void TestActionSets() {
 	FormulaParser parser;
 
 	ActionSet actions;
-	actions.AddActionSetProperty(pool.AddToken("health"), parser.Parse("health - event:damageAmount", &pool));
+	actions.AddAction(new ActionSetProperty(pool.AddToken("health"), parser.Parse("health - event:damageAmount", &pool)));
 
 	FormulaPropertyBag eventbag;
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
@@ -188,7 +188,7 @@ void TestListsAndFunctions() {
 	twobagalso.GetScopes().GetProperties().Set(pool.AddToken("value"), 2.0);
 
 	ActionSet actions;
-	actions.AddActionListAddEntry(pool.AddToken("testlist"), twobagalso);
+	actions.AddAction(new ActionListAddEntry(pool.AddToken("testlist"), twobagalso));
 	actions.Execute(nullptr, &test, 0, nullptr);
 
 	double val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;

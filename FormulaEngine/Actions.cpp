@@ -13,88 +13,24 @@
 
 ActionSet::ActionSet(ActionSet && other) {
 	m_actions = std::move(other.m_actions);
-	m_ownedBags = std::move(other.m_ownedBags);
 }
 
 ActionSet::ActionSet(const ActionSet & other)
-	: m_actions(other.m_actions)
 {
-	for(auto & action : m_actions) {
-		if(action.bag) {
-			action.bag = new FormulaPropertyBag(*action.bag);
-			m_ownedBags.push_back(action.bag);
-		}
+	for(auto & action : other.m_actions) {
+		m_actions.push_back(action->Clone());
 	}
 }
 
 ActionSet::~ActionSet() {
-	for(auto & bag : m_ownedBags)
-		delete bag;
+	for(auto & action : m_actions)
+		delete action;
 }
 
-
-void ActionSet::AddActionEventRepeat(unsigned eventToken, Formula && counter, FormulaPropertyBag * bag) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_EVENT_REPEAT;
-	rec.targetToken = eventToken;
-	rec.payload = std::move(counter);
-	rec.bag = bag;
-
-	if(bag)
-		m_ownedBags.push_back(bag);
-
-	m_actions.emplace_back(rec);
+void ActionSet::AddAction(IAction * action) {
+	m_actions.push_back(action);
 }
 
-void ActionSet::AddActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && payload) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_SET_GOAL_STATE;
-	rec.targetScope = scopeToken;
-	rec.targetToken = targetToken;
-	rec.payload = std::move(payload);
-
-	m_actions.emplace_back(rec);
-}
-
-void ActionSet::AddActionSetProperty(unsigned targetToken, Formula && payload) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_SET_PROPERTY;
-	rec.targetToken = targetToken;
-	rec.payload = std::move(payload);
-
-	m_actions.emplace_back(rec);
-}
-
-void ActionSet::AddActionSetFormula(unsigned targetToken, Formula && payload) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_SET_FORMULA;
-	rec.targetToken = targetToken;
-	rec.payload = std::move(payload);
-
-	m_actions.emplace_back(rec);
-}
-
-void ActionSet::AddActionListAddEntry(unsigned listToken, const Scriptable & entry) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_LIST_ADD;
-	rec.targetToken = listToken;
-	rec.entry = &entry;
-
-	m_actions.emplace_back(rec);
-}
-
-void ActionSet::AddActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * bag) {
-	ActionRecord rec;
-	rec.action = ACTION_CODE_LIST_SPAWN;
-	rec.targetToken = listToken;
-	rec.archetypeToken = archetypeToken;
-	rec.bag = bag;
-
-	if(bag)
-		m_ownedBags.push_back(bag);
-
-	m_actions.emplace_back(rec);
-}
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
 	ScopedPropertyBag scopes;
@@ -103,78 +39,147 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 		scopes.GetScopes().AddScope(contextScope, *optionalContext);
 
 	for(auto & action : m_actions) {
-		switch(action.action) {
-		case ACTION_CODE_SET_PROPERTY:
-			{
-				Result result = action.payload.Evaluate(&scopes);
-				if(result.code == RESULT_CODE_OK)
-					target->GetScopes().SetProperty(action.targetToken, result.value);
-				else
-					return result.code;
-			}
-			break;
-
-		case ACTION_CODE_SET_FORMULA:
-			target->GetScopes().SetFormula(action.targetToken, action.payload);
-			break;
-
-		case ACTION_CODE_SET_GOAL_STATE:
-			{
-				Result result = action.payload.Evaluate(&scopes);
-				if(result.code == RESULT_CODE_OK) {
-					IEngineBinding * binding = target->GetBinding(action.targetScope);
-					if(binding)
-						binding->SetGoalState(action.targetToken, result.value);
-				}
-				else
-					return result.code;
-			}
-			break;
-
-		case ACTION_CODE_LIST_ADD:
-			target->GetScopes().ListAddEntry(action.targetToken, *action.entry);
-			break;
-
-		case ACTION_CODE_LIST_SPAWN:
-			{
-				SimplePropertyBag * bagptr = nullptr;
-				if(action.bag) {
-					bagptr = new SimplePropertyBag;
-					action.bag->Flatten(bagptr, &scopes);
-				}
-
-				Scriptable * instance = world->InstantiateArchetype(action.archetypeToken, bagptr);
-				if(instance) {
-					target->GetScopes().ListAddEntry(action.targetToken, *instance);
-				}
-			}
-			break;
-
-		case ACTION_CODE_EVENT_REPEAT:
-			{
-				Result result = action.payload.Evaluate(&scopes);
-				if(result.code != RESULT_CODE_OK)
-					return result.code;
-
-				unsigned counter = unsigned(result.value);
-				for(unsigned i = 0; i < counter; ++i) {
-					SimplePropertyBag * bagptr = nullptr;
-					if(action.bag) {
-						bagptr = new SimplePropertyBag;
-						action.bag->Flatten(bagptr, &scopes);
-					}
-
-					world->QueueEvent(target, action.targetToken, bagptr);
-				}
-			}
-			break;
-
-		default:
-			return RESULT_CODE_SYNTAX_ERROR;
-		}
+		ResultCode code = action->Execute(world, target, scopes);
+		if(code != RESULT_CODE_OK)
+			return code;
 	}
 
 	return RESULT_CODE_OK;
 }
 
+
+
+ActionListSpawnEntry::ActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * paramBagPtr)
+	: m_listToken(listToken),
+	  m_archetypeToken(archetypeToken),
+	  m_paramBag(paramBagPtr)
+{
+}
+
+ActionListSpawnEntry::~ActionListSpawnEntry() {
+	delete m_paramBag;
+}
+
+IAction * ActionListSpawnEntry::Clone() const {
+	return new ActionListSpawnEntry(m_listToken, m_archetypeToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
+}
+
+ResultCode ActionListSpawnEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	SimplePropertyBag * bagptr = nullptr;
+	if(m_paramBag) {
+		bagptr = new SimplePropertyBag;
+		m_paramBag->Flatten(bagptr, &scopes);
+	}
+
+	Scriptable * instance = world->InstantiateArchetype(m_archetypeToken, bagptr);
+	if(instance) {
+		target->GetScopes().ListAddEntry(m_listToken, *instance);
+	}
+
+	return RESULT_CODE_OK;
+}
+
+
+ActionSetGoalState::ActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && formula)
+	: m_scopeToken(scopeToken),
+	  m_targetToken(targetToken),
+	  m_formula(formula)
+{
+}
+
+IAction * ActionSetGoalState::Clone() const {
+	Formula copy(m_formula);
+	return new ActionSetGoalState(m_scopeToken, m_targetToken, std::move(copy));
+}
+
+ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	((void)(world));
+
+	Result result = m_formula.Evaluate(&scopes);
+	if(result.code == RESULT_CODE_OK) {
+		IEngineBinding * binding = target->GetBinding(m_scopeToken);
+		if(binding)
+			binding->SetGoalState(m_targetToken, result.value);
+	}
+	
+	return result.code;
+}
+
+
+ActionEventRepeat::ActionEventRepeat(unsigned eventToken, Formula && repeatFormula, FormulaPropertyBag * parambagptr)
+	: m_eventToken(eventToken),
+ 	  m_repeatFormula(repeatFormula),
+ 	  m_paramBag(parambagptr)
+{
+}
+
+ActionEventRepeat::~ActionEventRepeat() {
+	delete m_paramBag;
+}
+
+IAction * ActionEventRepeat::Clone() const {
+	Formula formulacopy(m_repeatFormula);
+	return new ActionEventRepeat(m_eventToken, std::move(formulacopy), m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
+}
+
+ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	Result result = m_repeatFormula.Evaluate(&scopes);
+	if(result.code != RESULT_CODE_OK)
+		return result.code;
+
+	unsigned counter = unsigned(result.value);
+	for(unsigned i = 0; i < counter; ++i) {
+		SimplePropertyBag * bagptr = nullptr;
+		if(m_paramBag) {
+			bagptr = new SimplePropertyBag;
+			m_paramBag->Flatten(bagptr, &scopes);
+		}
+
+		world->QueueEvent(target, m_eventToken, bagptr);
+	}
+
+	return RESULT_CODE_OK;
+}
+
+
+ActionSetProperty::ActionSetProperty(unsigned targetToken, Formula && payload)
+	: m_targetToken(targetToken),
+	  m_payload(payload)
+{
+}
+
+IAction * ActionSetProperty::Clone() const {
+	Formula copy(m_payload);
+	return new ActionSetProperty(m_targetToken, std::move(copy));
+}
+
+ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	((void)(world));
+
+	Result result = m_payload.Evaluate(&scopes);
+	if(result.code == RESULT_CODE_OK)
+		target->GetScopes().SetProperty(m_targetToken, result.value);
+
+	return result.code;
+}
+
+
+ActionListAddEntry::ActionListAddEntry(unsigned listToken, const Scriptable & scriptable)
+	: m_listToken(listToken),
+	  m_scriptable(&scriptable)
+{
+}
+
+IAction * ActionListAddEntry::Clone() const {
+	return new ActionListAddEntry(m_listToken, *m_scriptable);
+}
+
+ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	((void)(world));
+	((void)(scopes));
+
+	target->GetScopes().ListAddEntry(m_listToken, *m_scriptable);
+
+	return RESULT_CODE_OK;
+}
 

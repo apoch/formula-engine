@@ -81,7 +81,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
 				unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
 
-				actions.AddActionListSpawnEntry(listToken, archetypeToken, parambagptr);
+				actions.AddAction(new ActionListSpawnEntry(listToken, archetypeToken, parambagptr));
 			}
 			else if(actionkey == "SetGoalState") {
 				auto binditer = action.find("binding");
@@ -100,7 +100,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
 				auto & payload = valiter->second.get<std::string>();
 
-				actions.AddActionSetGoalState(scopeToken, targetToken, parser->Parse(payload, &world->GetTokenPool()));
+				actions.AddAction(new ActionSetGoalState(scopeToken, targetToken, parser->Parse(payload, &world->GetTokenPool())));
 			}
 			else if(actionkey == "SetProperty") {
 				auto propiter = action.find("property");
@@ -114,7 +114,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
 				auto & payload = valiter->second.get<std::string>();
 
-				actions.AddActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool()));
+				actions.AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool())));
 			}
 			else if(actionkey == "RepeatEvent") {
 				auto eventiter = action.find("event");
@@ -139,7 +139,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 					}
 				}
 
-				actions.AddActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()), parambagptr);
+				actions.AddAction(new ActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()), parambagptr));
 			}
 		}
 

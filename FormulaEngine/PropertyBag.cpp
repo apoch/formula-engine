@@ -45,7 +45,7 @@ ListResult SimplePropertyBag::ResolveList(const IFormulaContext & context, unsig
 
 
 
-void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, ScopedPropertyBag * scopes) const {
+void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBag * scopes) const {
 	for(auto & pair : m_bag) {
 		Result result = pair.second.Evaluate(scopes);
 		if(result.code != RESULT_CODE_OK)

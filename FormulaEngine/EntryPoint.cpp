@@ -27,7 +27,7 @@ int _tmain() {
 	//
 	// Optionally run the test suite
 	//
-	//Tests::RunAll();
+	Tests::RunAll();
 
 
 	//
