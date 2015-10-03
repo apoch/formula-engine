@@ -23,6 +23,9 @@
 // Entry point for the program
 //
 int _tmain() {
+
+	// TODO - memory leak checking
+
 	
 	//
 	// Optionally run the test suite

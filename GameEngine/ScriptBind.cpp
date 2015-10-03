@@ -15,6 +15,7 @@ Binder::Binder(TokenPool * pool)
 	: m_tokens(pool)
 {
 	m_unitBindTable.BindTokenToFunction(pool->AddToken("RedColor"), &Unit::SetRedColor);
+	m_unitBindTable.BindTokenToFunction(pool->AddToken("BlueColor"), &Unit::SetBlueColor);
 }
 
 
@@ -31,3 +32,4 @@ IEngineBinding * Binder::CreateBinding(unsigned token) {
 
 
 } // Game namespace
+

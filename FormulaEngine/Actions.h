@@ -2,6 +2,7 @@
 
 struct IPropertyBag;
 struct IFormulaContext;
+class ActionSet;
 class ScopedPropertyBag;
 class FormulaPropertyBag;
 class Formula;
@@ -119,8 +120,26 @@ public:			// Setup interface
 
 public:			// Execution interface
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
 
 private:		// Internal state
 	std::vector<IAction *> m_actions;
+};
+
+
+
+
+
+class ActionConditionalBlock : public IAction {
+public:
+	ActionConditionalBlock(Formula && condition, ActionSet && actions, ActionSet && elseActions);
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	Formula m_condition;
+	ActionSet m_actions;
+	ActionSet m_else;
 };
 

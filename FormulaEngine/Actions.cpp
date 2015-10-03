@@ -31,13 +31,7 @@ void ActionSet::AddAction(IAction * action) {
 	m_actions.push_back(action);
 }
 
-
-ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
-	ScopedPropertyBag scopes;
-	scopes.GetScopes().AddScope(0, target->GetScopes().GetProperties());
-	if(optionalContext)
-		scopes.GetScopes().AddScope(contextScope, *optionalContext);
-
+ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	for(auto & action : m_actions) {
 		ResultCode code = action->Execute(world, target, scopes);
 		if(code != RESULT_CODE_OK)
@@ -45,6 +39,15 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 	}
 
 	return RESULT_CODE_OK;
+}
+
+ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
+	ScopedPropertyBag scopes;
+	scopes.GetScopes().AddScope(0, target->GetScopes().GetProperties());
+	if(optionalContext)
+		scopes.GetScopes().AddScope(contextScope, *optionalContext);
+
+	return Execute(world, target, scopes);
 }
 
 
@@ -181,5 +184,32 @@ ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target,
 	target->GetScopes().ListAddEntry(m_listToken, *m_scriptable);
 
 	return RESULT_CODE_OK;
+}
+
+
+
+ActionConditionalBlock::ActionConditionalBlock(Formula && condition, ActionSet && actions, ActionSet && elseActions)
+	: m_condition(std::move(condition)),
+	  m_actions(std::move(actions)),
+	  m_else(std::move(elseActions))
+{
+}
+
+IAction * ActionConditionalBlock::Clone() const {
+	Formula conditionCopy(m_condition);
+	ActionSet actionCopy(m_actions);
+	ActionSet elseCopy(m_else);
+	return new ActionConditionalBlock(std::move(conditionCopy), std::move(actionCopy), std::move(elseCopy));
+}
+
+ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	Result cond = m_condition.Evaluate(&scopes);
+	if(cond.code != RESULT_CODE_OK)
+		return cond.code;
+
+	if(cond.value == 0.0)
+		return m_else.Execute(world, target, scopes);
+
+	return m_actions.Execute(world, target, scopes);
 }
 

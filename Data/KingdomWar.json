@@ -84,10 +84,24 @@
                             "value": "Random(Health) + 1"
                         },
                         {
-                            "action": "SetGoalState",
-                            "binding": "Unit",
-                            "property": "RedColor",
-                            "value": "event:RedTeam"
+                            "action": "if",
+                            "condition": "event:RedTeam",
+                            "actions": [
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "RedColor",
+                                    "value": "1.0"
+                                }
+                            ],
+                            "else": [
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "BlueColor",
+                                    "value": "1.0"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -116,7 +130,7 @@
                             "action": "RepeatEvent",
                             "event": "SpawnSoldier",
                             "count": "25",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         },
@@ -134,7 +148,7 @@
                             "action": "CreateListMember",
                             "list": "Soldiers",
                             "archetype": "Soldier",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         }
@@ -161,7 +175,7 @@
                             "action": "RepeatEvent",
                             "event": "SpawnPlatoon",
                             "count": "40",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         }
@@ -174,7 +188,7 @@
                             "action": "CreateListMember",
                             "list": "Platoons",
                             "archetype": "Platoon",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         }
@@ -201,7 +215,7 @@
                             "action": "RepeatEvent",
                             "event": "SpawnDivision",
                             "count": "20",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         }
@@ -214,7 +228,7 @@
                             "action": "CreateListMember",
                             "list": "Divisions",
                             "archetype": "Division",
-                            "params": { 
+                            "params": {
                                 "RedTeam": "event:RedTeam"
                             }
                         }

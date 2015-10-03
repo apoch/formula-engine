@@ -29,6 +29,120 @@ static void LoadArrayOfBindings(const picojson::value & bindarray, ScriptWorld *
 	}
 }
 
+static void LoadArrayOfActions(const char name[], const picojson::object & obj, ActionSet * actions, ScriptWorld * world, FormulaParser * parser) {
+	auto actioniter = obj.find(name);
+	if(actioniter == obj.end() || !actioniter->second.is<picojson::array>())
+		return;
+
+	for(auto & actionentry : actioniter->second.get<picojson::array>()) {
+		if(!actionentry.is<picojson::object>())
+			continue;
+
+		auto & action = actionentry.get<picojson::object>();
+		auto actionkeyiter = action.find("action");
+		if(actionkeyiter == action.end() || !actionkeyiter->second.is<std::string>())
+			continue;
+
+		const std::string & actionkey = actionkeyiter->second.get<std::string>();
+		if(actionkey == "CreateListMember") {
+			auto listiter = action.find("list");
+			if(listiter == action.end() || !listiter->second.is<std::string>())
+				continue;
+
+			auto archetypeiter = action.find("archetype");
+			if(archetypeiter == action.end() || !archetypeiter->second.is<std::string>())
+				continue;
+
+			FormulaPropertyBag * parambagptr = nullptr;
+			auto paramsiter = action.find("params");
+			if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
+				parambagptr = new FormulaPropertyBag;
+
+				auto params = paramsiter->second.get<picojson::object>();
+				for(auto & param : params) {
+					parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
+				}
+			}
+
+			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
+			unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
+
+			actions->AddAction(new ActionListSpawnEntry(listToken, archetypeToken, parambagptr));
+		}
+		else if(actionkey == "if") {
+			auto conditer = action.find("condition");
+			if(conditer == action.end() || !conditer->second.is<std::string>())
+				continue;
+
+			Formula condition = parser->Parse(conditer->second.get<std::string>(), &world->GetTokenPool());
+
+			ActionSet nestedActions, elseActions;
+			LoadArrayOfActions("actions", action, &nestedActions, world, parser);
+			LoadArrayOfActions("else", action, &elseActions, world, parser);
+
+			actions->AddAction(new ActionConditionalBlock(std::move(condition), std::move(nestedActions), std::move(elseActions)));
+		}
+		else if(actionkey == "SetGoalState") {
+			auto binditer = action.find("binding");
+			if(binditer == action.end() || !binditer->second.is<std::string>())
+				continue;
+
+			auto propiter = action.find("property");
+			if(propiter == action.end() || !propiter->second.is<std::string>())
+				continue;
+
+			auto valiter = action.find("value");
+			if(valiter == action.end() || !valiter->second.is<std::string>())
+				continue;
+
+			unsigned scopeToken = world->GetTokenPool().AddToken(binditer->second.get<std::string>());
+			unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
+			auto & payload = valiter->second.get<std::string>();
+
+			actions->AddAction(new ActionSetGoalState(scopeToken, targetToken, parser->Parse(payload, &world->GetTokenPool())));
+		}
+		else if(actionkey == "SetProperty") {
+			auto propiter = action.find("property");
+			if(propiter == action.end() || !propiter->second.is<std::string>())
+				continue;
+
+			auto valiter = action.find("value");
+			if(valiter == action.end() || !valiter->second.is<std::string>())
+				continue;
+
+			unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
+			auto & payload = valiter->second.get<std::string>();
+
+			actions->AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool())));
+		}
+		else if(actionkey == "RepeatEvent") {
+			auto eventiter = action.find("event");
+			if(eventiter == action.end() || !eventiter->second.is<std::string>())
+				continue;
+
+			auto payloaditer = action.find("count");
+			if(payloaditer == action.end() || !payloaditer->second.is<std::string>())
+				continue;
+
+			unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
+			auto & payload = payloaditer->second.get<std::string>();
+
+			FormulaPropertyBag * parambagptr = nullptr;
+			auto paramsiter = action.find("params");
+			if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
+				parambagptr = new FormulaPropertyBag;
+
+				auto params = paramsiter->second.get<picojson::object>();
+				for(auto & param : params) {
+					parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
+				}
+			}
+
+			actions->AddAction(new ActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()), parambagptr));
+		}
+	}
+}
+
 static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
 	auto & events = eventarray.get<picojson::array>();
 	for(auto & evententry : events) {
@@ -43,105 +157,8 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 
 		const std::string & name = nameiter->second.get<std::string>();
 
-		auto actioniter = obj.find("actions");
-		if(actioniter == obj.end() || !actioniter->second.is<picojson::array>())
-			continue;
-
 		ActionSet actions;
-		for(auto & actionentry : actioniter->second.get<picojson::array>()) {
-			if(!actionentry.is<picojson::object>())
-				continue;
-
-			auto & action = actionentry.get<picojson::object>();
-			auto actionkeyiter = action.find("action");
-			if(actionkeyiter == action.end() || !actionkeyiter->second.is<std::string>())
-				continue;
-
-			const std::string & actionkey = actionkeyiter->second.get<std::string>();
-			if(actionkey == "CreateListMember") {
-				auto listiter = action.find("list");
-				if(listiter == action.end() || !listiter->second.is<std::string>())
-					continue;
-
-				auto archetypeiter = action.find("archetype");
-				if(archetypeiter == action.end() || !archetypeiter->second.is<std::string>())
-					continue;
-
-				FormulaPropertyBag * parambagptr = nullptr;
-				auto paramsiter = action.find("params");
-				if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
-					parambagptr = new FormulaPropertyBag;
-
-					auto params = paramsiter->second.get<picojson::object>();
-					for(auto & param : params) {
-						parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
-					}
-				}
-
-				unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
-				unsigned archetypeToken = world->GetTokenPool().AddToken(archetypeiter->second.get<std::string>());
-
-				actions.AddAction(new ActionListSpawnEntry(listToken, archetypeToken, parambagptr));
-			}
-			else if(actionkey == "SetGoalState") {
-				auto binditer = action.find("binding");
-				if(binditer == action.end() || !binditer->second.is<std::string>())
-					continue;
-
-				auto propiter = action.find("property");
-				if(propiter == action.end() || !propiter->second.is<std::string>())
-					continue;
-
-				auto valiter = action.find("value");
-				if(valiter == action.end() || !valiter->second.is<std::string>())
-					continue;
-
-				unsigned scopeToken = world->GetTokenPool().AddToken(binditer->second.get<std::string>());
-				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
-				auto & payload = valiter->second.get<std::string>();
-
-				actions.AddAction(new ActionSetGoalState(scopeToken, targetToken, parser->Parse(payload, &world->GetTokenPool())));
-			}
-			else if(actionkey == "SetProperty") {
-				auto propiter = action.find("property");
-				if(propiter == action.end() || !propiter->second.is<std::string>())
-					continue;
-
-				auto valiter = action.find("value");
-				if(valiter == action.end() || !valiter->second.is<std::string>())
-					continue;
-
-				unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
-				auto & payload = valiter->second.get<std::string>();
-
-				actions.AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool())));
-			}
-			else if(actionkey == "RepeatEvent") {
-				auto eventiter = action.find("event");
-				if(eventiter == action.end() || !eventiter->second.is<std::string>())
-					continue;
-
-				auto payloaditer = action.find("count");
-				if(payloaditer == action.end() || !payloaditer->second.is<std::string>())
-					continue;
-
-				unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
-				auto & payload = payloaditer->second.get<std::string>();
-
-				FormulaPropertyBag * parambagptr = nullptr;
-				auto paramsiter = action.find("params");
-				if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
-					parambagptr = new FormulaPropertyBag;
-
-					auto params = paramsiter->second.get<picojson::object>();
-					for(auto & param : params) {
-						parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
-					}
-				}
-
-				actions.AddAction(new ActionEventRepeat(eventToken, parser->Parse(payload, &world->GetTokenPool()), parambagptr));
-			}
-		}
+		LoadArrayOfActions("actions", obj, &actions, world, parser);
 
 		unsigned eventToken = world->GetTokenPool().AddToken(name);
 		scriptable->GetEvents().AddHandler(eventToken, std::move(actions));
