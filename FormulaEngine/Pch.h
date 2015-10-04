@@ -22,6 +22,7 @@
 #include <fstream>
 #include <cassert>
 #include <random>
+#include <atomic>
 
 
 // Third party library includes

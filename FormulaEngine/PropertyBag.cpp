@@ -108,25 +108,14 @@ const IFormulaContext * ScopeResolver::GetScope(unsigned token) const {
 	return iter->second;
 }
 
-void ScopeResolver::MoveFixup(const IFormulaContext * oldptr, const IFormulaContext * newptr) {
-	if(GetScope(0) == oldptr)
-		AddScope(0, *newptr);
-}
-
-
-
-
 
 ScopedPropertyBag::ScopedPropertyBag() {
-	m_resolver.AddScope(0, m_thisBag);
 }
 
 ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
 	std::swap(m_lists, other.m_lists);
 	std::swap(m_thisBag, other.m_thisBag);
 	std::swap(m_resolver, other.m_resolver);
-
-	m_resolver.MoveFixup(&other.m_thisBag, &m_thisBag);
 }
 
 ScopedPropertyBag::~ScopedPropertyBag() {
@@ -162,7 +151,7 @@ void ScopedPropertyBag::ListRemoveEntry(unsigned listToken, const Scriptable & e
 }
 
 Result ScopedPropertyBag::ResolveNumber(const IFormulaContext & originalContext, unsigned scope, unsigned token) const {
-	auto resolved = m_resolver.GetScope(scope);
+	auto resolved = scope ? m_resolver.GetScope(scope) : &m_thisBag;
 	if(resolved == nullptr) {
 		Result ret;
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
@@ -209,4 +198,9 @@ void ScopedPropertyBag::SetFormula(unsigned token, const Formula & formula) {
 void ScopedPropertyBag::SetProperty(unsigned token, double value) {
 	m_thisBag.Set(token, value);
 }
+
+void ScopedPropertyBag::SetProperties(const FormulaPropertyBag & refbag) {
+	m_thisBag = refbag;
+}
+
 

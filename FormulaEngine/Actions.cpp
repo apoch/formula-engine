@@ -42,7 +42,7 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
 	ScopedPropertyBag scopes;
-	scopes.GetScopes().AddScope(0, target->GetScopes().GetProperties());
+	scopes.SetProperties(target->GetScopes().GetProperties());
 	if(optionalContext)
 		scopes.GetScopes().AddScope(contextScope, *optionalContext);
 

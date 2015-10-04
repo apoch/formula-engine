@@ -8,3 +8,7 @@ void Unit::Teleport(double x, double y) {
 	m_location.y = static_cast<unsigned>(y);
 }
 
+void Unit::SetBlueColor(double blue) {
+	m_blue = blue;
+}
+

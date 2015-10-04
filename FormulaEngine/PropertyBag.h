@@ -50,8 +50,6 @@ public:			// Configuration interface
 	void AddScope(unsigned token, const IFormulaContext & context);
 	const IFormulaContext * GetScope(unsigned token) const;
 
-	void MoveFixup(const IFormulaContext * oldptr, const IFormulaContext * newptr);
-
 private:		// Internal state
 	std::map<unsigned, const IFormulaContext *> m_bag;
 };
@@ -70,6 +68,8 @@ private:		// Non-copyable
 public:			// Configuration interface
 	ScopeResolver & GetScopes()						{ return m_resolver; }
 	FormulaPropertyBag & GetProperties()			{ return m_thisBag; }
+
+	void SetProperties(const FormulaPropertyBag & refbag);
 
 public:			// Archetype support
 	void InstantiateFrom(const ScopedPropertyBag & other);

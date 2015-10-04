@@ -34,7 +34,7 @@ Result Formula::Evaluate(const IFormulaContext * context) const {
 		return ret;
 	}
 
-	unsigned index = m_terms.size() - 1;
+	unsigned index = static_cast<unsigned>(m_terms.size()) - 1;
 	ret = EvaluateSubexpression(context, &index);
 
 	if(index > 0) {

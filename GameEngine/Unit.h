@@ -30,7 +30,12 @@ public:			// Coordinates
 	bool MoveDirection(Direction dir);
 	void Teleport(double x, double y);
 
+public:			// Additional stuff
+	bool IsBlue() const								{ return m_blue > 0.0; }
+	void SetBlueColor(double blue);
+
 private:		// Internal state
 	Coords m_location;
+	double m_blue = -1.0;
 };
 

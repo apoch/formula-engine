@@ -23,4 +23,12 @@ void EventHandlerSet::TriggerHandlers(ScriptWorld * world, unsigned eventToken, 
 }
 
 
+void EventHandlerSet::IncRef() {
+	++m_refCount;
+}
+
+void EventHandlerSet::DecRef() {
+	if(--m_refCount == 0)
+		delete this;
+}
 

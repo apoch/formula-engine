@@ -11,7 +11,16 @@ public:			// Construction and destruction
 
 public:			// Unit interaction interface
 	void AddUnit(Unit * unit);
-	std::vector<const Unit *> GetUnitsByPosition(unsigned x, unsigned y) const;
+
+	template <typename FilterT>
+	void GetUnitsByPosition(unsigned x, unsigned y, const FilterT & filter, std::vector<const Unit *> * out) const {
+		out->clear();
+		for(auto & unit : m_ownedUnits) {
+			auto & pos = unit->GetCoordinates();
+			if(pos.x == x && pos.y == y && filter(unit))
+				out->push_back(unit);
+		}
+	}
 
 private:		// Internal state
 	std::vector<Unit *> m_ownedUnits;

@@ -20,7 +20,7 @@ public:			// Component accessors
 	const ScopedPropertyBag & GetScopes() const		{ return m_scopes; }
 	ScopedPropertyBag & GetScopes()					{ return m_scopes; }
 
-	EventHandlerSet & GetEvents()					{ return m_eventHandlers; }
+	EventHandlerSet * GetEvents()					{ if(!m_eventHandlers) { m_eventHandlers = new EventHandlerSet; } return m_eventHandlers; }
 
 public:			// Archetype support
 	void AddBinding(unsigned bindingToken);
@@ -42,7 +42,7 @@ private:		// Internal helper structures
 
 private:		// Internal state
 	ScopedPropertyBag m_scopes;
-	EventHandlerSet   m_eventHandlers;
+	EventHandlerSet * m_eventHandlers = nullptr;
 
 	std::map<unsigned, IEngineBinding *> m_bindings;
 

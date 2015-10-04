@@ -161,7 +161,7 @@ static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * 
 		LoadArrayOfActions("actions", obj, &actions, world, parser);
 
 		unsigned eventToken = world->GetTokenPool().AddToken(name);
-		scriptable->GetEvents().AddHandler(eventToken, std::move(actions));
+		scriptable->GetEvents()->AddHandler(eventToken, std::move(actions));
 	}
 }
 

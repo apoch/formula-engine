@@ -13,9 +13,11 @@
 Scriptable::Scriptable(Scriptable && other)
 	: m_scopes(std::move(other.m_scopes)),
 	  m_listMemberships(std::move(other.m_listMemberships)),
-	  m_eventHandlers(std::move(other.m_eventHandlers)),
 	  m_bindings(std::move(other.m_bindings))
-{ }
+{
+	m_eventHandlers = other.m_eventHandlers;
+	other.m_eventHandlers = nullptr;
+}
 
 Scriptable::~Scriptable() {
 	for(auto & membership : m_listMemberships)
@@ -23,6 +25,9 @@ Scriptable::~Scriptable() {
 
 	for(auto & pair : m_bindings)
 		delete pair.second;
+
+	if(m_eventHandlers)
+		m_eventHandlers->DecRef();
 }
 
 
@@ -55,6 +60,9 @@ Scriptable * Scriptable::Instantiate() const {
 	clone->m_eventHandlers = m_eventHandlers;
 	clone->m_scopes.InstantiateFrom(m_scopes);
 	clone->m_bindings = m_bindings;
+
+	if(m_eventHandlers)
+		m_eventHandlers->IncRef();
 
 	return clone;
 }

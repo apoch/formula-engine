@@ -17,6 +17,7 @@ Binder::Binder(TokenPool * pool, Map * map)
 	  m_map(map)
 {
 	m_unitBindTable.BindTokenToFunction(pool->AddToken("Teleport"), &Unit::Teleport);
+	m_unitBindTable.BindTokenToFunction(pool->AddToken("BlueColor"), &Unit::SetBlueColor);
 }
 
 

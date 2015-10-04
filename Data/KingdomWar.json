@@ -90,8 +90,8 @@
                                 {
                                     "action": "SetGoalState",
                                     "binding": "Unit",
-                                    "property": "RedColor",
-                                    "value": "1.0"
+                                    "property": "BlueColor",
+                                    "value": "0.0"
                                 },
                                 {
                                     "action": "SetGoalState",

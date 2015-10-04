@@ -56,11 +56,14 @@ void RunKingdomWar() {
 
 	world.DumpOverview();
 
-	
+	std::vector<const Unit *> buffer;
 	for(unsigned y = 0; y < worldHeight; ++y) {
 		for(unsigned x = 0; x < worldWidth; ++x) {
-			bool red = (worldMap.GetUnitsByPosition(x, y).size() > 0);
-			bool blue = false;
+			worldMap.GetUnitsByPosition(x, y, [](const Unit * unit) { return !unit->IsBlue(); }, &buffer);
+			bool red = buffer.size() > 0;
+
+			worldMap.GetUnitsByPosition(x, y, [](const Unit * unit) { return unit->IsBlue(); }, &buffer);
+			bool blue = buffer.size() > 0;
 
 			if(red && blue)
 				std::cout << "X";
@@ -69,7 +72,7 @@ void RunKingdomWar() {
 			else if(blue)
 				std::cout << "B";
 			else
-				std::cout << " ";
+				std::cout << "-";
 		}
 
 		std::cout << "\n";

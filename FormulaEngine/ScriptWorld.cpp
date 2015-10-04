@@ -43,7 +43,7 @@ void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptab
 
 
 void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag) {
-	target->GetEvents().TriggerHandlers(this, eventToken, target, paramBag);
+	target->GetEvents()->TriggerHandlers(this, eventToken, target, paramBag);
 }
 
 
