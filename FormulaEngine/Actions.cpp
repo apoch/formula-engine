@@ -12,11 +12,10 @@
 
 
 ActionSet::ActionSet(ActionSet && other) {
-	m_actions = std::move(other.m_actions);
+	std::swap(m_actions, other.m_actions);
 }
 
-ActionSet::ActionSet(const ActionSet & other)
-{
+ActionSet::ActionSet(const ActionSet & other) {
 	for(auto & action : other.m_actions) {
 		m_actions.push_back(action->Clone());
 	}
@@ -101,8 +100,12 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 	Result result = m_formula.Evaluate(&scopes);
 	if(result.code == RESULT_CODE_OK) {
 		IEngineBinding * binding = target->GetBinding(m_scopeToken);
-		if(binding)
-			binding->SetGoalState(m_targetToken, result.value);
+		if(binding) {
+			if(result.type == RESULT_TYPE_SCALAR)
+				binding->SetGoalState(m_targetToken, result.value);
+			else if(result.type == RESULT_TYPE_VECTOR2)
+				binding->SetGoalState(m_targetToken, result.value, result.value2);
+		}
 	}
 	
 	return result.code;
@@ -189,10 +192,10 @@ ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target,
 
 
 ActionConditionalBlock::ActionConditionalBlock(Formula && condition, ActionSet && actions, ActionSet && elseActions)
-	: m_condition(std::move(condition)),
-	  m_actions(std::move(actions)),
-	  m_else(std::move(elseActions))
+	: m_actions(actions),
+	  m_else(elseActions)
 {
+	std::swap(m_condition, condition);
 }
 
 IAction * ActionConditionalBlock::Clone() const {

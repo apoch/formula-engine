@@ -92,6 +92,12 @@
                                     "binding": "Unit",
                                     "property": "RedColor",
                                     "value": "1.0"
+                                },
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "Teleport",
+                                    "value": "Vec(0, 0)"
                                 }
                             ],
                             "else": [
@@ -100,6 +106,12 @@
                                     "binding": "Unit",
                                     "property": "BlueColor",
                                     "value": "1.0"
+                                },
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "Teleport",
+                                    "value": "Vec(19, 19)"
                                 }
                             ]
                         }

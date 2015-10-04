@@ -119,7 +119,6 @@
   <ItemGroup>
     <ClInclude Include="..\GameEngine\Map.h" />
     <ClInclude Include="..\GameEngine\ScriptBind.h" />
-    <ClInclude Include="..\GameEngine\SubMap.h" />
     <ClInclude Include="..\GameEngine\Unit.h" />
     <ClInclude Include="Actions.h" />
     <ClInclude Include="DeserializerFactory.h" />

@@ -66,9 +66,6 @@
     <ClInclude Include="..\GameEngine\Unit.h">
       <Filter>Game Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\GameEngine\SubMap.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Simulation.h">
       <Filter>Source Files</Filter>
     </ClInclude>

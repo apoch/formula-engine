@@ -28,10 +28,7 @@ public:			// Coordinates
 	const Coords & GetCoordinates() const			{ return m_location; }
 	
 	bool MoveDirection(Direction dir);
-
-public:			// Dummy tests
-	void SetRedColor(double red);
-	void SetBlueColor(double blue);
+	void Teleport(double x, double y);
 
 private:		// Internal state
 	Coords m_location;

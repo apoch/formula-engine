@@ -25,12 +25,7 @@
 
 #include "../GameEngine/Map.h"
 #include "../GameEngine/Unit.h"
-#include "../GameEngine/SubMap.h"
 #include "../GameEngine/ScriptBind.h"
-
-
-extern unsigned s_hackRed;
-extern unsigned s_hackBlue;
 
 
 namespace Simulation {
@@ -45,19 +40,10 @@ void RunKingdomWar() {
 	const unsigned worldWidth = 20;
 	const unsigned worldHeight = 20;
 
-	const unsigned cellWidth = 20;
-	const unsigned cellHeight = 20;
-
 	Map worldMap(worldWidth, worldHeight);
-	for(unsigned x = 0; x < worldWidth; ++x) {
-		for(unsigned y = 0; y < worldHeight; ++y) {
-			SubMap * cell = new SubMap(cellWidth, cellHeight, x, y);
-			worldMap.AddUnit(cell);
-		}
-	}
 
 	TokenPool pool;
-	Game::Binder binder(&pool);
+	Game::Binder binder(&pool, &worldMap);
 
 	ScriptWorld world(&pool, &binder);
 	DeserializerFactory factory;
@@ -70,7 +56,24 @@ void RunKingdomWar() {
 
 	world.DumpOverview();
 
-	std::cout << "RED: " << s_hackRed << "   BLUE: " << s_hackBlue << std::endl;
+	
+	for(unsigned y = 0; y < worldHeight; ++y) {
+		for(unsigned x = 0; x < worldWidth; ++x) {
+			bool red = (worldMap.GetUnitsByPosition(x, y).size() > 0);
+			bool blue = false;
+
+			if(red && blue)
+				std::cout << "X";
+			else if(red)
+				std::cout << "r";
+			else if(blue)
+				std::cout << "B";
+			else
+				std::cout << " ";
+		}
+
+		std::cout << "\n";
+	}
 }
 
 

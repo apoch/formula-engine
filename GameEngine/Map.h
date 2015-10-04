@@ -11,6 +11,7 @@ public:			// Construction and destruction
 
 public:			// Unit interaction interface
 	void AddUnit(Unit * unit);
+	std::vector<const Unit *> GetUnitsByPosition(unsigned x, unsigned y) const;
 
 private:		// Internal state
 	std::vector<Unit *> m_ownedUnits;
