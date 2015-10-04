@@ -5,14 +5,12 @@
 
 
 
-Formula::Formula(Formula && other)
-	: m_terms(std::move(other.m_terms))
-{
-
+Formula::Formula(Formula && other) {
+	std::swap(m_terms, other.m_terms);
 }
 
 Formula::~Formula() {
-	for(auto& term : m_terms) {
+	for(auto & term : m_terms) {
 		if(term.flags & Term::FLAG_OWNS_MEMORY) {
 			if(term.flags & Term::FLAG_IS_EVALUATOR)
 				delete term.payload.evaluator;
@@ -22,7 +20,7 @@ Formula::~Formula() {
 
 
 Formula & Formula::operator = (Formula && other) {
-	m_terms = std::move(other.m_terms);
+	std::swap(m_terms, other.m_terms);
 	return *this;
 }
 

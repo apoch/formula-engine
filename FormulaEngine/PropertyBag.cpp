@@ -56,7 +56,8 @@ void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBa
 }
 
 void FormulaPropertyBag::Set(unsigned token, Formula && formula) {
-	m_bag[token] = std::move(formula);
+	m_bag.erase(token);
+	m_bag.emplace(token, formula);
 }
 
 void FormulaPropertyBag::Set(unsigned token, const Formula & formula) {
@@ -120,11 +121,11 @@ ScopedPropertyBag::ScopedPropertyBag() {
 	m_resolver.AddScope(0, m_thisBag);
 }
 
-ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other)
-	: m_lists(std::move(other.m_lists)),
-	  m_thisBag(std::move(other.m_thisBag)),
-	  m_resolver(std::move(other.m_resolver))
-{
+ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
+	std::swap(m_lists, other.m_lists);
+	std::swap(m_thisBag, other.m_thisBag);
+	std::swap(m_resolver, other.m_resolver);
+
 	m_resolver.MoveFixup(&other.m_thisBag, &m_thisBag);
 }
 

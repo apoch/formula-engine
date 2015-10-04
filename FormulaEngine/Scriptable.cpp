@@ -20,6 +20,9 @@ Scriptable::Scriptable(Scriptable && other)
 Scriptable::~Scriptable() {
 	for(auto & membership : m_listMemberships)
 		membership.owner->ListRemoveEntry(membership.token, *this);
+
+	for(auto & pair : m_bindings)
+		delete pair.second;
 }
 
 
