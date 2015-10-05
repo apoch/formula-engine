@@ -26,7 +26,7 @@ public:			// Archetype support
 	void AddBinding(unsigned bindingToken);
 	IEngineBinding * GetBinding(unsigned bindingToken);
 
-	void BindAll(IEngineBinder * binder);
+	void BindAll(IEngineBinder * binder, ScriptWorld * world);
 
 	Scriptable * Instantiate() const;
 

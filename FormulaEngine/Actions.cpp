@@ -54,7 +54,7 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
 	m_scopeCache->Clear();
-	m_scopeCache->SetProperties(target->GetScopes().GetProperties());
+	m_scopeCache->SetProperties(&target->GetScopes().GetProperties());
 	if(optionalContext)
 		m_scopeCache->GetScopes().AddScope(contextScope, *optionalContext);
 

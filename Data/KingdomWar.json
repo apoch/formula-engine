@@ -84,8 +84,13 @@
                             "value": "Random(Health) + 1"
                         },
                         {
+                            "action": "SetProperty",
+                            "property": "RedTeam",
+                            "value": "event:RedTeam"
+                        },
+                        {
                             "action": "if",
-                            "condition": "event:RedTeam",
+                            "condition": "RedTeam",
                             "actions": [
                                 {
                                     "action": "SetGoalState",
@@ -98,6 +103,12 @@
                                     "binding": "Unit",
                                     "property": "Teleport",
                                     "value": "Vec(0, 0)"
+                                },
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "MoveDirection",
+                                    "value": "Vec(Random(2), Random(2))"
                                 }
                             ],
                             "else": [
@@ -112,6 +123,37 @@
                                     "binding": "Unit",
                                     "property": "Teleport",
                                     "value": "Vec(19, 19)"
+                                },
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "MoveDirection",
+                                    "value": "Vec(0-Random(2), 0-Random(2))"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "OnArrive",
+                    "actions": [ 
+                        {
+                            "action": "if",
+                            "condition": "RedTeam",
+                            "actions": [
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "MoveDirection",
+                                    "value": "Vec(Random(2), Random(2))"
+                                }
+                            ],
+                            "else": [
+                                {
+                                    "action": "SetGoalState",
+                                    "binding": "Unit",
+                                    "property": "MoveDirection",
+                                    "value": "Vec(0-Random(2), 0-Random(2))"
                                 }
                             ]
                         }

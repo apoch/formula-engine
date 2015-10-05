@@ -81,9 +81,9 @@ public:			// Configuration interface
 	void Clear();
 
 	ScopeResolver & GetScopes()						{ return m_resolver; }
-	FormulaPropertyBag & GetProperties()			{ return m_thisBag; }
+	FormulaPropertyBag & GetProperties()			{ return *m_thisBag; }
 
-	void SetProperties(const FormulaPropertyBag & refbag);
+	void SetProperties(FormulaPropertyBag * refbag);
 
 public:			// Archetype support
 	void InstantiateFrom(const ScopedPropertyBag & other);
@@ -95,7 +95,7 @@ public:			// IActionPerformer interface
 	void ListAddEntry(unsigned listToken, const Scriptable & entry) override;
 	void ListRemoveEntry(unsigned listToken, const Scriptable & entry) override;
 
-	const IFormulaContext & GetProperties() const override		{ return m_thisBag; }
+	const IFormulaContext & GetProperties() const override		{ return *m_thisBag; }
 
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -103,7 +103,8 @@ public:			// IFormulaContext interface
 	
 private:		// Internal state
 	std::map<unsigned, std::vector<const Scriptable *>> m_lists;
-	FormulaPropertyBag m_thisBag;
+	FormulaPropertyBag * m_thisBag;
+	FormulaPropertyBag m_builtInBag;
 	ScopeResolver m_resolver;
 };
 

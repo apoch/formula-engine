@@ -74,7 +74,7 @@ public:			// Construction
 	explicit Binder(TokenPool * pool, Map * map);
 
 public:
-	IEngineBinding * CreateBinding(unsigned token) override;
+	IEngineBinding * CreateBinding(Scriptable * scriptable, ScriptWorld * world, unsigned token) override;
 
 private:		// Internal state
 	Map * m_map;

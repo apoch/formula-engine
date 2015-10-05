@@ -38,10 +38,10 @@ void Scriptable::AddBinding(unsigned bindingToken) {
 }
 
 
-void Scriptable::BindAll(IEngineBinder * binder) {
+void Scriptable::BindAll(IEngineBinder * binder, ScriptWorld * world) {
 	for(auto & pair : m_bindings) {
 		if(pair.second == nullptr) {
-			pair.second = binder->CreateBinding(pair.first);
+			pair.second = binder->CreateBinding(this, world, pair.first);
 		}
 	}
 }

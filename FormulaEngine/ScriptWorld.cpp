@@ -109,7 +109,7 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IPropertyBag * pa
 	Scriptable * instance = archetype->Instantiate();
 	m_instances.push_back(instance);
 
-	instance->BindAll(m_binder);
+	instance->BindAll(m_binder, this);
 
 	QueueEvent(instance, m_tokens->AddToken("OnCreate"), paramBag);
 

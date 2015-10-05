@@ -4,9 +4,10 @@
 #include "Unit.h"
 
 
-Map::Map(unsigned width, unsigned height) {
-	((void)(width));
-	((void)(height));
+Map::Map(unsigned width, unsigned height)
+	: m_maxX(width),
+	  m_maxY(height)
+{
 }
 
 
@@ -19,3 +20,12 @@ Map::~Map() {
 void Map::AddUnit(Unit * unit) {
 	m_ownedUnits.push_back(unit);
 }
+
+
+void Map::AdvanceTick() {
+	for(auto & unit : m_ownedUnits)
+		unit->AdvanceTick();
+}
+
+
+
