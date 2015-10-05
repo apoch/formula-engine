@@ -18,14 +18,20 @@ public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 
+private:
+	void MaintainSorted();
+
 private:		// Internal state
-	std::map<unsigned, double> m_bag;
+	typedef std::pair<unsigned, double> BagPair;
+	std::vector<BagPair> m_bag;
 };
 
 
 
 class FormulaPropertyBag : public IPropertyBag {
 public:			// Configuration interface
+	void Clear();
+
 	void Set(unsigned token, const Formula & formula);
 	void Set(unsigned token, Formula && formula);
 
@@ -39,8 +45,12 @@ public:			// IFormulaContext interface
 public:			// Utility routines
 	void Flatten(SimplePropertyBag * bag, const ScopedPropertyBag * scopes) const;
 
+private:
+	void MaintainSorted();
+
 private:		// Internal state
-	std::map<unsigned, Formula> m_bag;
+	typedef std::pair<unsigned, Formula> BagPair;
+	std::vector<BagPair> m_bag;
 };
 
 
@@ -49,6 +59,8 @@ class ScopeResolver {
 public:			// Configuration interface
 	void AddScope(unsigned token, const IFormulaContext & context);
 	const IFormulaContext * GetScope(unsigned token) const;
+
+	void Clear();
 
 private:		// Internal state
 	std::map<unsigned, const IFormulaContext *> m_bag;
@@ -66,6 +78,8 @@ private:		// Non-copyable
 	ScopedPropertyBag & operator = (const ScopedPropertyBag & other) = delete;
 
 public:			// Configuration interface
+	void Clear();
+
 	ScopeResolver & GetScopes()						{ return m_resolver; }
 	FormulaPropertyBag & GetProperties()			{ return m_thisBag; }
 

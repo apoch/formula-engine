@@ -4,20 +4,14 @@
 
 
 
+Formula::Formula() {
+	m_terms.reserve(2);
+}
+
 
 Formula::Formula(Formula && other) {
 	std::swap(m_terms, other.m_terms);
 }
-
-Formula::~Formula() {
-	for(auto & term : m_terms) {
-		if(term.flags & Term::FLAG_OWNS_MEMORY) {
-			if(term.flags & Term::FLAG_IS_EVALUATOR)
-				delete term.payload.evaluator;
-		}
-	}
-}
-
 
 Formula & Formula::operator = (Formula && other) {
 	std::swap(m_terms, other.m_terms);
@@ -131,14 +125,6 @@ void Formula::Push(double literalValue) {
 	m_terms.emplace_back(t);
 }
 
-void Formula::Push(ITerminalEvaluator * evaluator) {
-	Term t;
-	t.flags = Term::FLAG_IS_EVALUATOR | Term::FLAG_OWNS_MEMORY;
-	t.payload.evaluator = evaluator;
-
-	m_terms.emplace_back(t);
-}
-
 void Formula::Push(const ITerminalEvaluator & evaluator) {
 	Term t;
 	t.flags = Term::FLAG_IS_EVALUATOR;
@@ -162,25 +148,5 @@ void Formula::Push(unsigned scope, unsigned token) {
 	t.payload.scopedToken.token = token;
 
 	m_terms.emplace_back(t);
-}
-
-
-
-Formula::Term::Term(Term && other)
-	: flags(other.flags)
-{
-	if(flags & FLAG_IS_LITERAL)
-		payload.literalValue = other.payload.literalValue;
-	else if(flags & FLAG_IS_EVALUATOR) {
-		payload.evaluator = other.payload.evaluator;
-		if(flags & FLAG_OWNS_MEMORY)
-			other.payload.evaluator = nullptr;
-	}
-	else if(flags & FLAG_IS_OPERATOR)
-		payload.op = other.payload.op;
-	else if(flags & FLAG_IS_TOKEN) {
-		payload.scopedToken.scope = other.payload.scopedToken.scope;
-		payload.scopedToken.token = other.payload.scopedToken.token;
-	}
 }
 

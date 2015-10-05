@@ -108,7 +108,7 @@ private:
 
 class ActionSet {
 public:			// Construction and destruction
-	ActionSet() { }
+	ActionSet();
 	ActionSet(ActionSet && other);
 	ActionSet(const ActionSet & other);
 	~ActionSet();
@@ -124,6 +124,7 @@ public:			// Execution interface
 
 private:		// Internal state
 	std::vector<IAction *> m_actions;
+	ScopedPropertyBag * m_scopeCache;
 };
 
 

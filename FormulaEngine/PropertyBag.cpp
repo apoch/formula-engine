@@ -7,8 +7,20 @@
 #include "Scriptable.h"
 
 
+void SimplePropertyBag::MaintainSorted() {
+	std::sort(std::begin(m_bag), std::end(m_bag), [](const BagPair & l, const BagPair & r) {
+		return l.first < r.first;
+	});
+}
+
 void SimplePropertyBag::Set(unsigned token, double value) {
-	m_bag[token] = value;
+	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, double> & item) {
+		return item.first == token;
+	});
+	m_bag.erase(iter, m_bag.end());
+
+	m_bag.emplace_back(std::make_pair(token, value));
+	MaintainSorted();
 }
 
 Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
@@ -23,8 +35,10 @@ Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigne
 		return ret;
 	}
 
-	auto iter = m_bag.find(token);
-	if(iter != m_bag.end()) {
+	auto iter = std::lower_bound(std::begin(m_bag), std::end(m_bag), token, [](const BagPair & l, unsigned token) {
+		return l.first < token;
+	});
+	if(iter != m_bag.end() && iter->first == token) {
 		ret.code = RESULT_CODE_OK;
 		ret.value = iter->second;
 	}
@@ -44,6 +58,9 @@ ListResult SimplePropertyBag::ResolveList(const IFormulaContext & context, unsig
 
 
 
+void FormulaPropertyBag::Clear() {
+	m_bag.clear();
+}
 
 void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBag * scopes) const {
 	for(auto & pair : m_bag) {
@@ -55,19 +72,39 @@ void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBa
 	}
 }
 
+void FormulaPropertyBag::MaintainSorted() {
+	std::sort(std::begin(m_bag), std::end(m_bag), [](const BagPair & l, const BagPair & r) {
+		return l.first < r.first;
+	});
+}
+
 void FormulaPropertyBag::Set(unsigned token, Formula && formula) {
-	m_bag.erase(token);
-	m_bag.emplace(token, formula);
+	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, Formula> & item) {
+		return item.first == token;
+	});
+	m_bag.erase(iter, m_bag.end());
+
+	m_bag.emplace_back(std::make_pair(token, formula));
+	MaintainSorted();
 }
 
 void FormulaPropertyBag::Set(unsigned token, const Formula & formula) {
-	m_bag[token] = formula;
+	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, Formula> & item) {
+		return item.first == token;
+	});
+	m_bag.erase(iter, m_bag.end());
+
+	m_bag.emplace_back(std::make_pair(token, formula));
+	MaintainSorted();
 }
 
 Result FormulaPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	if(scope == 0) {
-		auto iter = m_bag.find(token);
-		if(iter != m_bag.end())
+		auto iter = std::lower_bound(std::begin(m_bag), std::end(m_bag), token, [](const BagPair & l, unsigned token) {
+			return l.first < token;
+		});
+
+		if(iter != m_bag.end() && iter->first == token)
 			return iter->second.Evaluate(&context);
 	}
 
@@ -108,6 +145,11 @@ const IFormulaContext * ScopeResolver::GetScope(unsigned token) const {
 	return iter->second;
 }
 
+void ScopeResolver::Clear() {
+	m_bag.clear();
+}
+
+
 
 ScopedPropertyBag::ScopedPropertyBag() {
 }
@@ -126,6 +168,12 @@ ScopedPropertyBag::~ScopedPropertyBag() {
 	}
 }
 
+
+void ScopedPropertyBag::Clear() {
+	m_lists.clear();
+	m_thisBag.Clear();
+	m_resolver.Clear();
+}
 
 void ScopedPropertyBag::InstantiateFrom(const ScopedPropertyBag & other) {
 	m_resolver = other.m_resolver;

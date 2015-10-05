@@ -11,19 +11,31 @@
 
 
 
+ActionSet::ActionSet()
+	: m_scopeCache(new ScopedPropertyBag)
+{
+}
+
 ActionSet::ActionSet(ActionSet && other) {
 	std::swap(m_actions, other.m_actions);
+
+	m_scopeCache = other.m_scopeCache;
+	other.m_scopeCache = nullptr;
 }
 
 ActionSet::ActionSet(const ActionSet & other) {
 	for(auto & action : other.m_actions) {
 		m_actions.push_back(action->Clone());
 	}
+
+	m_scopeCache = new ScopedPropertyBag;
 }
 
 ActionSet::~ActionSet() {
 	for(auto & action : m_actions)
 		delete action;
+
+	delete m_scopeCache;
 }
 
 void ActionSet::AddAction(IAction * action) {
@@ -41,12 +53,12 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 }
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
-	ScopedPropertyBag scopes;
-	scopes.SetProperties(target->GetScopes().GetProperties());
+	m_scopeCache->Clear();
+	m_scopeCache->SetProperties(target->GetScopes().GetProperties());
 	if(optionalContext)
-		scopes.GetScopes().AddScope(contextScope, *optionalContext);
+		m_scopeCache->GetScopes().AddScope(contextScope, *optionalContext);
 
-	return Execute(world, target, scopes);
+	return Execute(world, target, *m_scopeCache);
 }
 
 

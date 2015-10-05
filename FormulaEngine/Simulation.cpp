@@ -57,6 +57,8 @@ void RunKingdomWar() {
 	world.DumpOverview();
 
 	std::vector<const Unit *> buffer;
+	buffer.reserve(25000);
+
 	for(unsigned y = 0; y < worldHeight; ++y) {
 		for(unsigned x = 0; x < worldWidth; ++x) {
 			worldMap.GetUnitsByPosition(x, y, [](const Unit * unit) { return !unit->IsBlue(); }, &buffer);

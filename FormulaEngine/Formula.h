@@ -48,9 +48,8 @@ struct ITerminalEvaluator {
 
 
 class Formula {
-public:			// Construction and destruction
-	Formula() { }
-	~Formula();
+public:			// Construction
+	Formula();
 
 public:			// Move semantics
 	Formula(Formula && other);
@@ -72,7 +71,6 @@ public:			// Enumerations
 
 public:			// Setup interface
 	void Push(double literalValue);
-	void Push(ITerminalEvaluator * evaluator);			// Takes ownership
 	void Push(const ITerminalEvaluator & evaluator);	// Does not take ownership
 	void Push(Operator op);
 	void Push(unsigned scope, unsigned token);
@@ -87,19 +85,12 @@ private:		// Internal helpers
 
 private:		// Internal helper structures
 	struct Term {
-		Term() { }
-		Term(Term && other);
-		Term & operator = (Term && other);
-
 		enum Flags {
 			// Mutually exclusive type flags
 			FLAG_IS_LITERAL		= 1 << 0,
 			FLAG_IS_EVALUATOR	= 1 << 1,
 			FLAG_IS_OPERATOR	= 1 << 2,
 			FLAG_IS_TOKEN		= 1 << 3,
-
-			// Ownership semantics
-			FLAG_OWNS_MEMORY	= 1 << 16,
 		};
 
 		union PayloadUnion {
