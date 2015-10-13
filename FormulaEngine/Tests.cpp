@@ -50,8 +50,11 @@ void TestSimpleFormulaBag() {
 	TokenPool pool;
 	FormulaParser parser;
 
+	Result hr;
+	hr.value = 20.0;
+
 	SimplePropertyBag bag;
-	bag.Set(pool.AddToken("twenty"), 20.0);
+	bag.Set(pool.AddToken("twenty"), hr);
 
 	Formula f = parser.Parse("((1.75 + 2.25) * 6) + twenty - 2", &pool);
 	Result res = f.Evaluate(&bag);
@@ -102,7 +105,11 @@ void TestScopedBag() {
 
 	ScopedPropertyBag scopes;
 	scopes.GetScopes().AddScope(pool.AddToken("event"), eventbag);
-	scopes.GetProperties().Set(pool.AddToken("health"), 100.0);
+
+	Result hr;
+	hr.value = 100.0;
+
+	scopes.GetProperties().Set(pool.AddToken("health"), hr);
 
 	Formula modifiedHealth = parser.Parse("health - event:damageAmount", &pool);
 
@@ -133,8 +140,11 @@ void TestActionSets() {
 	FormulaPropertyBag eventbag;
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
 
+	Result hr;
+	hr.value = 100.0;
+
 	Scriptable scriptable;
-	scriptable.GetScopes().GetProperties().Set(pool.AddToken("health"), 100.0);
+	scriptable.GetScopes().GetProperties().Set(pool.AddToken("health"), hr);
 
 
 	actions.Execute(nullptr, &scriptable, pool.AddToken("event"), &eventbag);
@@ -160,19 +170,27 @@ void TestListsAndFunctions() {
 
 	Scriptable test;
 
+	Result hr;
+	hr.value = 10.0;
+
 	Scriptable tenbag;
-	tenbag.GetScopes().GetProperties().Set(pool.AddToken("value"), 10.0);
+	tenbag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), tenbag);
 
+
+	hr.value = 30.0;
+
 	Scriptable thirtybag;
-	thirtybag.GetScopes().GetProperties().Set(pool.AddToken("value"), 30.0);
+	thirtybag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), thirtybag);
 
 	test.GetScopes().GetProperties().Set(pool.AddToken("computed"), parser.Parse("SumOf(testlist:value)", &pool));
 
 	{
+		hr.value = 2.0;
+
 		Scriptable twobag;
-		twobag.GetScopes().GetProperties().Set(pool.AddToken("value"), 2.0);
+		twobag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 		test.GetScopes().ListAddEntry(pool.AddToken("testlist"), twobag);
 
 		double val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
@@ -185,7 +203,7 @@ void TestListsAndFunctions() {
 	((void)(val2));
 
 	Scriptable twobagalso;
-	twobagalso.GetScopes().GetProperties().Set(pool.AddToken("value"), 2.0);
+	twobagalso.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 
 	ActionSet actions;
 	actions.AddAction(new ActionListAddEntry(pool.AddToken("testlist"), twobagalso));

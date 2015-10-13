@@ -56,6 +56,10 @@ public:			// Move semantics
 	Formula & operator = (Formula && other);
 
 public:			// Friendships
+	friend class FunctionBetween;
+	friend class FunctionDistance;
+	friend class FunctionLimit;
+	friend class FunctionNormalize;
 	friend class FunctionRandom;
 	friend class FunctionSumOfList;
 	friend class FunctionVector;

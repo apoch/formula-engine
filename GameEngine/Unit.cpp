@@ -21,16 +21,12 @@ void Unit::AdvanceTick() {
 
 
 void Unit::MoveDirection(double xDir, double yDir) {
-	double xCur = static_cast<double>(m_location.x);
-	double yCur = static_cast<double>(m_location.y);
-
-	SetLocationClamped(xCur + xDir, yCur + yDir);
+	SetLocationClamped(m_location.x + xDir, m_location.y + yDir);
 }
 
 
 void Unit::Teleport(double x, double y) {
 	SetLocationClamped(x, y);
-	m_location = m_desired;
 }
 
 void Unit::SetBlueColor(double blue) {
@@ -39,16 +35,16 @@ void Unit::SetBlueColor(double blue) {
 
 void Unit::SetLocationClamped(double x, double y) {
 	if(x < 0.0)
-		x = 0.0;
-	else if(x > m_bounds.x)
 		x = m_bounds.x;
+	else if(x >= m_bounds.x)
+		x = 0.0;
 
 	if(y < 0.0)
-		y = 0.0;
-	else if(y > m_bounds.y)
 		y = m_bounds.y;
+	else if(y >= m_bounds.y)
+		y = 0.0;
 
-	m_desired.x = static_cast<unsigned>(x);
-	m_desired.y = static_cast<unsigned>(y);
+	m_desired.x = x;
+	m_desired.y = y;
 }
 

@@ -25,6 +25,8 @@ public:			// Component accessors
 public:			// Archetype support
 	void AddBinding(unsigned bindingToken);
 	IEngineBinding * GetBinding(unsigned bindingToken);
+	const IEngineBinding * GetBinding(unsigned bindingToken) const;
+	Result ResolveBinding(const IFormulaContext & context, unsigned scope, unsigned token) const;
 
 	void BindAll(IEngineBinder * binder, ScriptWorld * world);
 

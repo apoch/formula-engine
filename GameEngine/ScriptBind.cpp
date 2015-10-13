@@ -19,6 +19,8 @@ Binder::Binder(TokenPool * pool, Map * map)
 	m_unitBindTable.BindTokenToFunction(pool->AddToken("Teleport"), &Unit::Teleport);
 	m_unitBindTable.BindTokenToFunction(pool->AddToken("BlueColor"), &Unit::SetBlueColor);
 	m_unitBindTable.BindTokenToFunction(pool->AddToken("MoveDirection"), &Unit::MoveDirection);
+
+	m_unitBindTable.BindTokenToProperty(pool->AddToken("Position"), &Unit::GetCoordinatesForScript);
 }
 
 

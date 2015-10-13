@@ -3,10 +3,140 @@
 #include "Functions.h"
 #include "Formula.h"
 
+#include <ctime>
 
+
+
+static class FunctionBetween : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+
+		--(*pindex);
+		Result v2 = termSource.EvaluateSubexpression(context, pindex);
+		if(v2.code != RESULT_CODE_OK)
+			return v2;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if(v1.code != RESULT_CODE_OK)
+			return v1;
+
+		--(*pindex);
+		Result t = termSource.EvaluateSubexpression(context, pindex);
+		if(t.code != RESULT_CODE_OK)
+			return t;
+
+		ret.value = (v1.value < t.value && t.value < v2.value) ? 1.0 : 0.0;
+		ret.code = RESULT_CODE_OK;
+		return ret;
+	}
+} s_functionBetween;
+
+
+static class FunctionDistance : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+
+		--(*pindex);
+		Result v2 = termSource.EvaluateSubexpression(context, pindex);
+		if(v2.code != RESULT_CODE_OK)
+			return v2;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if(v1.code != RESULT_CODE_OK)
+			return v1;
+
+		double x1 = v1.value;
+		double y1 = v1.value2;
+
+		double x2 = v2.value;
+		double y2 = v2.value2;
+
+		double dx = x2 - x1;
+		double dy = y2 - y1;
+
+		ret.value = sqrt((dx * dx) + (dy * dy));
+		ret.code = RESULT_CODE_OK;
+		return ret;
+	}
+} s_functionDistance;
+
+
+static class FunctionLimit : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		--(*pindex);
+		Result lim = termSource.EvaluateSubexpression(context, pindex);
+		if(lim.code != RESULT_CODE_OK)
+			return lim;
+
+		--(*pindex);
+		Result v = termSource.EvaluateSubexpression(context, pindex);
+		if(v.code != RESULT_CODE_OK)
+			return v;
+
+		// TODO - type checking in all functions
+
+		double x = v.value;
+		double y = v.value2;
+
+		double mag = sqrt((x * x) + (y * y));
+		if(mag <= lim.value)
+			return v;
+
+		double scale = lim.value / mag;
+		x *= scale;
+		y *= scale;
+
+		Result ret;
+		ret.code = RESULT_CODE_OK;
+		ret.type = RESULT_TYPE_VECTOR2;
+		ret.value = x;
+		ret.value2 = y;
+
+		return ret;
+	}
+} s_functionLimit;
+
+
+static class FunctionNormalize : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if(v1.code != RESULT_CODE_OK)
+			return v1;
+
+		double x1 = v1.value;
+		double y1 = v1.value2;
+
+		double mag = sqrt((x1 * x1) + (y1 * y1));
+		x1 /= mag;
+		y1 /= mag;
+
+		ret.value = x1;
+		ret.value2 = y1;
+		ret.type = RESULT_TYPE_VECTOR2;
+		ret.code = RESULT_CODE_OK;
+		return ret;
+	}
+} s_functionNormalize;
 
 
 static class FunctionRandom : public ITerminalEvaluator {
+public:
+	FunctionRandom()
+		: m_generator((unsigned)(time(nullptr)))
+	{ }
+
 public:			// ITerminalEvaluator interface
 	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
 		Result ret;
@@ -17,7 +147,7 @@ public:			// ITerminalEvaluator interface
 		if(param.code != RESULT_CODE_OK)
 			return param;
 
-		std::uniform_real_distribution<double> distribution(0.0, param.value);
+		std::uniform_real_distribution<double> distribution(-1.0, 1.0);
 		ret.value = distribution(m_generator);
 		ret.code = RESULT_CODE_OK;
 
@@ -99,11 +229,23 @@ public:			// ITerminalEvaluator interface
 
 
 const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
-	if(!std::strcmp(str, "SumOf"))
-		return &s_functionSumOfList;
+	if(!std::strcmp(str, "Between"))
+		return &s_functionBetween;
+
+	if(!std::strcmp(str, "Distance"))
+		return &s_functionDistance;
+
+	if(!std::strcmp(str, "Limit"))
+		return &s_functionLimit;
+
+	if(!std::strcmp(str, "Normalize"))
+		return &s_functionNormalize;
 
 	if(!std::strcmp(str, "Random"))
 		return &s_functionRandom;
+
+	if(!std::strcmp(str, "SumOf"))
+		return &s_functionSumOfList;
 
 	if(!std::strcmp(str, "Vec"))
 		return &s_functionVector;

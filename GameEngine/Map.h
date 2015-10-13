@@ -29,7 +29,7 @@ public:			// Unit interaction interface
 		out->clear();
 		for(auto & unit : m_ownedUnits) {
 			auto & pos = unit->GetCoordinates();
-			if(pos.x == x && pos.y == y && filter(unit))
+			if(unsigned(pos.x) == x && unsigned(pos.y) == y && filter(unit))
 				out->push_back(unit);
 		}
 	}

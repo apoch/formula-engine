@@ -54,6 +54,14 @@ IEngineBinding * Scriptable::GetBinding(unsigned token) {
 	return iter->second;
 }
 
+const IEngineBinding * Scriptable::GetBinding(unsigned token) const {
+	auto iter = m_bindings.find(token);
+	if(iter == m_bindings.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 
 Scriptable * Scriptable::Instantiate() const {
 	Scriptable * clone = new Scriptable;
@@ -63,6 +71,9 @@ Scriptable * Scriptable::Instantiate() const {
 
 	if(m_eventHandlers)
 		m_eventHandlers->IncRef();
+
+	BindingPropertyBag bag(clone);
+	clone->m_scopes.SetBindings(bag);
 
 	return clone;
 }
@@ -82,6 +93,40 @@ void Scriptable::OnListMembershipRemoved(unsigned listToken, IActionPerformer * 
 		else
 			++iter;
 	}
+}
+
+
+Result Scriptable::ResolveBinding(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	const IEngineBinding * binding = nullptr;
+
+	if(scope) {
+		binding = GetBinding(scope);
+	}
+	else {
+		for(auto iter : m_bindings) {
+			if(iter.second->HasPropertyBinding(token)) {
+				binding = iter.second;
+				break;
+			}
+		}
+	}
+
+	if(!binding)
+		return context.ResolveNumber(context, scope, token);
+
+	Result ret;
+	ret.code = RESULT_CODE_OK;
+	unsigned arity = binding->GetPropertyBinding(token, &ret.value, &ret.value2);
+	if(arity == 0)
+		ret.code = RESULT_CODE_MISSING_DEFINITION;
+	else if(arity == 1)
+		ret.type = RESULT_TYPE_SCALAR;
+	else if(arity == 2)
+		ret.type = RESULT_TYPE_VECTOR2;
+	else
+		ret.code = RESULT_CODE_TYPE_ERROR;
+
+	return ret;
 }
 
 

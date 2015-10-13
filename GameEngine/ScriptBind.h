@@ -15,6 +15,8 @@ public:
 	typedef void (BoundT::*GoalStateFunctionDouble)(double);
 	typedef void (BoundT::*GoalStateFunctionVector)(double, double);
 
+	typedef void (BoundT::*PropertyFunctionVector)(double *, double *) const;
+
 public:
 	void BindTokenToFunction(unsigned token, GoalStateFunctionDouble func) {
 		m_doubleMap[token] = func;
@@ -22,6 +24,10 @@ public:
 
 	void BindTokenToFunction(unsigned token, GoalStateFunctionVector func) {
 		m_vectorMap[token] = func;
+	}
+
+	void BindTokenToProperty(unsigned token, PropertyFunctionVector func) {
+		m_propertyVectorMap[token] = func;
 	}
 
 	void Dispatch(unsigned token, BoundT * boundObject, double value) {
@@ -40,9 +46,25 @@ public:
 		((boundObject)->*func)(valuex, valuey);
 	}
 
+
+	bool HasProperty(unsigned token) const {
+		return m_propertyVectorMap.find(token) != m_propertyVectorMap.end();
+	}
+
+	unsigned DispatchProperty(unsigned token, BoundT * boundObject, double * outX, double * outY) {
+		if(m_propertyVectorMap.find(token) == m_propertyVectorMap.end())
+			return 0;
+
+		PropertyFunctionVector func = m_propertyVectorMap[token];
+		((boundObject)->*func)(outX, outY);
+		return 2;
+	}
+
 private:		// Internal state
 	std::map<unsigned, GoalStateFunctionDouble> m_doubleMap;
 	std::map<unsigned, GoalStateFunctionVector> m_vectorMap;
+
+	std::map<unsigned, PropertyFunctionVector> m_propertyVectorMap;
 };
 
 
@@ -61,6 +83,14 @@ public:
 
 	void SetGoalState(unsigned token, double statex, double statey) override {
 		m_table->Dispatch(token, m_bound, statex, statey);
+	}
+
+	bool HasPropertyBinding(unsigned token) const override {
+		return m_table->HasProperty(token);
+	}
+
+	unsigned GetPropertyBinding(unsigned token, double * out1, double * out2) const override {
+		return m_table->DispatchProperty(token, m_bound, out1, out2);
 	}
 
 private:

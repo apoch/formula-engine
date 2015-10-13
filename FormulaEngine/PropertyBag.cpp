@@ -5,6 +5,9 @@
 #include "PropertyBag.h"
 #include "EventHandler.h"
 #include "Scriptable.h"
+#include "TokenPool.h"
+#include "ScriptWorld.h"
+#include "Functions.h"
 
 
 void SimplePropertyBag::MaintainSorted() {
@@ -13,13 +16,13 @@ void SimplePropertyBag::MaintainSorted() {
 	});
 }
 
-void SimplePropertyBag::Set(unsigned token, double value) {
+void SimplePropertyBag::Set(unsigned token, const Result & value) {
 	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, double> & item) {
 		return item.first == token;
 	});
 	m_bag.erase(iter, m_bag.end());
 
-	m_bag.emplace_back(std::make_pair(token, value));
+	m_bag.emplace_back(std::make_pair(token, value.value));
 	MaintainSorted();
 }
 
@@ -68,7 +71,7 @@ void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBa
 		if(result.code != RESULT_CODE_OK)
 			std::cout << "FAIL\n";
 
-		bag->Set(pair.first, result.value);
+		bag->Set(pair.first, result);
 	}
 }
 
@@ -125,9 +128,16 @@ ListResult FormulaPropertyBag::ResolveList(const IFormulaContext & context, unsi
 }
 
 
-void FormulaPropertyBag::Set(unsigned token, double value) {
+void FormulaPropertyBag::Set(unsigned token, const Result & value) {
 	Formula f;
-	f.Push(value);
+	if(value.type == RESULT_TYPE_SCALAR)
+		f.Push(value.value);
+	else if(value.type == RESULT_TYPE_VECTOR2) {
+		f.Push(value.value);
+		f.Push(value.value2);
+		f.Push(*GetFunctionEvaluatorByName("Vec"));
+	}
+
 	Set(token, std::move(f));
 }
 
@@ -153,12 +163,16 @@ void ScopeResolver::Clear() {
 
 ScopedPropertyBag::ScopedPropertyBag() {
 	m_thisBag = &m_builtInBag;
+	m_bindingBag = nullptr;
 }
 
 ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
+	m_bindingBag = nullptr;
+
 	std::swap(m_lists, other.m_lists);
 	std::swap(m_builtInBag, other.m_builtInBag);
 	std::swap(m_resolver, other.m_resolver);
+	std::swap(m_bindingBag, other.m_bindingBag);
 	
 	m_thisBag = &m_builtInBag;
 	if(other.m_thisBag != &other.m_builtInBag)
@@ -171,6 +185,8 @@ ScopedPropertyBag::~ScopedPropertyBag() {
 			member->OnListMembershipRemoved(pair.first, this);
 		}
 	}
+
+	delete m_bindingBag;
 }
 
 
@@ -180,6 +196,9 @@ void ScopedPropertyBag::Clear() {
 	m_resolver.Clear();
 
 	m_thisBag = &m_builtInBag;
+	
+	delete m_bindingBag;
+	m_bindingBag = nullptr;
 }
 
 void ScopedPropertyBag::InstantiateFrom(const ScopedPropertyBag & other) {
@@ -215,7 +234,13 @@ Result ScopedPropertyBag::ResolveNumber(const IFormulaContext & originalContext,
 		return ret;
 	}
 
-	return resolved->ResolveNumber(originalContext, 0, token);
+	Result ret = resolved->ResolveNumber(originalContext, 0, token);
+	if(ret.code != RESULT_CODE_OK) {
+		if(m_bindingBag)
+			return m_bindingBag->ResolveNumber(originalContext, 0, token);
+	}
+
+	return ret;
 }
 
 ListResult ScopedPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
@@ -251,12 +276,58 @@ void ScopedPropertyBag::SetFormula(unsigned token, const Formula & formula) {
 	m_thisBag->Set(token, formula);
 }
 
-void ScopedPropertyBag::SetProperty(unsigned token, double value) {
+void ScopedPropertyBag::SetProperty(unsigned token, const Result & value) {
 	m_thisBag->Set(token, value);
 }
 
 void ScopedPropertyBag::SetProperties(FormulaPropertyBag * refbag) {
 	m_thisBag = refbag;
 }
+
+void ScopedPropertyBag::SetBindings(const BindingPropertyBag & refBag) {
+	m_bindingBag = new BindingPropertyBag(refBag);
+}
+
+
+
+WorldPropertyBag::WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes)
+	: m_world(world),
+	  m_scopes(&scopes)
+{ }
+
+Result WorldPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	if(m_world != nullptr && scope != 0) {
+		Scriptable * target = m_world->GetScriptable(scope);
+		if(target != nullptr)
+			return target->GetScopes().ResolveNumber(context, 0, token);
+	}
+
+	return m_scopes->ResolveNumber(context, scope, token);
+}
+
+ListResult WorldPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	return m_scopes->ResolveList(context, scope, token);
+}
+
+
+BindingPropertyBag::BindingPropertyBag(const Scriptable * scriptable)
+	: m_scriptable(scriptable)
+{
+}
+
+Result BindingPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	return m_scriptable->ResolveBinding(context, scope, token);
+}
+
+ListResult BindingPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	((void)(context));
+	((void)(scope));
+	((void)(token));
+
+	ListResult ret;
+	ret.code = RESULT_CODE_MISSING_DEFINITION;
+	return ret;
+}
+
 
 

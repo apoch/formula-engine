@@ -11,7 +11,7 @@ class ScriptWorld;
 
 
 struct IActionPerformer {
-	virtual void SetProperty(unsigned targetToken, double value) = 0;
+	virtual void SetProperty(unsigned targetToken, const Result & value) = 0;
 	virtual void SetFormula(unsigned targetToken, const Formula & formula) = 0;
 
 	virtual void ListAddEntry(unsigned listToken, const Scriptable & entry) = 0;
@@ -142,5 +142,19 @@ private:
 	Formula m_condition;
 	ActionSet m_actions;
 	ActionSet m_else;
+};
+
+
+class ActionListForEach : public IAction {
+public:
+	ActionListForEach(unsigned scriptableToken, unsigned listToken, ActionSet && loopActions);
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_scriptableToken;
+	unsigned m_listToken;
+	ActionSet m_loopActions;
 };
 

@@ -55,6 +55,8 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
 	m_scopeCache->Clear();
 	m_scopeCache->SetProperties(&target->GetScopes().GetProperties());
+	BindingPropertyBag bag(target);
+	m_scopeCache->SetBindings(bag);
 	if(optionalContext)
 		m_scopeCache->GetScopes().AddScope(contextScope, *optionalContext);
 
@@ -107,9 +109,9 @@ IAction * ActionSetGoalState::Clone() const {
 }
 
 ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	((void)(world));
+	WorldPropertyBag bag(world, scopes);
 
-	Result result = m_formula.Evaluate(&scopes);
+	Result result = m_formula.Evaluate(&bag);
 	if(result.code == RESULT_CODE_OK) {
 		IEngineBinding * binding = target->GetBinding(m_scopeToken);
 		if(binding) {
@@ -141,7 +143,8 @@ IAction * ActionEventRepeat::Clone() const {
 }
 
 ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	Result result = m_repeatFormula.Evaluate(&scopes);
+	WorldPropertyBag bag(world, scopes);
+	Result result = m_repeatFormula.Evaluate(&bag);
 	if(result.code != RESULT_CODE_OK)
 		return result.code;
 
@@ -172,11 +175,11 @@ IAction * ActionSetProperty::Clone() const {
 }
 
 ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	((void)(world));
+	WorldPropertyBag bag(world, scopes);
 
-	Result result = m_payload.Evaluate(&scopes);
+	Result result = m_payload.Evaluate(&bag);
 	if(result.code == RESULT_CODE_OK)
-		target->GetScopes().SetProperty(m_targetToken, result.value);
+		target->GetScopes().SetProperty(m_targetToken, result);
 
 	return result.code;
 }
@@ -218,7 +221,8 @@ IAction * ActionConditionalBlock::Clone() const {
 }
 
 ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	Result cond = m_condition.Evaluate(&scopes);
+	WorldPropertyBag bag(world, scopes);
+	Result cond = m_condition.Evaluate(&bag);
 	if(cond.code != RESULT_CODE_OK)
 		return cond.code;
 
@@ -227,4 +231,39 @@ ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * tar
 
 	return m_actions.Execute(world, target, scopes);
 }
+
+
+ActionListForEach::ActionListForEach(unsigned scriptableToken, unsigned listToken, ActionSet && loopActions)
+	: m_scriptableToken(scriptableToken),
+	  m_listToken(listToken),
+	  m_loopActions(loopActions)
+{
+}
+
+IAction * ActionListForEach::Clone() const {
+	ActionSet actionCopy(m_loopActions);
+	return new ActionListForEach(m_scriptableToken, m_listToken, std::move(actionCopy));
+}
+
+ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	Scriptable * scriptable = world->GetScriptable(m_scriptableToken);
+	if(!scriptable)
+		return RESULT_CODE_MISSING_DEFINITION;
+
+	const ActionSet * myActions = &m_loopActions;
+
+	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](const Scriptable * member){
+		ScopedPropertyBag newScopes;
+		newScopes.SetProperties(&target->GetScopes().GetProperties());
+
+		if(target->GetScopes().GetBindings())
+			newScopes.SetBindings(*target->GetScopes().GetBindings());
+
+		if(member->GetScopes().GetBindings())
+			newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), *member->GetScopes().GetBindings());
+
+		myActions->Execute(world, target, newScopes);
+	});
+}
+
 

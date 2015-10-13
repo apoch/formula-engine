@@ -6,8 +6,8 @@ class ScriptWorld;
 
 
 struct Coords {
-	unsigned x;
-	unsigned y;
+	double x;
+	double y;
 };
 
 enum Direction {
@@ -22,11 +22,11 @@ enum Direction {
 class Unit {
 public:			// Construction and destruction
 	Unit(unsigned x, unsigned y, unsigned maxX, unsigned maxY, Scriptable * boundScriptable, ScriptWorld * world) {
-		m_location.x = x;
-		m_location.y = y;
+		m_location.x = double(x);
+		m_location.y = double(y);
 
-		m_bounds.x = maxX;
-		m_bounds.y = maxY;
+		m_bounds.x = double(maxX);
+		m_bounds.y = double(maxY);
 
 		m_desired = m_location;
 
@@ -41,6 +41,10 @@ public:
 
 public:			// Coordinates
 	const Coords & GetCoordinates() const			{ return m_location; }
+	void GetCoordinatesForScript(double * x, double * y) const {
+		*x = m_location.x;
+		*y = m_location.y;
+	}
 	
 	void MoveDirection(double xDir, double yDir);
 	void Teleport(double x, double y);

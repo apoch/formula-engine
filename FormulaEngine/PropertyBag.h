@@ -6,13 +6,13 @@ class Scriptable;
 
 
 struct IPropertyBag : public IFormulaContext {
-	virtual void Set(unsigned token, double value) = 0;
+	virtual void Set(unsigned token, const Result & value) = 0;
 };
 
 
 class SimplePropertyBag : public IPropertyBag {
 public:			// IPropertyBag interface
-	void Set(unsigned token, double value) override;
+	void Set(unsigned token, const Result & value) override;
 
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -36,7 +36,7 @@ public:			// Configuration interface
 	void Set(unsigned token, Formula && formula);
 
 public:			// IPropertyBag interface
-	void Set(unsigned token, double value) override;
+	void Set(unsigned token, const Result & value) override;
 
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -53,6 +53,18 @@ private:		// Internal state
 	std::vector<BagPair> m_bag;
 };
 
+
+class BindingPropertyBag : public IFormulaContext {
+public:			// Construction
+	explicit BindingPropertyBag(const Scriptable * scriptable);
+
+public:			// IFormulaContext interface
+	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+
+private:		// Internal state
+	const Scriptable * m_scriptable;
+};
 
 
 class ScopeResolver {
@@ -82,20 +94,35 @@ public:			// Configuration interface
 
 	ScopeResolver & GetScopes()						{ return m_resolver; }
 	FormulaPropertyBag & GetProperties()			{ return *m_thisBag; }
+	BindingPropertyBag * GetBindings() const		{ return m_bindingBag; }
 
 	void SetProperties(FormulaPropertyBag * refbag);
+	void SetBindings(const BindingPropertyBag & refBag);
 
 public:			// Archetype support
 	void InstantiateFrom(const ScopedPropertyBag & other);
 	
 public:			// IActionPerformer interface
-	void SetProperty(unsigned token, double value) override;
+	void SetProperty(unsigned token, const Result & value) override;
 	void SetFormula(unsigned token, const Formula & formula) override;
 
 	void ListAddEntry(unsigned listToken, const Scriptable & entry) override;
 	void ListRemoveEntry(unsigned listToken, const Scriptable & entry) override;
 
 	const IFormulaContext & GetProperties() const override		{ return *m_thisBag; }
+
+public:			// ForEach loop support
+	template <typename FunctorT>
+	ResultCode ListEnumerate(unsigned listToken, const FunctorT & functor) const {
+		auto iter = m_lists.find(listToken);
+		if(iter == m_lists.end())
+			return RESULT_CODE_MISSING_DEFINITION;
+
+		for(auto scriptable : iter->second)
+			functor(scriptable);
+
+		return RESULT_CODE_OK;
+	}
 
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -104,8 +131,23 @@ public:			// IFormulaContext interface
 private:		// Internal state
 	std::map<unsigned, std::vector<const Scriptable *>> m_lists;
 	FormulaPropertyBag * m_thisBag;
+	BindingPropertyBag * m_bindingBag;
 	FormulaPropertyBag m_builtInBag;
 	ScopeResolver m_resolver;
+};
+
+
+class WorldPropertyBag : public IFormulaContext {
+public:			// Construction
+	WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes);
+
+public:			// IFormulaContext interface
+	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+
+private:		// Internal state
+	ScriptWorld * m_world;
+	const ScopedPropertyBag * m_scopes;
 };
 
 

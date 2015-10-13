@@ -65,6 +65,35 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 
 	// TODO - allow mismatched type for scaling vectors via mul/div?
 	if(left.type != right.type) {
+		if(left.type == RESULT_TYPE_SCALAR && right.type == RESULT_TYPE_VECTOR2) {
+			if(op == OPERATOR_MULTIPLY) {
+				Result ret;
+				ret.type = RESULT_TYPE_VECTOR2;
+				ret.code = RESULT_CODE_OK;
+				ret.value = left.value * right.value;
+				ret.value2 = left.value * right.value2;
+				return ret;
+			}
+		}
+		else if(left.type == RESULT_TYPE_VECTOR2 && right.type == RESULT_TYPE_SCALAR) {
+			if(op == OPERATOR_MULTIPLY) {
+				Result ret;
+				ret.type = RESULT_TYPE_VECTOR2;
+				ret.code = RESULT_CODE_OK;
+				ret.value = left.value * right.value;
+				ret.value2 = left.value2 * right.value;
+				return ret;
+			}
+			else if(op == OPERATOR_DIVIDE) {
+				Result ret;
+				ret.type = RESULT_TYPE_VECTOR2;
+				ret.code = RESULT_CODE_OK;
+				ret.value = left.value / right.value;
+				ret.value2 = left.value2 / right.value;
+				return ret;
+			}
+		}
+
 		Result err;
 		err.code = RESULT_CODE_TYPE_ERROR;
 		return err;
@@ -89,8 +118,11 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 		switch(op) {
 		case OPERATOR_ADD:			ret.value2 = left.value2 + right.value2;		break;
 		case OPERATOR_SUBTRACT:		ret.value2 = left.value2 - right.value2;		break;
-		case OPERATOR_MULTIPLY:		ret.value2 = left.value2 * right.value2;		break;	// TODO - what does it mean to mul/div a vec2?
-		case OPERATOR_DIVIDE:		ret.value2 = left.value2 / right.value2;		break;
+
+		case OPERATOR_MULTIPLY:
+		case OPERATOR_DIVIDE:
+			ret.code = RESULT_CODE_TYPE_ERROR;
+			break;
 		}
 	}
 
@@ -111,6 +143,7 @@ Result Formula::EvaluateTerminal(const IFormulaContext * context, unsigned index
 		return ret;
 	}
 
+	ret.type = RESULT_TYPE_SCALAR;
 	ret.code = RESULT_CODE_OK;
 	ret.value = m_terms[index].payload.literalValue;
 	return ret;

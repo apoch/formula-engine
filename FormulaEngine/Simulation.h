@@ -21,5 +21,9 @@ namespace Simulation {
 void RunKingdomWar();
 
 
+// Run a simulation of the "Flocking" example
+void RunFlocking();
+
+
 }
 
