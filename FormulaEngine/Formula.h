@@ -51,6 +51,10 @@ class Formula {
 public:			// Construction
 	Formula();
 
+public:			// Copy semantics
+	Formula(const Formula & other) = default;
+	Formula & operator = (const Formula & other) = default;
+
 public:			// Move semantics
 	Formula(Formula && other);
 	Formula & operator = (Formula && other);
