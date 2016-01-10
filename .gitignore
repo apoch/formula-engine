@@ -12,3 +12,4 @@ build/**
 ipch/**
 *.sdf
 *.opensdf
+*.opendb
