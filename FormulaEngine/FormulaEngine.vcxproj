@@ -30,6 +30,7 @@
     <ProjectGuid>{859CC8FA-913A-4A87-8C49-D9A9723000D2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FormulaEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -100,7 +101,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\Build\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unchecked|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -110,7 +111,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unchecked|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\Build\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -120,7 +121,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\Bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Build\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\Build\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,7 +145,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FormulaEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -176,7 +177,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;_DEBUG;WIN32;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FormulaEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -214,7 +215,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FormulaEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -225,9 +226,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\GameEngine\Map.h" />
-    <ClInclude Include="..\GameEngine\ScriptBind.h" />
-    <ClInclude Include="..\GameEngine\Unit.h" />
     <ClInclude Include="Actions.h" />
     <ClInclude Include="DeserializerFactory.h" />
     <ClInclude Include="EngineBind.h" />
@@ -236,23 +234,16 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Pch.h" />
-    <ClInclude Include="picojson.h" />
     <ClInclude Include="PropertyBag.h" />
     <ClInclude Include="Scriptable.h" />
     <ClInclude Include="ScriptWorld.h" />
-    <ClInclude Include="Simulation.h" />
-    <ClInclude Include="Tests.h" />
     <ClInclude Include="TokenPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\GameEngine\Map.cpp" />
-    <ClCompile Include="..\GameEngine\ScriptBind.cpp" />
-    <ClCompile Include="..\GameEngine\Unit.cpp" />
     <ClCompile Include="Actions.cpp" />
     <ClCompile Include="DeserializerFactory.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Formula.cpp" />
-    <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Pch.cpp">
@@ -266,8 +257,6 @@
     <ClCompile Include="PropertyBag.cpp" />
     <ClCompile Include="Scriptable.cpp" />
     <ClCompile Include="ScriptWorld.cpp" />
-    <ClCompile Include="Simulation.cpp" />
-    <ClCompile Include="Tests.cpp" />
     <ClCompile Include="TokenPool.cpp" />
   </ItemGroup>
   <ItemGroup>

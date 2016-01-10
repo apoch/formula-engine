@@ -19,14 +19,8 @@
     <Filter Include="Support Data Files">
       <UniqueIdentifier>{265136a2-b4f8-4b40-ba92-61b646db6522}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Engine">
-      <UniqueIdentifier>{9192f23c-0e36-4c09-bfcc-ebc59a0091ae}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="picojson.h">
-      <Filter>Support Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Actions.h">
       <Filter>Formula Engine</Filter>
     </ClInclude>
@@ -54,29 +48,14 @@
     <ClInclude Include="TokenPool.h">
       <Filter>Formula Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Tests.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="EventHandler.h">
       <Filter>Formula Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameEngine\Map.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameEngine\Unit.h">
-      <Filter>Game Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Pch.h">
       <Filter>Support Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EngineBind.h">
       <Filter>Formula Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GameEngine\ScriptBind.h">
-      <Filter>Game Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,29 +86,11 @@
     <ClCompile Include="TokenPool.cpp">
       <Filter>Formula Engine</Filter>
     </ClCompile>
-    <ClCompile Include="EntryPoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EventHandler.cpp">
       <Filter>Formula Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\GameEngine\Map.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Simulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GameEngine\ScriptBind.cpp">
-      <Filter>Game Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GameEngine\Unit.cpp">
-      <Filter>Game Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
