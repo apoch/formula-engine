@@ -10,6 +10,7 @@ enum ResultCode {
 };
 
 enum ResultType {
+	RESULT_TYPE_TOKEN,
 	RESULT_TYPE_SCALAR,
 	RESULT_TYPE_VECTOR2,
 };
@@ -19,6 +20,7 @@ struct Result {
 	ResultType type   = RESULT_TYPE_SCALAR;
 	double     value  = 0.0;
 	double     value2 = 0.0;
+	unsigned   token  = 0;
 };
 
 struct ListResult {

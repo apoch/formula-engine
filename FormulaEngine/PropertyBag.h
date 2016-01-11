@@ -151,3 +151,16 @@ private:		// Internal state
 };
 
 
+class TextPropertyBag : public IFormulaContext {
+public:			// IFormulaContext interface
+	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+
+public:			// Text configuration and retrieval
+	void AddLine(unsigned token, const char * str);
+	const char * GetLine(unsigned token) const;
+
+private:		// Internal state
+	std::map<unsigned, std::string> m_bag;
+};
+

@@ -6,6 +6,7 @@ class ScriptWorld;
 
 
 struct IEngineBinding {
+	virtual void SetGoalState(unsigned token, unsigned tokenValue) = 0;
 	virtual void SetGoalState(unsigned token, double state) = 0;
 	virtual void SetGoalState(unsigned token, double statex, double statey) = 0;
 

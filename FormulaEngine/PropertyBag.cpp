@@ -297,6 +297,10 @@ WorldPropertyBag::WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag 
 
 Result WorldPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	if(m_world != nullptr && scope != 0) {
+		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
+		if(magic != nullptr)
+			return magic->ResolveNumber(context, scope, token);
+
 		Scriptable * target = m_world->GetScriptable(scope);
 		if(target != nullptr)
 			return target->GetScopes().ResolveNumber(context, 0, token);
@@ -331,3 +335,38 @@ ListResult BindingPropertyBag::ResolveList(const IFormulaContext & context, unsi
 
 
 
+void TextPropertyBag::AddLine(unsigned token, const char * str) {
+	m_bag[token] = str;
+}
+
+
+const char * TextPropertyBag::GetLine(unsigned token) const {
+	auto iter = m_bag.find(token);
+	if (iter == m_bag.end())
+		return nullptr;
+
+	return iter->second.c_str();
+}
+
+
+Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	((void)(context));
+	((void)(scope));
+
+	Result ret;
+	ret.type = RESULT_TYPE_TOKEN;
+	ret.code = RESULT_CODE_OK;
+	ret.token = token;
+
+	return ret;
+}
+
+ListResult TextPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	((void)(context));
+	((void)(scope));
+	((void)(token));
+
+	ListResult ret;
+	ret.code = RESULT_CODE_MISSING_DEFINITION;
+	return ret;
+}

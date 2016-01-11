@@ -18,8 +18,11 @@
 
 class User {
 public:
-	void SendMessage(double message) {
-		std::cout << message << std::endl;
+	ScriptWorld * world;
+
+public:
+	void SendMessage(unsigned message) {
+		std::cout << world->GetMagicBag(3)->GetLine(message) << std::endl;
 	}
 };
 
@@ -33,6 +36,7 @@ namespace Game {
 	public:
 		typedef void (BoundT::*GoalStateFunctionDouble)(double);
 		typedef void (BoundT::*GoalStateFunctionVector)(double, double);
+		typedef void (BoundT::*GoalStateFunctionToken)(unsigned);
 
 		typedef void (BoundT::*PropertyFunctionVector)(double *, double *) const;
 
@@ -45,8 +49,20 @@ namespace Game {
 			m_vectorMap[token] = func;
 		}
 
+		void BindTokenToFunction(unsigned token, GoalStateFunctionToken func) {
+			m_tokenMap[token] = func;
+		}
+
 		void BindTokenToProperty(unsigned token, PropertyFunctionVector func) {
 			m_propertyVectorMap[token] = func;
+		}
+
+		void Dispatch(unsigned token, BoundT * boundObject, unsigned tokenValue) {
+			if (m_tokenMap.find(token) == m_tokenMap.end())
+				return;
+
+			GoalStateFunctionToken func = m_tokenMap[token];
+			((boundObject)->*func)(tokenValue);
 		}
 
 		void Dispatch(unsigned token, BoundT * boundObject, double value) {
@@ -82,6 +98,7 @@ namespace Game {
 	private:		// Internal state
 		std::map<unsigned, GoalStateFunctionDouble> m_doubleMap;
 		std::map<unsigned, GoalStateFunctionVector> m_vectorMap;
+		std::map<unsigned, GoalStateFunctionToken> m_tokenMap;
 
 		std::map<unsigned, PropertyFunctionVector> m_propertyVectorMap;
 	};
@@ -96,6 +113,10 @@ namespace Game {
 		{ }
 
 	public:
+		void SetGoalState(unsigned token, unsigned tokenValue) override {
+			m_table->Dispatch(token, m_bound, tokenValue);
+		}
+
 		void SetGoalState(unsigned token, double state) override {
 			m_table->Dispatch(token, m_bound, state);
 		}
@@ -147,6 +168,7 @@ namespace Game {
 
 		if (m_tokens->GetStringFromToken(token) == "User") {
 			User * user = new User();
+			user->world = world;
 			return new Binding<User>(user, &m_userBindTable);
 		}
 
@@ -176,7 +198,7 @@ int main() {
 
 	while (world.DispatchEvents());
 
-	world.DumpOverview();
+	//world.DumpOverview();
 
     return 0;
 }

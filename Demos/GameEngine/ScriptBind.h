@@ -77,6 +77,11 @@ public:
 	{ }
 
 public:
+	void SetGoalState(unsigned token, unsigned tokenValue) override {
+		assert(false);		// Not implemented
+	}
+
+
 	void SetGoalState(unsigned token, double state) override {
 		m_table->Dispatch(token, m_bound, state);
 	}

@@ -41,6 +41,10 @@ void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptab
 }
 
 
+void ScriptWorld::AddMagicBag(unsigned token) {
+	m_magicBags[token] = TextPropertyBag();
+}
+
 
 void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag) {
 	target->GetEvents()->TriggerHandlers(this, eventToken, target, paramBag);
@@ -95,6 +99,15 @@ Scriptable * ScriptWorld::GetArchetype(unsigned token) {
 Scriptable * ScriptWorld::GetScriptable(unsigned token) {
 	auto iter = m_scriptables.find(token);
 	if(iter == m_scriptables.end())
+		return nullptr;
+
+	return &iter->second;
+}
+
+
+TextPropertyBag * ScriptWorld::GetMagicBag(unsigned token) {
+	auto iter = m_magicBags.find(token);
+	if(iter == m_magicBags.end())
 		return nullptr;
 
 	return &iter->second;

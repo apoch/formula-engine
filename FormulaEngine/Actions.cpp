@@ -119,6 +119,8 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 				binding->SetGoalState(m_targetToken, result.value);
 			else if(result.type == RESULT_TYPE_VECTOR2)
 				binding->SetGoalState(m_targetToken, result.value, result.value2);
+			else if(result.type == RESULT_TYPE_TOKEN)
+				binding->SetGoalState(m_targetToken, result.token);
 		}
 	}
 	

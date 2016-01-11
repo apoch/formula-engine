@@ -11,9 +11,11 @@ public:			// Construction and destruction
 public:			// Setup interface
 	void AddScriptable(const std::string & name, Scriptable && scriptable);
 	void AddArchetype(const std::string & name, Scriptable && archetype);
+	void AddMagicBag(unsigned nametoken);
 
 	Scriptable * GetArchetype(unsigned token);
 	Scriptable * GetScriptable(unsigned token);
+	TextPropertyBag * GetMagicBag(unsigned token);
 
 	TokenPool & GetTokenPool()			{ return *m_tokens; }
 
@@ -47,6 +49,7 @@ private:		// Internal state
 	TokenPool * m_tokens;
 	std::map<unsigned, Scriptable> m_scriptables;
 	std::map<unsigned, Scriptable> m_archetypes;
+	std::map<unsigned, TextPropertyBag> m_magicBags;
 
 	std::vector<Event> m_eventQueue;
 	std::vector<Scriptable *> m_instances;

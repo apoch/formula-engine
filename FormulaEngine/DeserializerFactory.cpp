@@ -29,6 +29,17 @@ static void LoadArrayOfBindings(const picojson::value & bindarray, ScriptWorld *
 	}
 }
 
+static void LoadArrayOfText(const picojson::value & textarray, ScriptWorld * world, TextPropertyBag * textBag) {
+	auto & texts = textarray.get<picojson::object>();
+	for(auto & text : texts) {
+		if(!text.second.is<std::string>())
+			continue;
+
+		auto & payload = text.second.get<std::string>();
+		textBag->AddLine(world->GetTokenPool().AddToken(text.first), payload.c_str());
+	}
+}
+
 static void LoadArrayOfActions(const char name[], const picojson::object & obj, ActionSet * actions, ScriptWorld * world, FormulaParser * parser) {
 	auto actioniter = obj.find(name);
 	if(actioniter == obj.end() || !actioniter->second.is<picojson::array>())
@@ -306,6 +317,16 @@ void DeserializerFactory::LoadFileIntoScriptWorld(const char filename[], ScriptW
 			LoadArrayOfScriptables(pair.second, world, &ScriptWorld::AddScriptable, &ScriptWorld::GetScriptable, &parser);
 		else if(pair.first == "archetypes")
 			LoadArrayOfScriptables(pair.second, world, &ScriptWorld::AddArchetype, &ScriptWorld::GetArchetype, &parser);
+		else if(pair.first == "textbags") {
+			auto & obj = pair.second.get<picojson::array>();
+
+			for (auto & textiter : obj) {
+				unsigned token = world->GetTokenPool().AddToken(textiter.get<picojson::object>().find("name")->second.get<std::string>());
+				world->AddMagicBag(token);
+				TextPropertyBag * bag = world->GetMagicBag(token);
+				LoadArrayOfText(textiter.get<picojson::object>().find("textlines")->second, world, bag);
+			}
+		}
 	}
 }
 

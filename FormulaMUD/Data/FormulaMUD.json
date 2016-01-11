@@ -13,7 +13,13 @@
               "action": "SetGoalState",
               "binding": "User",
               "property": "SendMessage",
-              "value": "42"
+              "value": "TEXT:USER_CONNECT_GREETING"
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_CONNECT_GREETING_TWO"
             }
           ]
         }
@@ -42,6 +48,16 @@
           ]
         }
       ]
+    }
+  ],
+
+  "textbags": [
+    {
+      "name": "TEXT",
+      "textlines": {
+        "USER_CONNECT_GREETING": "Hello user! Welcome to FormulaMUD!",
+        "USER_CONNECT_GREETING_TWO": "Please do not pick your nose."
+      }
     }
   ]
 }
