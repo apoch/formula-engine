@@ -1,0 +1,47 @@
+{
+  "archetypes": [
+    {
+      "name": "User",
+      "bindings": [
+        "User"
+      ],
+      "events": [
+        {
+          "name": "OnCreate",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "42"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "scriptables": [
+    {
+      "name": "MasterControl",
+      "lists": [
+        {
+          "name": "ConnectedUsers",
+          "contents": [ ]
+        }
+      ],
+      "events": [
+        {
+          "name": "OnUserConnect",
+          "actions": [
+            {
+              "action": "CreateListMember",
+              "archetype": "User",
+              "list": "ConnectedUsers"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

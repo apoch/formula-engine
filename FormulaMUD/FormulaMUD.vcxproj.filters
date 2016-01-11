@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Support Data Files">
+      <UniqueIdentifier>{85e42423-35af-4526-8344-9fc5333e7c51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FormulaMUD.cpp">
@@ -26,5 +29,10 @@
     <ClInclude Include="Pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\FormulaMUD.json">
+      <Filter>Support Data Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

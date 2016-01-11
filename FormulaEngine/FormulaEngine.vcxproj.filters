@@ -16,9 +16,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Support Data Files">
-      <UniqueIdentifier>{265136a2-b4f8-4b40-ba92-61b646db6522}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actions.h">
@@ -92,16 +89,5 @@
     <ClCompile Include="Pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Data\test.json">
-      <Filter>Support Data Files</Filter>
-    </None>
-    <None Include="..\Data\KingdomWar.json">
-      <Filter>Support Data Files</Filter>
-    </None>
-    <None Include="..\Data\Flocking.json">
-      <Filter>Support Data Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

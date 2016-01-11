@@ -179,6 +179,11 @@
       <Project>{859cc8fa-913a-4a87-8c49-d9a9723000d2}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Flocking.json" />
+    <None Include="Data\KingdomWar.json" />
+    <None Include="Data\test.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

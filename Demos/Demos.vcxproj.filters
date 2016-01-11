@@ -16,6 +16,9 @@
     <Filter Include="Game Engine">
       <UniqueIdentifier>{194a7592-a949-4899-b644-a3f8769728b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Support Data Files">
+      <UniqueIdentifier>{9f86dcf6-881e-402a-80df-83d035972652}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -62,5 +65,16 @@
     <ClCompile Include="GameEngine\Unit.cpp">
       <Filter>Game Engine</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Flocking.json">
+      <Filter>Support Data Files</Filter>
+    </None>
+    <None Include="Data\KingdomWar.json">
+      <Filter>Support Data Files</Filter>
+    </None>
+    <None Include="Data\test.json">
+      <Filter>Support Data Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
