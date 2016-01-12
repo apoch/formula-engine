@@ -70,6 +70,10 @@ bool ScriptWorld::DispatchEvents() {
 				for(auto & pair : m_scriptables) {
 					DispatchEvent(&pair.second, e.nameToken, e.parameterBag);
 				}
+
+				for (auto * scriptable : m_instances) {
+					DispatchEvent(scriptable, e.nameToken, e.parameterBag);
+				}
 			}
 
 			delete e.parameterBag;

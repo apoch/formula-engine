@@ -1,0 +1,9 @@
+{
+  "commands": [
+    {
+      "command": "pick",
+      "event": "CMD_pick",
+      "helpText": "Pick your nose!"
+    }
+  ]
+}

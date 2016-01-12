@@ -22,6 +22,28 @@
               "value": "TEXT:USER_CONNECT_GREETING_TWO"
             }
           ]
+        },
+        {
+          "name": "Poll",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "PollInput",
+              "value": "0"
+            }
+          ]
+        },
+        {
+          "name": "CMD_pick",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_TEST_MESSAGE"
+            }
+          ]
         }
       ]
     }
@@ -56,7 +78,9 @@
       "name": "TEXT",
       "textlines": {
         "USER_CONNECT_GREETING": "Hello user! Welcome to FormulaMUD!",
-        "USER_CONNECT_GREETING_TWO": "Please do not pick your nose."
+        "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands",
+        
+        "USER_TEST_MESSAGE": "Please do not pick your nose."
       }
     }
   ]

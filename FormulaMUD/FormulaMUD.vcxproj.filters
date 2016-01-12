@@ -34,5 +34,8 @@
     <None Include="Data\FormulaMUD.json">
       <Filter>Support Data Files</Filter>
     </None>
+    <None Include="Data\CommandList.json">
+      <Filter>Support Data Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
