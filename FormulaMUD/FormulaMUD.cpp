@@ -3,63 +3,12 @@
 
 #include "Pch.h"
 
-#include "FormulaEngine/Formula.h"
-#include "FormulaEngine/Actions.h"
-#include "FormulaEngine/Parser.h"
-#include "FormulaEngine/PropertyBag.h"
-#include "FormulaEngine/TokenPool.h"
-#include "FormulaEngine/EventHandler.h"
-#include "FormulaEngine/Scriptable.h"
-#include "FormulaEngine/ScriptWorld.h"
-#include "FormulaEngine/DeserializerFactory.h"
-#include "FormulaEngine/EngineBind.h"
+#include "User.h"
+#include "CommandTable.h"
+#include "WorldState.h"
 
 
 namespace Game {
-
-	class CommandTable {
-	public:			// Construction
-		CommandTable (const char * jsonFileName, TokenPool * tokens);
-
-	public:			// Command dispatching
-		bool DispatchCommandToWorld (const std::string & command, ScriptWorld * world, Scriptable * user);
-
-	public:			// Additional functionality
-		void DisplayHelp (const std::string & command);
-
-	public:			// Internal state
-		struct CommandData {
-			unsigned    eventId;
-			std::string helpText;
-			unsigned    numParams;
-		};
-
-		std::map<std::string, CommandData> m_map;
-	};
-
-
-	struct WorldState {
-		bool alive = true;
-		CommandTable * commands = nullptr;
-	};
-
-
-
-	class User {
-	public:			// TODO - icky
-		ScriptWorld * world;
-		Scriptable * scriptable;
-		WorldState * worldState;
-		TextPropertyBag * textBag;
-
-	public:
-		void SendMessage(unsigned message) {
-			std::cout << textBag->GetLine(message) << std::endl;
-		}
-
-		void PollInput(double ignored);
-	};
-
 
 	template <typename BoundT>
 	class BindingTable {
@@ -197,133 +146,13 @@ namespace Game {
 			return nullptr;
 
 		if (m_tokens->GetStringFromToken(token) == "User") {
-			User * user = new User();
-			user->world = world;
-			user->scriptable = scriptable;
-			user->worldState = m_worldState;
-			user->textBag = world->GetMagicBag(world->GetTokenPool().AddToken("TEXT"));
+			User * user = new User(world, scriptable, m_worldState);
 			return new Binding<User>(user, &m_userBindTable);
 		}
 
 		return nullptr;
 	}
 
-
-
-	CommandTable::CommandTable(const char * jsonFileName, TokenPool * tokens) {
-		picojson::value outvalue;
-
-		{
-			std::ifstream stream(jsonFileName, std::ios::in);
-			picojson::parse(outvalue, stream);
-		}
-
-		if(!outvalue.is<picojson::object>())
-			return;
-
-		const auto & obj = outvalue.get<picojson::object>();
-
-		auto cmditer = obj.find("commands");
-		if (cmditer == obj.end())
-			return;
-
-		const auto & cmds = cmditer->second.get<picojson::array>();
-		for (const auto & cmd : cmds) {
-			if (!cmd.is<picojson::object>())
-				continue;
-
-			const auto & command = cmd.get<picojson::object>();
-			CommandData data;
-
-			auto textiter = command.find("command");
-			if (textiter == command.end())
-				continue;
-
-			auto eventiter = command.find("event");
-			if (eventiter == command.end())
-				continue;
-
-			std::string helpText = "No help is available for this command.";
-			auto helpiter = command.find("helpText");
-			if (helpiter != command.end())
-				helpText = helpiter->second.get<std::string>();
-
-			data.eventId = tokens->AddToken(eventiter->second.get<std::string>());
-			data.numParams = 0;
-			data.helpText = helpText;
-
-			m_map[textiter->second.get<std::string>()] = data;
-		}
-	}
-
-	bool CommandTable::DispatchCommandToWorld(const std::string & command, ScriptWorld * world, Scriptable * user) {
-		auto iter = m_map.find(command);
-		if (iter == m_map.end())
-			return false;
-
-		// TODO - params
-
-		world->QueueEvent(user, iter->second.eventId, nullptr);
-
-		return true;
-	}
-
-	void CommandTable::DisplayHelp (const std::string & command) {
-		auto iter = m_map.find(command);
-		if (iter == m_map.end()) {
-			if (command.empty()) {
-				std::cout << "Available commands:\n";
-
-				for (auto & pair : m_map) {
-					std::cout << pair.first << "\n";
-				}
-
-				std::cout << "\nType 'help command' to get help with a specific command.\n";
-				std::cout << "Type 'quit' or 'exit' at any time to leave." << std::endl;
-			}
-			else {
-				std::cout << "Unknown command '" << command << "'. Type 'help' for a list of commands." << std::endl;
-			}
-
-			return;
-		}
-
-		std::cout << "Help for '" << iter->first << "':\n" << iter->second.helpText << std::endl;
-	}
-
-	
-	void User::PollInput (double) {
-		std::string buffer;
-
-		std::getline(std::cin, buffer);
-
-		std::stringstream parser;
-		parser << buffer;
-
-		std::string command;
-		parser >> command;
-
-		if (command == "q" || command == "quit" || command == "exit") {
-			worldState->alive = false;
-			return;
-		}
-
-		if (command == "help") {
-			std::string param;
-			parser >> param;
-
-			worldState->commands->DisplayHelp(param);
-
-			return;
-		}
-
-		// TODO - parse params into property bag
-
-		if (worldState->commands->DispatchCommandToWorld(command, world, scriptable))
-			return;
-
-		std::cout << "What?" << std::endl;
-	}
 }
 
 

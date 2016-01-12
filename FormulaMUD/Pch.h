@@ -29,3 +29,15 @@
 // Third party library includes
 #include "Shared/PicoJSON.h"
 
+
+// FormulaEngine dependencies
+#include "FormulaEngine/Formula.h"
+#include "FormulaEngine/Actions.h"
+#include "FormulaEngine/Parser.h"
+#include "FormulaEngine/PropertyBag.h"
+#include "FormulaEngine/TokenPool.h"
+#include "FormulaEngine/EventHandler.h"
+#include "FormulaEngine/Scriptable.h"
+#include "FormulaEngine/ScriptWorld.h"
+#include "FormulaEngine/DeserializerFactory.h"
+#include "FormulaEngine/EngineBind.h"

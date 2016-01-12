@@ -150,9 +150,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommandTable.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="WorldState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandTable.cpp" />
     <ClCompile Include="FormulaMUD.cpp" />
     <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -160,6 +164,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FormulaEngine\FormulaEngine.vcxproj">
