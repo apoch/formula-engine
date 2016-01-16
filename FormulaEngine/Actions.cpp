@@ -57,8 +57,10 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 	m_scopeCache->SetProperties(&target->GetScopes().GetProperties());
 	BindingPropertyBag bag(target);
 	m_scopeCache->SetBindings(bag);
-	if(optionalContext)
+	if (optionalContext) {
 		m_scopeCache->GetScopes().AddScope(contextScope, *optionalContext);
+		optionalContext->PopulateNamedBindings(m_scopeCache);
+	}
 
 	return Execute(world, target, *m_scopeCache);
 }
@@ -112,9 +114,12 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 	WorldPropertyBag bag(world, scopes);
 
 	Result result = m_formula.Evaluate(&bag);
-	if(result.code == RESULT_CODE_OK) {
+	if (result.code == RESULT_CODE_OK) {
 		IEngineBinding * binding = target->GetBinding(m_scopeToken);
-		if(binding) {
+		if (!binding)
+			binding = scopes.GetNamedBinding(m_scopeToken)->GetBinding(m_scopeToken);
+
+		if (binding) {
 			if(result.type == RESULT_TYPE_SCALAR)
 				binding->SetGoalState(m_targetToken, result.value);
 			else if(result.type == RESULT_TYPE_VECTOR2)
@@ -126,6 +131,37 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 	
 	return result.code;
 }
+
+
+
+
+ActionEventTrigger::ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr)
+	: m_eventToken(eventToken),
+ 	  m_targetToken(targetToken),
+ 	  m_paramBag(parambagptr)
+{
+}
+
+ActionEventTrigger::~ActionEventTrigger() {
+	delete m_paramBag;
+}
+
+IAction * ActionEventTrigger::Clone() const {
+	return new ActionEventTrigger(m_eventToken, m_targetToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
+}
+
+ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable *, const ScopedPropertyBag & scopes) const {
+	SimplePropertyBag * bagptr = nullptr;
+	if(m_paramBag) {
+		bagptr = new SimplePropertyBag;
+		m_paramBag->Flatten(bagptr, &scopes);
+	}
+
+	world->QueueEvent(world->GetScriptable(m_targetToken), m_eventToken, bagptr);
+	return RESULT_CODE_OK;
+}
+
+
 
 
 ActionEventRepeat::ActionEventRepeat(unsigned eventToken, Formula && repeatFormula, FormulaPropertyBag * parambagptr)
@@ -187,21 +223,20 @@ ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, 
 }
 
 
-ActionListAddEntry::ActionListAddEntry(unsigned listToken, const Scriptable & scriptable)
+ActionListAddEntry::ActionListAddEntry(unsigned listToken, unsigned targetToken)
 	: m_listToken(listToken),
-	  m_scriptable(&scriptable)
+	  m_targetToken(targetToken)
 {
 }
 
 IAction * ActionListAddEntry::Clone() const {
-	return new ActionListAddEntry(m_listToken, *m_scriptable);
+	return new ActionListAddEntry(m_listToken, m_targetToken);
 }
 
 ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	((void)(world));
 	((void)(scopes));
 
-	target->GetScopes().ListAddEntry(m_listToken, *m_scriptable);
+	target->GetScopes().ListAddEntry(m_listToken, *world->GetScriptable(m_targetToken));
 
 	return RESULT_CODE_OK;
 }

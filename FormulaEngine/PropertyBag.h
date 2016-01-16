@@ -3,10 +3,13 @@
 
 struct Result;
 class Scriptable;
+class ScopedPropertyBag;
 
 
 struct IPropertyBag : public IFormulaContext {
 	virtual void Set(unsigned token, const Result & value) = 0;
+
+	virtual void PopulateNamedBindings (ScopedPropertyBag *) const { }
 };
 
 
@@ -79,7 +82,7 @@ private:		// Internal state
 };
 
 
-class ScopedPropertyBag : public IFormulaContext, public IActionPerformer {
+class ScopedPropertyBag : public IPropertyBag, public IActionPerformer {
 public:			// Construction and destruction
 	ScopedPropertyBag();
 	ScopedPropertyBag(ScopedPropertyBag && other);
@@ -99,6 +102,10 @@ public:			// Configuration interface
 	void SetProperties(FormulaPropertyBag * refbag);
 	void SetBindings(const BindingPropertyBag & refBag);
 
+	void SetNamedBinding (unsigned token, Scriptable * binding);
+	Scriptable * GetNamedBinding (unsigned token) const;
+	void PopulateNamedBindings (ScopedPropertyBag * otherBag) const override;
+
 public:			// Archetype support
 	void InstantiateFrom(const ScopedPropertyBag & other);
 	
@@ -110,6 +117,9 @@ public:			// IActionPerformer interface
 	void ListRemoveEntry(unsigned listToken, const Scriptable & entry) override;
 
 	const IFormulaContext & GetProperties() const override		{ return *m_thisBag; }
+
+public:
+	void Set(unsigned token, const Result & value) override;
 
 public:			// ForEach loop support
 	template <typename FunctorT>
@@ -134,6 +144,8 @@ private:		// Internal state
 	BindingPropertyBag * m_bindingBag;
 	FormulaPropertyBag m_builtInBag;
 	ScopeResolver m_resolver;
+
+	std::map<unsigned, Scriptable *> m_namedBindings;
 };
 
 

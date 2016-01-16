@@ -45,9 +45,7 @@ void RunKingdomWar() {
 	Game::Binder binder(&pool, &worldMap);
 
 	ScriptWorld world(&pool, &binder);
-	DeserializerFactory factory;
-
-	factory.LoadFileIntoScriptWorld("Data\\KingdomWar.json", &world);
+	DeserializerFactory::LoadFileIntoScriptWorld("Data\\KingdomWar.json", &world);
 
 	world.QueueBroadcastEvent("OnCreate");
 
@@ -99,9 +97,7 @@ void RunFlocking() {
 	Game::Binder binder(&pool, &worldMap);
 
 	ScriptWorld world(&pool, &binder);
-	DeserializerFactory factory;
-
-	factory.LoadFileIntoScriptWorld("Data\\Flocking.json", &world);
+	DeserializerFactory::LoadFileIntoScriptWorld("Data\\Flocking.json", &world);
 
 	world.QueueBroadcastEvent("OnCreate");
 

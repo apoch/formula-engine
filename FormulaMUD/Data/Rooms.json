@@ -1,0 +1,42 @@
+{
+  "rooms": [
+    {
+      "name": "StartRoom",
+      "connections": {
+        "north": "NorthRoom"
+      },
+      "events": [
+        {
+          "name": "OnUserEnter",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:TEST_ONE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NorthRoom",
+      "connections": {
+        "south": "StartRoom"
+      },
+      "events": [
+        {
+          "name": "OnUserEnter",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:TEST"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -28,6 +28,20 @@ struct IAction {
 };
 
 
+class ActionEventTrigger : public IAction {
+public:
+	ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr);
+	~ActionEventTrigger();
+
+	IAction * Clone() const override;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	unsigned m_eventToken;
+	unsigned m_targetToken;
+	FormulaPropertyBag * m_paramBag;
+};
+
 class ActionEventRepeat : public IAction {
 public:
 	ActionEventRepeat(unsigned eventToken, Formula && repeatFormula, FormulaPropertyBag * parambagptr);
@@ -67,14 +81,14 @@ private:
 
 class ActionListAddEntry : public IAction {
 public:
-	ActionListAddEntry(unsigned listToken, const Scriptable & scriptable);
+	ActionListAddEntry(unsigned listToken, unsigned targetToken);
 
 	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
 	unsigned m_listToken;
-	const Scriptable * m_scriptable;
+	unsigned m_targetToken;
 };
 
 class ActionListSpawnEntry : public IAction {

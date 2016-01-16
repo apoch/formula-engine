@@ -20,6 +20,7 @@ public:			// Setup interface
 	TokenPool & GetTokenPool()			{ return *m_tokens; }
 
 	Scriptable * InstantiateArchetype(unsigned token, IPropertyBag * paramBag);
+	Scriptable * InstantiateArchetype(unsigned nameOfInstance, unsigned token, IPropertyBag * paramBag);
 
 public:			// Event pump interface
 	void QueueEvent(unsigned targetToken, const std::string & eventName);

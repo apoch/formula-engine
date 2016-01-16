@@ -4,6 +4,17 @@
       "command": "pick",
       "event": "CMD_pick",
       "helpText": "Pick your nose!"
+    },
+
+    {
+      "command": "north",
+      "event": "CMD_north",
+      "helpText": "Move to the north, if that is possible."
+    },
+    {
+      "command": "south",
+      "event": "CMD_south",
+      "helpText": "Move to the south, if that is possible."
     }
   ]
 }

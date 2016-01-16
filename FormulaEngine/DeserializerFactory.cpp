@@ -55,7 +55,21 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			continue;
 
 		const std::string & actionkey = actionkeyiter->second.get<std::string>();
-		if(actionkey == "CreateListMember") {
+		if (actionkey == "AddSelfToList") {
+			auto targetiter = action.find("target");
+			if (targetiter == action.end() || !targetiter->second.is<std::string>())
+				continue;
+
+			auto listiter = action.find("list");
+			if (listiter == action.end() || !listiter->second.is<std::string>())
+				continue;
+
+			unsigned targetToken = world->GetTokenPool().AddToken(targetiter->second.get<std::string>());
+			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
+
+			actions->AddAction(new ActionListAddEntry(listToken, targetToken));
+		}
+		else if(actionkey == "CreateListMember") {
 			auto listiter = action.find("list");
 			if(listiter == action.end() || !listiter->second.is<std::string>())
 				continue;
@@ -126,6 +140,32 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 
 			actions->AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool())));
 		}
+		else if(actionkey == "TriggerEvent") {
+			auto eventiter = action.find("event");
+			if(eventiter == action.end() || !eventiter->second.is<std::string>())
+				continue;
+
+			auto targetiter = action.find("target");
+			if(targetiter == action.end() || !targetiter->second.is<std::string>())
+				continue;
+
+			auto & target = targetiter->second.get<std::string>();
+			unsigned targetToken = world->GetTokenPool().AddToken(target);
+			unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
+
+			FormulaPropertyBag * parambagptr = nullptr;
+			auto paramsiter = action.find("params");
+			if(paramsiter != action.end() && paramsiter->second.is<picojson::object>()) {
+				parambagptr = new FormulaPropertyBag;
+
+				auto params = paramsiter->second.get<picojson::object>();
+				for(auto & param : params) {
+					parambagptr->Set(world->GetTokenPool().AddToken(param.first), parser->Parse(param.second.get<std::string>(), &world->GetTokenPool()));
+				}
+			}
+
+			actions->AddAction(new ActionEventTrigger(eventToken, targetToken, parambagptr));
+		}
 		else if(actionkey == "RepeatEvent") {
 			auto eventiter = action.find("event");
 			if(eventiter == action.end() || !eventiter->second.is<std::string>())
@@ -173,28 +213,6 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 	}
 }
 
-static void LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
-	auto & events = eventarray.get<picojson::array>();
-	for(auto & evententry : events) {
-		if(!evententry.is<picojson::object>())
-			continue;
-
-		auto & obj = evententry.get<picojson::object>();
-
-		auto nameiter = obj.find("name");
-		if(nameiter == obj.end() || !nameiter->second.is<std::string>())
-			continue;
-
-		const std::string & name = nameiter->second.get<std::string>();
-
-		ActionSet actions;
-		LoadArrayOfActions("actions", obj, &actions, world, parser);
-
-		unsigned eventToken = world->GetTokenPool().AddToken(name);
-		scriptable->GetEvents()->AddHandler(eventToken, std::move(actions));
-	}
-}
-
 
 static void LoadArrayOfProperties(const picojson::value & proparray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
 	auto & props = proparray.get<picojson::object>();
@@ -234,7 +252,7 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 
 		auto eventiter = obj.find("events");
 		if(eventiter != obj.end() && eventiter->second.is<picojson::array>())
-			LoadArrayOfEvents(eventiter->second, world, parser, &instance);
+			DeserializerFactory::LoadArrayOfEvents(eventiter->second, world, parser, &instance);
 
 		auto binditer = obj.find("bindings");
 		if(binditer != obj.end() && binditer->second.is<picojson::array>())
@@ -331,3 +349,24 @@ void DeserializerFactory::LoadFileIntoScriptWorld(const char filename[], ScriptW
 }
 
 
+void DeserializerFactory::LoadArrayOfEvents(const picojson::value & eventarray, ScriptWorld * world, FormulaParser * parser, Scriptable * scriptable) {
+	auto & events = eventarray.get<picojson::array>();
+	for(auto & evententry : events) {
+		if(!evententry.is<picojson::object>())
+			continue;
+
+		auto & obj = evententry.get<picojson::object>();
+
+		auto nameiter = obj.find("name");
+		if(nameiter == obj.end() || !nameiter->second.is<std::string>())
+			continue;
+
+		const std::string & name = nameiter->second.get<std::string>();
+
+		ActionSet actions;
+		LoadArrayOfActions("actions", obj, &actions, world, parser);
+
+		unsigned eventToken = world->GetTokenPool().AddToken(name);
+		scriptable->GetEvents()->AddHandler(eventToken, std::move(actions));
+	}
+}

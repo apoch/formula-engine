@@ -30,6 +30,9 @@
     <ClCompile Include="CommandTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pch.h">
@@ -44,12 +47,18 @@
     <ClInclude Include="CommandTable.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FormulaMUD.json">
       <Filter>Support Data Files</Filter>
     </None>
     <None Include="Data\CommandList.json">
+      <Filter>Support Data Files</Filter>
+    </None>
+    <None Include="Data\Rooms.json">
       <Filter>Support Data Files</Filter>
     </None>
   </ItemGroup>

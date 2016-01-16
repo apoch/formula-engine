@@ -289,6 +289,28 @@ void ScopedPropertyBag::SetBindings(const BindingPropertyBag & refBag) {
 }
 
 
+void ScopedPropertyBag::SetNamedBinding (unsigned token, Scriptable * binding) {
+	m_namedBindings[token] = binding;
+}
+
+Scriptable * ScopedPropertyBag::GetNamedBinding (unsigned token) const {
+	auto iter = m_namedBindings.find(token);
+	if (iter == m_namedBindings.end())
+		return nullptr;
+
+	return iter->second;
+}
+
+void ScopedPropertyBag::PopulateNamedBindings (ScopedPropertyBag * other) const {
+	other->m_namedBindings = m_namedBindings;
+}
+
+void ScopedPropertyBag::Set(unsigned token, const Result & value) {
+	((void)(token));
+	((void)(value));
+	assert(false);
+}
+
 
 WorldPropertyBag::WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes)
 	: m_world(world),
@@ -332,6 +354,7 @@ ListResult BindingPropertyBag::ResolveList(const IFormulaContext & context, unsi
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
 	return ret;
 }
+
 
 
 

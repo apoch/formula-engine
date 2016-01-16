@@ -4,6 +4,7 @@
 #include "User.h"
 #include "WorldState.h"
 #include "CommandTable.h"
+#include "Room.h"
 
 
 namespace Game {
@@ -13,9 +14,32 @@ namespace Game {
 User::User (ScriptWorld * world, Scriptable * boundScriptable, WorldState * worldState)
 	: m_world(world),
 	  m_scriptable(boundScriptable),
-	  m_worldState(worldState)
+	  m_worldState(worldState),
+	  m_room(nullptr)
 {
+	// TODO - improve this
 	m_textBag = world->GetMagicBag(world->GetTokenPool().AddToken("TEXT"));
+}
+
+
+void User::EnterConnectedRoom (unsigned directionIdToken) {
+	if (!m_room)
+		return;
+
+	Room * target = m_room->FindConnection(directionIdToken);
+	if (!target) {
+		m_world->QueueEvent(m_scriptable, m_world->GetTokenPool().AddToken("EnterConnectedRoomFailed"), nullptr);
+		return;
+	}
+
+	m_room = target;
+	UpdateRoom();
+}
+
+
+void User::EnterRoom (unsigned roomIdToken) {
+	m_room = m_worldState->roomNetwork->FindRoom(roomIdToken);
+	UpdateRoom();
 }
 
 
@@ -55,6 +79,13 @@ void User::PollInput (double) {
 	std::cout << "What?" << std::endl;
 }
 
+
+void User::UpdateRoom () {
+	auto * scopes = new ScopedPropertyBag();
+	scopes->SetNamedBinding(m_world->GetTokenPool().AddToken("User"), m_scriptable);
+
+	m_world->QueueEvent(m_room->GetScriptable(), m_world->GetTokenPool().AddToken("OnUserEnter"), scopes);
+}
 
 
 

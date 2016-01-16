@@ -2,6 +2,7 @@ Bin/**
 bin/**
 Build/**
 build/**
+.vs/**
 *.exe
 *.dll
 *.pdb

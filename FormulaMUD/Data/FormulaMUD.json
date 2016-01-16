@@ -1,6 +1,14 @@
 {
   "archetypes": [
     {
+      "name": "room",
+      "bindings": [
+        "Room"
+      ],
+      "events": [
+      ]
+    },
+    {
       "name": "User",
       "bindings": [
         "User"
@@ -20,6 +28,23 @@
               "binding": "User",
               "property": "SendMessage",
               "value": "TEXT:USER_CONNECT_GREETING_TWO"
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "EnterRoom",
+              "value": "TEXT:StartRoom"
+            }
+          ]
+        },
+        {
+          "name": "EnterConnectedRoomFailed",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_TRAVEL_FAILED"
             }
           ]
         },
@@ -31,6 +56,28 @@
               "binding": "User",
               "property": "PollInput",
               "value": "0"
+            }
+          ]
+        },
+        {
+          "name": "CMD_north",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "EnterConnectedRoom",
+              "value": "TEXT:north"
+            }
+          ]
+        },
+        {
+          "name": "CMD_south",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "EnterConnectedRoom",
+              "value": "TEXT:south"
             }
           ]
         },
@@ -79,8 +126,13 @@
       "textlines": {
         "USER_CONNECT_GREETING": "Hello user! Welcome to FormulaMUD!",
         "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands",
-        
-        "USER_TEST_MESSAGE": "Please do not pick your nose."
+
+        "USER_TRAVEL_FAILED": "There are no exits in that direction.",
+
+        "USER_TEST_MESSAGE": "Please do not pick your nose.",
+
+        "TEST": "You entered the room!",
+        "TEST_ONE": "You are in a starting room."
       }
     }
   ]

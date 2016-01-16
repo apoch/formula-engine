@@ -133,6 +133,24 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IPropertyBag * pa
 	return instance;
 }
 
+Scriptable * ScriptWorld::InstantiateArchetype(unsigned nameOfInstance, unsigned token, IPropertyBag * paramBag) {
+	Scriptable * archetype = GetArchetype(token);
+	if(!archetype)
+		return nullptr;
+
+	Scriptable * instance = archetype->Instantiate();
+
+	assert(m_scriptables.find(nameOfInstance) == m_scriptables.end());
+		
+	instance->BindAll(m_binder, this);
+
+	m_scriptables.emplace(std::make_pair(nameOfInstance, std::move(*instance)));
+	delete instance;
+
+	QueueEvent(GetScriptable(nameOfInstance), m_tokens->AddToken("OnCreate"), paramBag);
+
+	return GetScriptable(nameOfInstance);
+}
 
 void ScriptWorld::QueueBroadcastEvent(const std::string & eventName) {
 	QueueEvent(0, eventName);

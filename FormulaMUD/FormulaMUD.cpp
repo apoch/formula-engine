@@ -4,6 +4,7 @@
 #include "Pch.h"
 
 #include "User.h"
+#include "Room.h"
 #include "CommandTable.h"
 #include "WorldState.h"
 
@@ -135,6 +136,8 @@ namespace Game {
 		: m_tokens(pool),
 		  m_worldState(worldState)
 	{
+		m_userBindTable.BindTokenToFunction(pool->AddToken("EnterConnectedRoom"), &User::EnterConnectedRoom);
+		m_userBindTable.BindTokenToFunction(pool->AddToken("EnterRoom"), &User::EnterRoom);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("SendMessage"), &User::SendMessage);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("PollInput"), &User::PollInput);
 	}
@@ -171,9 +174,10 @@ int main() {
 
 	ScriptWorld world(&tokens, &binder);
 
-	DeserializerFactory factory;
+	DeserializerFactory::LoadFileIntoScriptWorld("Data\\FormulaMUD.json", &world);
 
-	factory.LoadFileIntoScriptWorld("Data\\FormulaMUD.json", &world);
+	Game::RoomNetwork roomNetwork("Data\\Rooms.json", &tokens, &world, &state);
+	state.roomNetwork = &roomNetwork;
 
 	world.QueueBroadcastEvent("OnUserConnect");
 	while (world.DispatchEvents());
