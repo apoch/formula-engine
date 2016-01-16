@@ -285,7 +285,7 @@ IAction * ActionListForEach::Clone() const {
 ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	Scriptable * scriptable = world->GetScriptable(m_scriptableToken);
 	if(!scriptable)
-		return RESULT_CODE_MISSING_DEFINITION;
+		scriptable = target;
 
 	const ActionSet * myActions = &m_loopActions;
 

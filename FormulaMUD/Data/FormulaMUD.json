@@ -1,17 +1,21 @@
 {
   "archetypes": [
     {
-      "name": "room",
-      "bindings": [
-        "Room"
-      ],
-      "events": [
-      ]
+      "name": "Room"
+    },
+    {
+      "name": "Item"
     },
     {
       "name": "User",
       "bindings": [
         "User"
+      ],
+      "lists": [
+        {
+          "name": "Inventory",
+          "contents": [ ]
+        }
       ],
       "events": [
         {
@@ -82,13 +86,51 @@
           ]
         },
         {
-          "name": "CMD_pick",
+          "name": "CMD_east",
           "actions": [
             {
               "action": "SetGoalState",
               "binding": "User",
-              "property": "SendMessage",
-              "value": "TEXT:USER_TEST_MESSAGE"
+              "property": "EnterConnectedRoom",
+              "value": "TEXT:east"
+            }
+          ]
+        },
+        {
+          "name": "CMD_west",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "EnterConnectedRoom",
+              "value": "TEXT:west"
+            }
+          ]
+        },
+        {
+          "name": "CMD_carrying",
+          "actions": [
+            {
+              "action": "foreach",
+              "list": "Inventory",
+              "actions": [
+                {
+                  "action": "SetGoalState",
+                  "binding": "User",
+                  "property": "SendMessage",
+                  "value": "TEXT:PLACEHOLDER_ITEM"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "CMD_DEBUG_genitem",
+          "actions": [
+            {
+              "action": "CreateListMember",
+              "list": "Inventory",
+              "archetype": "Item"
             }
           ]
         }
@@ -129,10 +171,7 @@
 
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
 
-        "USER_TEST_MESSAGE": "Please do not pick your nose.",
-
-        "TEST": "You entered the room!",
-        "TEST_ONE": "You are in a starting room."
+        "PLACEHOLDER_ITEM": "One item!"
       }
     }
   ]

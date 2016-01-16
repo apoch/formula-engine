@@ -196,15 +196,15 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			if(listiter == action.end() || !listiter->second.is<std::string>())
 				continue;
 
+			unsigned scriptableToken = 0;
 			auto scriptableiter = action.find("scriptable");
-			if(scriptableiter == action.end() || !scriptableiter->second.is<std::string>())
-				continue;
+			if(scriptableiter != action.end() && scriptableiter->second.is<std::string>())
+				scriptableToken = world->GetTokenPool().AddToken(scriptableiter->second.get<std::string>());
 
 			ActionSet loopactions;
 			LoadArrayOfActions("actions", action, &loopactions, world, parser);
 
 			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
-			unsigned scriptableToken = world->GetTokenPool().AddToken(scriptableiter->second.get<std::string>());
 			actions->AddAction(new ActionListForEach(scriptableToken, listToken, std::move(loopactions)));
 		}
 		else {

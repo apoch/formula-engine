@@ -11,7 +11,7 @@ Room::Room (unsigned roomToken, ScriptWorld * world, WorldState * worldState)
 	: m_world(world),
 	  m_worldState(worldState)
 {
-	m_scriptable = world->InstantiateArchetype(roomToken, world->GetTokenPool().AddToken("room"), nullptr);
+	m_scriptable = world->InstantiateArchetype(roomToken, world->GetTokenPool().AddToken("Room"), nullptr);
 }
 
 

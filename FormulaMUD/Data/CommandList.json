@@ -1,9 +1,9 @@
 {
   "commands": [
     {
-      "command": "pick",
-      "event": "CMD_pick",
-      "helpText": "Pick your nose!"
+      "command": "debug_genitem",
+      "event": "CMD_DEBUG_genitem",
+      "helpText": "Generate an item in your possession"
     },
 
     {
@@ -15,6 +15,22 @@
       "command": "south",
       "event": "CMD_south",
       "helpText": "Move to the south, if that is possible."
+    },
+    {
+      "command": "east",
+      "event": "CMD_east",
+      "helpText": "Move to the east, if that is possible."
+    },
+    {
+      "command": "west",
+      "event": "CMD_west",
+      "helpText": "Move to the west, if that is possible."
+    },
+
+    {
+      "command": "carrying",
+      "event": "CMD_carrying",
+      "helpText": "Show a list of everything you are carrying"
     }
   ]
 }
