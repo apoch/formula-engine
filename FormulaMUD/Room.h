@@ -3,7 +3,6 @@
 
 class ScriptWorld;
 class Scriptable;
-class TextPropertyBag;
 
 
 namespace Game {
@@ -26,13 +25,19 @@ public:			// Miscellaneous access
 		return m_scriptable;
 	}
 
+	void SetDescription (const std::string & description);
+
+	const std::string & GetDescription () const {
+		return m_description;
+	}
+
 private:		// Internal state
 	ScriptWorld * m_world = nullptr;
 	Scriptable * m_scriptable = nullptr;
 	WorldState * m_worldState = nullptr;
-	TextPropertyBag * m_textBag = nullptr;
 
 	std::map<unsigned, Room *> m_connections;
+	std::string m_description;
 };
 
 

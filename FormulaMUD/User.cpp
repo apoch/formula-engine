@@ -42,6 +42,12 @@ void User::EnterRoom (unsigned roomIdToken) {
 	UpdateRoom();
 }
 
+void User::SendRoomDescription (double) {
+	assert(m_room != nullptr);
+
+	std::cout << m_room->GetDescription() << std::endl;
+}
+
 
 void User::SendMessage (unsigned tokenId) {
 	std::cout << m_textBag->GetLine(tokenId) << std::endl;

@@ -11,9 +11,6 @@ Room::Room (unsigned roomToken, ScriptWorld * world, WorldState * worldState)
 	: m_world(world),
 	  m_worldState(worldState)
 {
-	// TODO - improve this
-	m_textBag = world->GetMagicBag(world->GetTokenPool().AddToken("TEXT"));
-
 	m_scriptable = world->InstantiateArchetype(roomToken, world->GetTokenPool().AddToken("room"), nullptr);
 }
 
@@ -29,6 +26,11 @@ Room * Room::FindConnection (unsigned directionToken) {
 
 	return iter->second;
 }
+
+void Room::SetDescription (const std::string & description) {
+	m_description = description;
+}
+
 
 
 RoomNetwork::RoomNetwork (const char * jsonFileName, TokenPool * tokens, ScriptWorld * world, WorldState * worldState) {
@@ -64,6 +66,10 @@ RoomNetwork::RoomNetwork (const char * jsonFileName, TokenPool * tokens, ScriptW
 		unsigned nameToken = tokens->AddToken(nameiter->second.get<std::string>());
 
 		m_rooms[nameToken] = Room(nameToken, world, worldState);
+
+		auto desciter = roomobj.find("description");
+		if (desciter != roomobj.end() && desciter->second.is<std::string>())
+			m_rooms[nameToken].SetDescription(desciter->second.get<std::string>());
 
 		auto eventiter = roomobj.find("events");
 		if (eventiter != roomobj.end() && eventiter->second.is<picojson::array>())

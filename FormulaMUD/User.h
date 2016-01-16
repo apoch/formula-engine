@@ -22,6 +22,8 @@ public:			// IO interface
 	void EnterConnectedRoom (unsigned directionIdToken);
 
 	void SendMessage (unsigned message);
+	void SendRoomDescription (double ignored);
+
 	void PollInput (double ignored);
 
 private:		// Internal helpers

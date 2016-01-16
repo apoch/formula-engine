@@ -150,9 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="GameEngine\Map.h" />
     <ClInclude Include="GameEngine\ScriptBind.h" />
     <ClInclude Include="GameEngine\Unit.h" />

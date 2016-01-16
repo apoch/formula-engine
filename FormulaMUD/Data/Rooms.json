@@ -2,6 +2,7 @@
   "rooms": [
     {
       "name": "StartRoom",
+      "description": "You are in a starter room. There is an exit to the north.",
       "connections": {
         "north": "NorthRoom"
       },
@@ -12,8 +13,8 @@
             {
               "action": "SetGoalState",
               "binding": "User",
-              "property": "SendMessage",
-              "value": "TEXT:TEST_ONE"
+              "property": "SendRoomDescription",
+              "value": "0"
             }
           ]
         }
@@ -21,6 +22,7 @@
     },
     {
       "name": "NorthRoom",
+      "description": "You find yourself in a tiny room.",
       "connections": {
         "south": "StartRoom"
       },
@@ -31,8 +33,8 @@
             {
               "action": "SetGoalState",
               "binding": "User",
-              "property": "SendMessage",
-              "value": "TEXT:TEST"
+              "property": "SendRoomDescription",
+              "value": "0"
             }
           ]
         }

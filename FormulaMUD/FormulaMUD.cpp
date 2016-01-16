@@ -139,6 +139,7 @@ namespace Game {
 		m_userBindTable.BindTokenToFunction(pool->AddToken("EnterConnectedRoom"), &User::EnterConnectedRoom);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("EnterRoom"), &User::EnterRoom);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("SendMessage"), &User::SendMessage);
+		m_userBindTable.BindTokenToFunction(pool->AddToken("SendRoomDescription"), &User::SendRoomDescription);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("PollInput"), &User::PollInput);
 	}
 
