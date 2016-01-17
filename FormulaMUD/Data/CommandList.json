@@ -22,6 +22,11 @@
     },
 
     {
+      "command": "look",
+      "event": "CMD_look",
+      "helpText": "Look around the current location for interesting things."
+    },
+    {
       "command": "take",
       "event": "CMD_take",
       "helpText": "Pick up, retrieve, snag, snatch, grab, or otherwise obtain an item."
@@ -29,7 +34,7 @@
     {
       "command": "carrying",
       "event": "CMD_carrying",
-      "helpText": "Show a list of everything you are carrying"
+      "helpText": "Show a list of everything you are carrying."
     }
   ]
 }

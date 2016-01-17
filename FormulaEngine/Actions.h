@@ -161,13 +161,13 @@ private:
 
 class ActionListForEach : public IAction {
 public:
-	ActionListForEach(unsigned scriptableToken, unsigned listToken, ActionSet && loopActions);
+	ActionListForEach(Formula && scriptableToken, unsigned listToken, ActionSet && loopActions);
 
 	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
-	unsigned m_scriptableToken;
+	Formula m_scriptableToken;
 	unsigned m_listToken;
 	ActionSet m_loopActions;
 };

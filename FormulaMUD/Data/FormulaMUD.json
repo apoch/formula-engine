@@ -108,6 +108,36 @@
           ]
         },
         {
+          "name": "CMD_look",
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_LOOK_ITEMS_HEADER"
+            },
+            {
+              "action": "foreach",
+              "scriptable": "CurrentRoom",
+              "list": "Items",
+              "actions": [
+                {
+                  "action": "SetGoalState",
+                  "binding": "User",
+                  "property": "SendMessage",
+                  "value": "TEXT:PLACEHOLDER_ITEM"
+                }
+              ]
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_LOOK_ITEMS_FOOTER"
+            }
+          ]
+        },
+        {
           "name": "CMD_take",
           "actions": [
             {
@@ -176,6 +206,9 @@
         "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands\r\n",
 
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
+
+        "USER_LOOK_ITEMS_HEADER": "Items in this location:",
+        "USER_LOOK_ITEMS_FOOTER": "\r\n",
 
         "PLACEHOLDER_ITEM": "An item!"
       }

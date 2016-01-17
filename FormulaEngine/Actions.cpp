@@ -270,7 +270,7 @@ ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * tar
 }
 
 
-ActionListForEach::ActionListForEach(unsigned scriptableToken, unsigned listToken, ActionSet && loopActions)
+ActionListForEach::ActionListForEach(Formula && scriptableToken, unsigned listToken, ActionSet && loopActions)
 	: m_scriptableToken(scriptableToken),
 	  m_listToken(listToken),
 	  m_loopActions(loopActions)
@@ -278,13 +278,19 @@ ActionListForEach::ActionListForEach(unsigned scriptableToken, unsigned listToke
 }
 
 IAction * ActionListForEach::Clone() const {
+	Formula stCopy(m_scriptableToken);
 	ActionSet actionCopy(m_loopActions);
-	return new ActionListForEach(m_scriptableToken, m_listToken, std::move(actionCopy));
+	return new ActionListForEach(std::move(stCopy), m_listToken, std::move(actionCopy));
 }
 
 ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	Scriptable * scriptable = world->GetScriptable(m_scriptableToken);
-	if(!scriptable)
+	unsigned token = 0;
+	Result originRes = m_scriptableToken.Evaluate(&scopes);
+	if (originRes.code == RESULT_CODE_OK)
+		token = originRes.token;
+
+	Scriptable * scriptable = world->GetScriptable(token);
+	if (!scriptable)
 		scriptable = target;
 
 	const ActionSet * myActions = &m_loopActions;
