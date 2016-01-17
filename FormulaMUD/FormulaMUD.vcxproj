@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bindings.h" />
     <ClInclude Include="CommandTable.h" />
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Room.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="WorldState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bindings.cpp" />
     <ClCompile Include="CommandTable.cpp" />
     <ClCompile Include="FormulaMUD.cpp" />
     <ClCompile Include="Pch.cpp">

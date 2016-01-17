@@ -29,6 +29,9 @@
     <ClCompile Include="Pch.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
+    <ClCompile Include="Bindings.cpp">
+      <Filter>FormulaMUD Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pch.h">
@@ -44,6 +47,9 @@
       <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
+      <Filter>FormulaMUD Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindings.h">
       <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
   </ItemGroup>
