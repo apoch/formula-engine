@@ -6,14 +6,14 @@ The Formula Engine is designed to operate around a small yet highly composable s
  * Entities, which can be organized into Lists
  * Events, as well as Actions (which are performed in response to events)
 
-By using these primitives judiciously, it is possible to express quite rich game systems and game logic without needing heavy bindings from engine code to script code. Moreover, the project aims to demonstrate a moderately detailed simulation using these tools alongside a stripped-down grid-based game engine.
+By using these primitives judiciously, it is possible to express quite rich game systems and game logic without needing heavy bindings from engine code to script code. Moreover, the project aims to demonstrate a moderately detailed simulation using these tools to implement a basic but functional MUD (Multi-User Dungeon).
 
-Code is exclusively C++11; data is exclusively JSON. Examples of the input scripts can be found in the [`Data` directory](./Data/). Compiler is assumed to be Visual Studio 2013 or newer; if you'd like to see other compilers supported, I would gladly take a pull request!
+Code is exclusively C++11; data is exclusively JSON. Examples of the input scripts can be found in [`FormulaMUD/Data`](./FormulaMUD/Data/) as well as in the [`Demos/Data` directory](./Demos/Data/). Compiler is assumed to be Visual Studio 2015 or newer; if you'd like to see other compilers supported, I would gladly take a pull request!
 
 <br>
 
 ### Properties and Formulas
-Properties are simply numeric data, either statically defined or dynamically computed. Static properties are useful for describing data-driven aspects of a design. Dynamic properties are expressed in terms of _formulas_, which are simply arithmetic expressions such as `1 + (health * 4)`.
+Properties are simply numeric data, either statically defined or dynamically computed. Static properties are useful for describing data-driven aspects of a design. Dynamic properties are expressed in terms of _formulas_, which are simply arithmetic expressions such as `1 + (health * 4)`. Properties can also refer to text strings.
 
 The implementation of formulas can be found in [`Formula.h`](./FormulaEngine/Formula.h) and [`Formula.cpp`](./FormulaEngine/Formula.cpp) under the [`FormulaEngine` directory](./FormulaEngine/). Formulas are often (but not always!) parsed from text strings, using a class implemented in [`Parser.h`](./FormulaEngine/Parser.h) and [`Parser.cpp`](./FormulaEngine/Parser.cpp).
 
@@ -28,7 +28,7 @@ The class `ScopedPropertyBag` implements support for both sets of properties (in
 
 Entities are generally implemented in terms of the class `Scriptable`, which exists in [`Scriptable.h`](./FormulaEngine/Scriptable.h) and [`Scriptable.cpp`](./FormulaEngine/Scriptable.cpp). `Scriptables` combine the storage of properties (via a `ScopedPropertyBag`) as well as responding to _events_ (see below).
 
-List membership is automatically managed. If an entity (specifically a `Scriptable`) is added to a list, it recieves a callback. Similarly, a callback is invoked if the entity is removed from the list. An entity being destructed will automatically remove itself from all lists to which it has been added.
+List membership is automatically managed. If an entity (specifically a `Scriptable`) is added to a list, it recieves a callback. Similarly, a callback is invoked if the entity is removed from the list. An entity being destructed will automatically remove itself from all lists to which it has been added. Note that the inverse is not true - an entity can be removed from all lists in the game and still exist as a standalone object.
 
 <br>
 
@@ -36,6 +36,8 @@ List membership is automatically managed. If an entity (specifically a `Scriptab
 When the game engine detects that something has occurred which might be of interest to a script, it propagates an _event_. In response to these events, entities may fire a sequence of _actions_. Unlike most traditional game scripting models, actions are not a rich set of verbs exposed by the game engine. Instead, actions fall into a relatively small set of highly generic behaviors that modify critical data used by the game engine itself.
 
 Event handling is implemented inside [`EventHandler.h`](./FormulaEngine/EventHandler.h) and [`EventHandler.cpp`](./FormulaEngine/EventHandler.cpp). The specific actions of each _event handler_ are represented by the `ActionSet` class, which predictably can be found in [`Actions.h`](./FormulaEngine/Actions.h) and [`Actions.cpp`](./FormulaEngine/Actions.cpp).
+
+Scripts can also propagate events internally without needing any bindings to the game engine itself.
 
 <br>
 
@@ -52,7 +54,7 @@ It is often convenient to define an entity in terms of some kind of template or 
 ## FAQ
 
  1. **How do I do (x) in this paradigm?**
-Please stand by and watch this space. The ideas behind the Formula Engine are still undergoing a lot of refinement, so examples for a wide variety of use cases are still being worked out.
+The best place to start is to examine the JSON data files for the FormulaMUD game engine, as well as the bindings that live in the C++ code (see [`FormulaMUD` directory](./FormulaMUD/)). Most forms of game logic are represented in the implementation, or are under construction and will be represented soon. For specifics, feel free to get in touch with the project maintainers; we'd be happy to add documentation for specific use cases as well as examples.
 
  2. **How do I represent things that happen over time?**
 The non-answer is that _you don't_. A more accurate reflection of things would look something like this: events, and the actions that respond to them, are immediate and atemporal. They do not model the notion of time elapsing, and this is on purpose. One of the goals of this project is to build a simulation that _does_ handle complex time-based scripts (such as strategies or plans). The honest answer is that we don't know yet how that will play out.
@@ -61,7 +63,7 @@ The non-answer is that _you don't_. A more accurate reflection of things would l
 Not yet. This is still a very nascent project and it'll get fleshed out more as time goes on.
 
  4. **How do I embed this in my own game?**
-For now, the basics of what you need are in the `Formula Engine` filter in the Visual Studio solution. Examples of composing and constructing larger systems from those basic ingredients can be found in various places, such as [`Tests.cpp`](./FormulaEngine/Tests.cpp). In general the stuff that lives in `Game Engine` and `Support` filters can be replaced with whatever engine you're working with.
+For now, the basics of what you need are in the `FormulaEngine` project in the Visual Studio solution. This is a static library that can be linked into any project and used as shown in the `Demos` project and the larger, more complete `FormulaMUD` project. We're in the process of cleaning up the implementation and simplifying the interfaces needed to embed FormulaEngine in a larger project, so watch this space.
 
 ## Future Plans
 
