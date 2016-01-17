@@ -172,3 +172,19 @@ private:
 	ActionSet m_loopActions;
 };
 
+
+class ActionListTransfer : public IAction {
+public:
+	ActionListTransfer (Formula && condition, unsigned originToken, unsigned originListToken, unsigned targetToken, unsigned targetListToken);
+
+	IAction * Clone () const override;
+	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	Formula m_condition;
+	unsigned m_originToken;
+	unsigned m_originListToken;
+	unsigned m_targetToken;
+	unsigned m_targetListToken;
+};
+

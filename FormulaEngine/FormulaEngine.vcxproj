@@ -226,6 +226,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\picojson.h" />
     <ClInclude Include="Actions.h" />
     <ClInclude Include="DeserializerFactory.h" />
     <ClInclude Include="EngineBind.h" />

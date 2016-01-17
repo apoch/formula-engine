@@ -134,6 +134,17 @@ public:			// ForEach loop support
 		return RESULT_CODE_OK;
 	}
 
+	template <typename FunctorT>
+	ResultCode ListRemoveIf (unsigned listToken, const FunctorT & functor) {
+		auto iter = m_lists.find(listToken);
+		if (iter == m_lists.end())
+			return RESULT_CODE_MISSING_DEFINITION;
+
+		auto killiter = std::remove_if(iter->second.begin(), iter->second.end(), functor);
+		iter->second.erase(killiter, iter->second.end());
+		return RESULT_CODE_OK;
+	}
+
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;

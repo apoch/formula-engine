@@ -1,12 +1,6 @@
 {
   "commands": [
     {
-      "command": "debug_genitem",
-      "event": "CMD_DEBUG_genitem",
-      "helpText": "Generate an item in your possession"
-    },
-
-    {
       "command": "north",
       "event": "CMD_north",
       "helpText": "Move to the north, if that is possible."
@@ -27,6 +21,11 @@
       "helpText": "Move to the west, if that is possible."
     },
 
+    {
+      "command": "take",
+      "event": "CMD_take",
+      "helpText": "Pick up, retrieve, snag, snatch, grab, or otherwise obtain an item."
+    },
     {
       "command": "carrying",
       "event": "CMD_carrying",

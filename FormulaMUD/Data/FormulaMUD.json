@@ -108,6 +108,18 @@
           ]
         },
         {
+          "name": "CMD_take",
+          "actions": [
+            {
+              "action": "ListTransfer",
+              "scriptable": "NorthRoom",
+              "list": "Items",
+              "targetList": "Inventory",
+              "condition": "1"
+            }
+          ]
+        },
+        {
           "name": "CMD_carrying",
           "actions": [
             {
@@ -121,16 +133,6 @@
                   "value": "TEXT:PLACEHOLDER_ITEM"
                 }
               ]
-            }
-          ]
-        },
-        {
-          "name": "CMD_DEBUG_genitem",
-          "actions": [
-            {
-              "action": "CreateListMember",
-              "list": "Inventory",
-              "archetype": "Item"
             }
           ]
         }
@@ -159,6 +161,10 @@
           ]
         }
       ]
+    },
+
+    {
+      "name": "TestItem"
     }
   ],
 

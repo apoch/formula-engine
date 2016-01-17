@@ -304,3 +304,46 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 }
 
 
+ActionListTransfer::ActionListTransfer (Formula && condition, unsigned originToken, unsigned originListToken, unsigned targetToken, unsigned targetListToken)
+	: m_condition(std::move(condition)),
+	  m_originToken(originToken),
+	  m_originListToken(originListToken),
+	  m_targetToken(targetToken),
+	  m_targetListToken(targetListToken)
+{
+}
+
+IAction * ActionListTransfer::Clone () const {
+	Formula conditionCopy(m_condition);
+
+	return new ActionListTransfer(std::move(conditionCopy), m_originToken, m_originListToken, m_targetToken, m_targetListToken);
+}
+
+ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	Scriptable * originScriptable = world->GetScriptable(m_originToken);
+	if (!originScriptable)
+		originScriptable = target;
+
+	Scriptable * targetScriptable = world->GetScriptable(m_targetToken);
+	if (!targetScriptable)
+		targetScriptable = target;
+
+	const Formula * condition = &m_condition;
+	unsigned targetListToken = m_targetListToken;
+
+	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](const Scriptable * member) {
+		WorldPropertyBag bag(world, scopes);
+		Result cond = condition->Evaluate(&bag);
+		if (cond.code != RESULT_CODE_OK)
+			return false;
+
+		if (cond.value == 0.0)
+			return false;
+
+		targetScriptable->GetScopes().ListAddEntry(targetListToken, *member);
+		return true;
+	});
+}
+
+
+

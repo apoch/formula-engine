@@ -207,6 +207,38 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
 			actions->AddAction(new ActionListForEach(scriptableToken, listToken, std::move(loopactions)));
 		}
+		else if (actionkey == "ListTransfer") {
+			auto listiter = action.find("list");
+			if(listiter == action.end() || !listiter->second.is<std::string>())
+				continue;
+
+			auto targetlistiter = action.find("targetList");
+			if(targetlistiter == action.end() || !targetlistiter->second.is<std::string>())
+				continue;
+
+			auto conditer = action.find("condition");
+			if(conditer == action.end() || !conditer->second.is<std::string>())
+				continue;
+
+			unsigned originToken = 0;
+			unsigned targetToken = 0;
+
+			auto originiter = action.find("scriptable");
+			if(originiter != action.end() && originiter->second.is<std::string>())
+				originToken = world->GetTokenPool().AddToken(originiter->second.get<std::string>());
+
+			auto targetIter = action.find("target");
+			if(targetIter != action.end() && targetIter->second.is<std::string>())
+				targetToken = world->GetTokenPool().AddToken(targetIter->second.get<std::string>());
+
+
+			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
+			unsigned targetListToken = world->GetTokenPool().AddToken(targetlistiter->second.get<std::string>());
+
+			Formula condition = parser->Parse(conditer->second.get<std::string>(), &world->GetTokenPool());
+
+			actions->AddAction(new ActionListTransfer(std::move(condition), originToken, listToken, targetToken, targetListToken));
+		}
 		else {
 			assert(false);
 		}
@@ -224,6 +256,40 @@ static void LoadArrayOfProperties(const picojson::value & proparray, ScriptWorld
 
 		Formula formula = parser->Parse(formulastring, &world->GetTokenPool());
 		scriptable->GetScopes().SetFormula(world->GetTokenPool().AddToken(prop.first), formula);
+	}
+}
+
+
+void DeserializerFactory::LoadArrayOfLists (const picojson::array & listarray, ScriptWorld * world, Scriptable * instance) {
+	for(auto & listentry : listarray) {
+		auto & listobj = listentry.get<picojson::object>();
+
+		auto listnameiter = listobj.find("name");
+		if(listnameiter == listobj.end() || !listnameiter->second.is<std::string>())
+			continue;
+
+		auto contentsiter = listobj.find("contents");
+		if(contentsiter == listobj.end() || !contentsiter->second.is<picojson::array>())
+			continue;
+
+		const std::string & listname = listnameiter->second.get<std::string>();
+		unsigned token = world->GetTokenPool().AddToken(listname);
+
+				
+		auto & contents = contentsiter->second.get<picojson::array>();
+		for(auto & contententry : contents) {
+			if(!contententry.is<std::string>())
+				continue;
+
+			const std::string & content = contententry.get<std::string>();
+			unsigned contenttoken = world->GetTokenPool().AddToken(content);
+			Scriptable * otherInstance = world->GetScriptable(contenttoken);
+
+			if(!otherInstance)
+				continue;
+
+			instance->GetScopes().ListAddEntry(token, *otherInstance);
+		}
 	}
 }
 
@@ -281,36 +347,7 @@ static void LoadArrayOfScriptables(const picojson::value & node, ScriptWorld * w
 		if(listiter != obj.end() && listiter->second.is<picojson::array>()) {
 			auto & listarray = listiter->second.get<picojson::array>();
 
-			for(auto & listentry : listarray) {
-				auto & listobj = listentry.get<picojson::object>();
-
-				auto listnameiter = listobj.find("name");
-				if(listnameiter == listobj.end() || !listnameiter->second.is<std::string>())
-					continue;
-
-				auto contentsiter = listobj.find("contents");
-				if(contentsiter == listobj.end() || !contentsiter->second.is<picojson::array>())
-					continue;
-
-				const std::string & listname = listnameiter->second.get<std::string>();
-				unsigned token = world->GetTokenPool().AddToken(listname);
-
-				
-				auto & contents = contentsiter->second.get<picojson::array>();
-				for(auto & contententry : contents) {
-					if(!contententry.is<std::string>())
-						continue;
-
-					const std::string & content = contententry.get<std::string>();
-					unsigned contenttoken = world->GetTokenPool().AddToken(content);
-					Scriptable * otherInstance = world->GetScriptable(contenttoken);
-
-					if(!otherInstance)
-						continue;
-
-					instance->GetScopes().ListAddEntry(token, *otherInstance);
-				}
-			}
+			DeserializerFactory::LoadArrayOfLists(listarray, world, instance);
 		}
 	}
 }

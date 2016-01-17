@@ -74,6 +74,10 @@ RoomNetwork::RoomNetwork (const char * jsonFileName, TokenPool * tokens, ScriptW
 		auto eventiter = roomobj.find("events");
 		if (eventiter != roomobj.end() && eventiter->second.is<picojson::array>())
 			DeserializerFactory::LoadArrayOfEvents(eventiter->second, world, &parser, m_rooms[nameToken].GetScriptable());
+
+		auto listsiter = roomobj.find("lists");
+		if (listsiter != roomobj.end() && listsiter->second.is<picojson::array>())
+			DeserializerFactory::LoadArrayOfLists(listsiter->second.get<picojson::array>(), world, m_rooms[nameToken].GetScriptable());
 	}
 
 	for (const auto & room : rooms) {

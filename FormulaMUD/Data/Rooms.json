@@ -26,6 +26,12 @@
       "connections": {
         "south": "StartRoom"
       },
+      "lists": [
+        {
+          "name": "Items",
+          "contents": [ "TestItem" ]
+        }
+      ],
       "events": [
         {
           "name": "OnUserEnter",
