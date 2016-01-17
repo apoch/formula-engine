@@ -1,54 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Support Data Files">
+      <UniqueIdentifier>{85e42423-35af-4526-8344-9fc5333e7c51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Precompiled Header">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Support Data Files">
-      <UniqueIdentifier>{85e42423-35af-4526-8344-9fc5333e7c51}</UniqueIdentifier>
+    <Filter Include="FormulaMUD Engine">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FormulaMUD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClCompile>
     <ClCompile Include="CommandTable.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch.cpp">
+      <Filter>Precompiled Header</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Precompiled Header</Filter>
     </ClInclude>
     <ClInclude Include="User.h">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
     <ClInclude Include="WorldState.h">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
     <ClInclude Include="CommandTable.h">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
-      <Filter>Source Files</Filter>
+      <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

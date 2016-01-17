@@ -1,34 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Game Engine">
       <UniqueIdentifier>{194a7592-a949-4899-b644-a3f8769728b6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Support Data Files">
       <UniqueIdentifier>{9f86dcf6-881e-402a-80df-83d035972652}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Precompiled Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Demo Core">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Test Core">
+      <UniqueIdentifier>{e243b4ba-d35c-497a-92c3-d8c5021b7b85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulation.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Tests.h">
-      <Filter>Source Files</Filter>
+      <Filter>Demo Core</Filter>
     </ClInclude>
     <ClInclude Include="Pch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Precompiled Header</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine\Map.h">
       <Filter>Game Engine</Filter>
@@ -39,19 +35,16 @@
     <ClInclude Include="GameEngine\Unit.h">
       <Filter>Game Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Tests.h">
+      <Filter>Test Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demos.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Demo Core</Filter>
     </ClCompile>
     <ClCompile Include="Simulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Demo Core</Filter>
     </ClCompile>
     <ClCompile Include="GameEngine\Map.cpp">
       <Filter>Game Engine</Filter>
@@ -61,6 +54,12 @@
     </ClCompile>
     <ClCompile Include="GameEngine\Unit.cpp">
       <Filter>Game Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch.cpp">
+      <Filter>Precompiled Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests.cpp">
+      <Filter>Test Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

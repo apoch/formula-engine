@@ -1,18 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Formula Engine">
       <UniqueIdentifier>{72121e11-adfa-4b92-9886-2f0f993b3151}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Support Header Files">
+    <Filter Include="Precompiled Header">
+      <UniqueIdentifier>{3ece316a-699a-44eb-a208-4ad8822b8548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Libraries">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
@@ -48,14 +43,14 @@
     <ClInclude Include="EventHandler.h">
       <Filter>Formula Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Pch.h">
-      <Filter>Support Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EngineBind.h">
       <Filter>Formula Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\picojson.h">
-      <Filter>Support Header Files</Filter>
+      <Filter>External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Pch.h">
+      <Filter>Precompiled Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +85,7 @@
       <Filter>Formula Engine</Filter>
     </ClCompile>
     <ClCompile Include="Pch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Precompiled Header</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

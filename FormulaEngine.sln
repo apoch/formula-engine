@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormulaEngine", "FormulaEngine\FormulaEngine.vcxproj", "{859CC8FA-913A-4A87-8C49-D9A9723000D2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B0EEF16-2062-47E5-9C72-72700815DB85}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demos", "Demos\Demos.vcxproj", "{35C2F43A-AD0D-4F78-A705-F48EA0F46A44}"
 	ProjectSection(ProjectDependencies) = postProject
 		{859CC8FA-913A-4A87-8C49-D9A9723000D2} = {859CC8FA-913A-4A87-8C49-D9A9723000D2}
