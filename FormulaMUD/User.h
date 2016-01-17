@@ -26,6 +26,9 @@ public:			// IO interface
 
 	void PollInput (double ignored);
 
+public:			// Properties
+	void GetCurrentRoomNameToken (unsigned * outToken) const;
+
 private:		// Internal helpers
 	void UpdateRoom ();
 

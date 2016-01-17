@@ -9,7 +9,8 @@ namespace Game {
 
 Room::Room (unsigned roomToken, ScriptWorld * world, WorldState * worldState)
 	: m_world(world),
-	  m_worldState(worldState)
+	  m_worldState(worldState),
+	  m_roomToken(roomToken)
 {
 	m_scriptable = world->InstantiateArchetype(roomToken, world->GetTokenPool().AddToken("Room"), nullptr);
 }

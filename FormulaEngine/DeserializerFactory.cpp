@@ -220,12 +220,12 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			if(conditer == action.end() || !conditer->second.is<std::string>())
 				continue;
 
-			unsigned originToken = 0;
+			Formula originToken;
 			unsigned targetToken = 0;
 
 			auto originiter = action.find("scriptable");
 			if(originiter != action.end() && originiter->second.is<std::string>())
-				originToken = world->GetTokenPool().AddToken(originiter->second.get<std::string>());
+				originToken = parser->Parse(originiter->second.get<std::string>(), &world->GetTokenPool());
 
 			auto targetIter = action.find("target");
 			if(targetIter != action.end() && targetIter->second.is<std::string>())
@@ -237,7 +237,7 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 
 			Formula condition = parser->Parse(conditer->second.get<std::string>(), &world->GetTokenPool());
 
-			actions->AddAction(new ActionListTransfer(std::move(condition), originToken, listToken, targetToken, targetListToken));
+			actions->AddAction(new ActionListTransfer(std::move(condition), std::move(originToken), listToken, targetToken, targetListToken));
 		}
 		else {
 			assert(false);

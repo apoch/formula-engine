@@ -304,7 +304,7 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 }
 
 
-ActionListTransfer::ActionListTransfer (Formula && condition, unsigned originToken, unsigned originListToken, unsigned targetToken, unsigned targetListToken)
+ActionListTransfer::ActionListTransfer (Formula && condition, Formula && originToken, unsigned originListToken, unsigned targetToken, unsigned targetListToken)
 	: m_condition(std::move(condition)),
 	  m_originToken(originToken),
 	  m_originListToken(originListToken),
@@ -315,12 +315,18 @@ ActionListTransfer::ActionListTransfer (Formula && condition, unsigned originTok
 
 IAction * ActionListTransfer::Clone () const {
 	Formula conditionCopy(m_condition);
+	Formula originTokenCopy(m_originToken);
 
-	return new ActionListTransfer(std::move(conditionCopy), m_originToken, m_originListToken, m_targetToken, m_targetListToken);
+	return new ActionListTransfer(std::move(conditionCopy), std::move(originTokenCopy), m_originListToken, m_targetToken, m_targetListToken);
 }
 
 ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	Scriptable * originScriptable = world->GetScriptable(m_originToken);
+	unsigned token = 0;
+	Result originRes = m_originToken.Evaluate(&scopes);
+	if (originRes.code == RESULT_CODE_OK)
+		token = originRes.token;
+
+	Scriptable * originScriptable = world->GetScriptable(token);
 	if (!originScriptable)
 		originScriptable = target;
 

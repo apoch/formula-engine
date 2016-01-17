@@ -22,6 +22,14 @@ User::User (ScriptWorld * world, Scriptable * boundScriptable, WorldState * worl
 }
 
 
+void User::GetCurrentRoomNameToken (unsigned * outToken) const {
+	if (m_room)
+		*outToken = m_room->GetNameToken();
+	else
+		*outToken = 0;
+}
+
+
 void User::EnterConnectedRoom (unsigned directionIdToken) {
 	if (!m_room)
 		return;

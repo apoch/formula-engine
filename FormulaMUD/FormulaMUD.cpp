@@ -18,6 +18,7 @@ namespace Game {
 		typedef void (BoundT::*GoalStateFunctionVector)(double, double);
 		typedef void (BoundT::*GoalStateFunctionToken)(unsigned);
 
+		typedef void (BoundT::*PropertyFunctionToken)(unsigned *) const;
 		typedef void (BoundT::*PropertyFunctionVector)(double *, double *) const;
 
 	public:
@@ -31,6 +32,10 @@ namespace Game {
 
 		void BindTokenToFunction(unsigned token, GoalStateFunctionToken func) {
 			m_tokenMap[token] = func;
+		}
+
+		void BindTokenToProperty(unsigned token, PropertyFunctionToken func) {
+			m_propertyTokenMap[token] = func;
 		}
 
 		void BindTokenToProperty(unsigned token, PropertyFunctionVector func) {
@@ -60,7 +65,23 @@ namespace Game {
 
 
 		bool HasProperty(unsigned token) const {
-			return m_propertyVectorMap.find(token) != m_propertyVectorMap.end();
+			if (m_propertyVectorMap.find(token) != m_propertyVectorMap.end())
+				return true;
+
+			if (m_propertyTokenMap.find(token) != m_propertyTokenMap.end())
+				return true;
+
+			return false;
+		}
+
+		unsigned DispatchProperty (unsigned token, BoundT * boundObject, unsigned * out) const {
+			auto iter = m_propertyTokenMap.find(token);
+			if (iter == m_propertyTokenMap.end())
+				return 0;
+
+			PropertyFunctionToken func = iter->second;
+			((boundObject)->*func)(out);
+			return 1;
 		}
 
 		unsigned DispatchProperty(unsigned token, BoundT * boundObject, double * outX, double * outY) {
@@ -77,6 +98,7 @@ namespace Game {
 		std::map<unsigned, GoalStateFunctionVector> m_vectorMap;
 		std::map<unsigned, GoalStateFunctionToken> m_tokenMap;
 
+		std::map<unsigned, PropertyFunctionToken> m_propertyTokenMap;
 		std::map<unsigned, PropertyFunctionVector> m_propertyVectorMap;
 	};
 
@@ -104,6 +126,10 @@ namespace Game {
 
 		bool HasPropertyBinding(unsigned token) const override {
 			return m_table->HasProperty(token);
+		}
+
+		unsigned GetPropertyBinding (unsigned token, unsigned * out) const override {
+			return m_table->DispatchProperty(token, m_bound, out);
 		}
 
 		unsigned GetPropertyBinding(unsigned token, double * out1, double * out2) const override {
@@ -141,6 +167,8 @@ namespace Game {
 		m_userBindTable.BindTokenToFunction(pool->AddToken("SendMessage"), &User::SendMessage);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("SendRoomDescription"), &User::SendRoomDescription);
 		m_userBindTable.BindTokenToFunction(pool->AddToken("PollInput"), &User::PollInput);
+
+		m_userBindTable.BindTokenToProperty(pool->AddToken("CurrentRoom"), &User::GetCurrentRoomNameToken);
 	}
 
 

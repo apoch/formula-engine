@@ -31,6 +31,10 @@ public:			// Miscellaneous access
 		return m_description;
 	}
 
+	unsigned GetNameToken () const {
+		return m_roomToken;
+	}
+
 private:		// Internal state
 	ScriptWorld * m_world = nullptr;
 	Scriptable * m_scriptable = nullptr;
@@ -38,6 +42,8 @@ private:		// Internal state
 
 	std::map<unsigned, Room *> m_connections;
 	std::string m_description;
+
+	unsigned m_roomToken = 0;
 };
 
 

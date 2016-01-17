@@ -94,6 +94,10 @@ public:
 		return m_table->HasProperty(token);
 	}
 
+	unsigned GetPropertyBinding (unsigned token, unsigned * out) const override {
+		return 0;
+	}
+
 	unsigned GetPropertyBinding(unsigned token, double * out1, double * out2) const override {
 		return m_table->DispatchProperty(token, m_bound, out1, out2);
 	}

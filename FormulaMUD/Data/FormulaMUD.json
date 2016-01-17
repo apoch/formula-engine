@@ -112,7 +112,7 @@
           "actions": [
             {
               "action": "ListTransfer",
-              "scriptable": "NorthRoom",
+              "scriptable": "CurrentRoom",
               "list": "Items",
               "targetList": "Inventory",
               "condition": "1"
