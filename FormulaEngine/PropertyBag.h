@@ -141,7 +141,13 @@ public:			// ForEach loop support
 			return RESULT_CODE_MISSING_DEFINITION;
 
 		auto killiter = std::remove_if(iter->second.begin(), iter->second.end(), functor);
+
+		// Need to issue "removed from list" notifications to all deleted elements
+		for (auto notifyiter = killiter; notifyiter != iter->second.end(); ++notifyiter)
+			(*notifyiter)->OnListMembershipRemoved(listToken, this);
+
 		iter->second.erase(killiter, iter->second.end());
+
 		return RESULT_CODE_OK;
 	}
 
