@@ -302,8 +302,7 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 		if(target->GetScopes().GetBindings())
 			newScopes.SetBindings(*target->GetScopes().GetBindings());
 
-		if(member->GetScopes().GetBindings())
-			newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), *member->GetScopes().GetBindings());
+		newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), member->GetScopes());
 
 		myActions->Execute(world, target, newScopes);
 	});

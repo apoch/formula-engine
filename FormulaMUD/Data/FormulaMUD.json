@@ -125,7 +125,7 @@
                   "action": "SetGoalState",
                   "binding": "User",
                   "property": "SendMessage",
-                  "value": "TEXT:PLACEHOLDER_ITEM"
+                  "value": "other:Title"
                 }
               ]
             },
@@ -160,7 +160,7 @@
                   "action": "SetGoalState",
                   "binding": "User",
                   "property": "SendMessage",
-                  "value": "TEXT:PLACEHOLDER_ITEM"
+                  "value": "other:Title"
                 }
               ]
             }
@@ -194,7 +194,10 @@
     },
 
     {
-      "name": "TestItem"
+      "name": "Doodad",
+      "properties": {
+        "Title": "TEXT:ITEM_DOODAD"
+      }
     }
   ],
 
@@ -208,9 +211,9 @@
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
 
         "USER_LOOK_ITEMS_HEADER": "Items in this location:",
-        "USER_LOOK_ITEMS_FOOTER": "\r\n",
+        "USER_LOOK_ITEMS_FOOTER": " ",
 
-        "PLACEHOLDER_ITEM": "An item!"
+        "ITEM_DOODAD": "A useless doodad"
       }
     }
   ]

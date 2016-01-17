@@ -29,7 +29,7 @@
       "lists": [
         {
           "name": "Items",
-          "contents": [ "TestItem" ]
+          "contents": [ "Doodad" ]
         }
       ],
       "events": [
