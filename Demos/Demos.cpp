@@ -22,7 +22,7 @@
 //
 // Entry point for the program
 //
-int _tmain() {
+int _tmain () {
 
 	// Optional memory leak checking
 	/*

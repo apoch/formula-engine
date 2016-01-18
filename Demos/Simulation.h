@@ -18,11 +18,11 @@ namespace Simulation {
 
 
 // Run a complete simulation of the "Kingdom War" example
-void RunKingdomWar();
+void RunKingdomWar ();
 
 
 // Run a simulation of the "Flocking" example
-void RunFlocking();
+void RunFlocking ();
 
 
 }
