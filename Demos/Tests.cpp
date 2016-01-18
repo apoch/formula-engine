@@ -46,7 +46,7 @@ namespace {
 // Asserts that evaluation succeeds and the result
 // value is the expected number.
 //
-void TestSimpleFormulaBag() {
+void TestSimpleFormulaBag () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -73,7 +73,7 @@ void TestSimpleFormulaBag() {
 // Asserts that evaluation results in the expected
 // number value.
 //
-void TestFormulas() {
+void TestFormulas () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -96,7 +96,7 @@ void TestFormulas() {
 // Asserts that the result of evaluation matches
 // the expected numeric value.
 //
-void TestScopedBag() {
+void TestScopedBag () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -130,7 +130,7 @@ void TestScopedBag() {
 // Asserts that the result of action execution is the
 // expected numeric value.
 //
-void TestActionSets() {
+void TestActionSets () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -164,7 +164,7 @@ void TestActionSets() {
 //
 // Asserts that list-based computations yield expected values.
 //
-void TestListsAndFunctions() {
+void TestListsAndFunctions () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -227,7 +227,7 @@ void TestListsAndFunctions() {
 // particular expected entity, and that computed
 // properties of that entity have expected values.
 //
-void TestDeserialization() {
+void TestDeserialization () {
 	TokenPool pool;
 	FormulaParser parser;
 
@@ -255,7 +255,7 @@ void TestDeserialization() {
 // Asserts that the results from vector operations are
 // expected values and success codes.
 //
-void TestVectors() {
+void TestVectors () {
 	FormulaParser parser;
 
 	Formula formula = parser.Parse("Vec(2, 8)", nullptr);
