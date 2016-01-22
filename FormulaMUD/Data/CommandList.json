@@ -32,6 +32,11 @@
       "helpText": "Pick up, retrieve, snag, snatch, grab, or otherwise obtain an item."
     },
     {
+      "command": "drop",
+      "event": "CMD_drop",
+      "helpText":  "Drop an item. Obviously, you can't drop something you're not carrying."
+    },
+    {
       "command": "carrying",
       "event": "CMD_carrying",
       "helpText": "Show a list of everything you are carrying."

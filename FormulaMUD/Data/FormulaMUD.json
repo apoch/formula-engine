@@ -150,6 +150,18 @@
           ]
         },
         {
+          "name": "CMD_drop",
+          "actions": [
+            {
+              "action": "ListTransfer",
+              "list": "Inventory",
+              "targetList": "Items",
+              "target": "CurrentRoom",
+              "condition": "1"
+            }
+          ]
+        },
+        {
           "name": "CMD_carrying",
           "actions": [
             {
