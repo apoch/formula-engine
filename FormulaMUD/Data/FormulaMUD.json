@@ -154,7 +154,6 @@
           "actions": [
             {
               "action": "ListTransfer",
-              "scriptable": "User",
               "list": "Inventory",
               "targetList": "Items",
               "target": "CurrentRoom",

@@ -175,7 +175,7 @@ private:
 
 class ActionListTransfer : public IAction {
 public:
-	ActionListTransfer (Formula && condition, Formula && originToken, unsigned originListToken, unsigned targetToken, unsigned targetListToken);
+	ActionListTransfer (Formula && condition, Formula && originToken, unsigned originListToken, Formula && targetToken, unsigned targetListToken);
 
 	IAction * Clone () const override;
 	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
@@ -183,8 +183,8 @@ public:
 private:
 	Formula m_condition;
 	Formula m_originToken;
-	unsigned m_originListToken;
-	unsigned m_targetToken;
-	unsigned m_targetListToken;
+	Formula m_targetToken;
+  unsigned m_originListToken;
+  unsigned m_targetListToken;
 };
 
