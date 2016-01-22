@@ -30,6 +30,10 @@
 #include "Shared/PicoJSON.h"
 
 
+// Utility includes
+#include "Shared/Utilities.h"
+
+
 // FormulaEngine dependencies
 #include "FormulaEngine/Formula.h"
 #include "FormulaEngine/Actions.h"

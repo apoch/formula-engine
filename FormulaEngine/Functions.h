@@ -4,6 +4,6 @@
 struct ITerminalEvaluator;
 
 
-const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]);
+const ITerminalEvaluator * GetFunctionEvaluatorByName (const char str[]);
 
 

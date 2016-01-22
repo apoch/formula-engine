@@ -114,11 +114,10 @@ Result Scriptable::ResolveBinding(const IFormulaContext & context, unsigned scop
 	if(!binding)
 		return context.ResolveNumber(context, scope, token);
 
-	unsigned arity;
 	Result ret;
 	ret.code = RESULT_CODE_OK;
 
-	arity = binding->GetPropertyBinding(token, &ret.token);
+	unsigned arity = binding->GetPropertyBinding(token, &ret.token);
 	if (arity == 1) {
 		ret.type = RESULT_TYPE_TOKEN;
 		return ret;

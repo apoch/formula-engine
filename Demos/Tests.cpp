@@ -35,6 +35,17 @@
 
 namespace {
 
+
+//
+// Assertion helper for tests; does not compile out in Release
+//
+void test_assert(bool condition) {
+	if (!condition)
+		terminate();
+}
+
+
+
 //
 // Basic test for the SimpleFormulaBag class
 //
@@ -59,8 +70,8 @@ void TestSimpleFormulaBag () {
 	Formula f = parser.Parse("((1.75 + 2.25) * 6) + twenty - 2", &pool);
 	Result res = f.Evaluate(&bag);
 
-	assert(res.code == RESULT_CODE_OK);
-	assert(res.value == 42.0);
+	test_assert(res.code == RESULT_CODE_OK);
+	test_assert(res.value == 42.0);
 }
 
 //
@@ -83,8 +94,7 @@ void TestFormulas () {
 
 	double val = fbag.ResolveNumber(fbag, 0, pool.AddToken("beta")).value;
 
-	assert(val == 42.0);
-	((void)(val));
+	test_assert(val == 42.0);
 }
 
 //
@@ -115,8 +125,7 @@ void TestScopedBag () {
 
 	double val = modifiedHealth.Evaluate(&scopes).value;
 
-	assert(val == 90.0);
-	((void)(val));
+	test_assert(val == 90.0);
 }
 
 //
@@ -151,8 +160,7 @@ void TestActionSets () {
 
 
 	double val = scriptable.GetScopes().ResolveNumber(scriptable.GetScopes(), 0, pool.AddToken("health")).value;
-	assert(val == 90.0);
-	((void)(val));
+	test_assert(val == 90.0);
 }
 
 //
@@ -194,13 +202,11 @@ void TestListsAndFunctions () {
 		test.GetScopes().ListAddEntry(pool.AddToken("testlist"), twobag);
 
 		double val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
-		assert(val1 == 42.0);
-		((void)(val1));
+		test_assert(val1 == 42.0);
 	}
 
 	double val2 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
-	assert(val2 == 40.0);
-	((void)(val2));
+	test_assert(val2 == 40.0);
 
 	Scriptable twobagalso;
 	twobagalso.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
@@ -212,8 +218,7 @@ void TestListsAndFunctions () {
 	actions.Execute(nullptr, &test, 0, nullptr);
 
 	double val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
-	assert(val3 == 42.0);
-	((void)(val3));
+	test_assert(val3 == 42.0);
 	*/
 }
 
@@ -237,13 +242,12 @@ void TestDeserialization () {
 	unsigned computedToken = world.GetTokenPool().AddToken("computed");
 	unsigned testToken = world.GetTokenPool().AddToken("test");
 
-	assert(world.GetScriptable(testToken) != nullptr);
+	test_assert(world.GetScriptable(testToken) != nullptr);
 
 	auto & scopes = world.GetScriptable(testToken)->GetScopes();
 	double val = scopes.ResolveNumber(scopes, 0, computedToken).value;
 
-	assert(val == 42.0);
-	((void)(val));
+	test_assert(val == 42.0);
 }
 
 //
@@ -260,18 +264,18 @@ void TestVectors () {
 
 	Formula formula = parser.Parse("Vec(2, 8)", nullptr);
 	Result res = formula.Evaluate(nullptr);
-	assert(res.code == RESULT_CODE_OK);
-	assert(res.type == RESULT_TYPE_VECTOR2);
-	assert(res.value == 2.0);
-	assert(res.value2 == 8.0);
+	test_assert(res.code == RESULT_CODE_OK);
+	test_assert(res.type == RESULT_TYPE_VECTOR2);
+	test_assert(res.value == 2.0);
+	test_assert(res.value2 == 8.0);
 
 
 	Formula summation = parser.Parse("Vec(1, 7) + Vec(1, 1)", nullptr);
 	Result sum = summation.Evaluate(nullptr);
-	assert(sum.code == RESULT_CODE_OK);
-	assert(sum.type == RESULT_TYPE_VECTOR2);
-	assert(sum.value == 2.0);
-	assert(sum.value2 == 8.0);
+	test_assert(sum.code == RESULT_CODE_OK);
+	test_assert(sum.type == RESULT_TYPE_VECTOR2);
+	test_assert(sum.value == 2.0);
+	test_assert(sum.value2 == 8.0);
 }
 
 

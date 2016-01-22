@@ -36,10 +36,6 @@ struct IFormulaContext {
 	virtual ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const = 0;
 };
 
-struct IScopeContext {
-	virtual const IFormulaContext * ResolveScope(unsigned token) const = 0;
-};
-
 
 struct ITerminalEvaluator {
 	virtual ~ITerminalEvaluator() { }
@@ -53,23 +49,6 @@ class Formula {
 public:			// Construction
 	Formula();
 
-public:			// Copy semantics
-	Formula(const Formula & other) = default;
-	Formula & operator = (const Formula & other) = default;
-
-public:			// Move semantics
-	Formula(Formula && other);
-	Formula & operator = (Formula && other);
-
-public:			// Friendships
-	friend class FunctionBetween;
-	friend class FunctionDistance;
-	friend class FunctionLimit;
-	friend class FunctionNormalize;
-	friend class FunctionRandom;
-	friend class FunctionSumOfList;
-	friend class FunctionVector;
-
 public:			// Enumerations
 	enum Operator {
 		OPERATOR_ADD,
@@ -80,27 +59,27 @@ public:			// Enumerations
 	};
 
 public:			// Setup interface
-	void Push(double literalValue);
-	void Push(const ITerminalEvaluator & evaluator);	// Does not take ownership
-	void Push(Operator op);
-	void Push(unsigned scope, unsigned token);
+	void Push (double literalValue);
+	void Push (const ITerminalEvaluator & evaluator);	// Does not take ownership
+	void Push (Operator op);
+	void Push (unsigned scope, unsigned token);
 
 public:			// Evaluation interface
-	Result Evaluate(const IFormulaContext * context) const;
+	Result Evaluate (const IFormulaContext * context) const;
+	Result EvaluateSubexpression (const IFormulaContext * context, unsigned * pindex) const;
+	bool EvaluateScopedToken (unsigned index, unsigned * outScope, unsigned * outToken) const;
 
 private:		// Internal helpers
-	Result EvaluateFunction(const IFormulaContext * context, unsigned * pindex) const;
-	Result EvaluateSubexpression(const IFormulaContext * context, unsigned * pindex) const;
-	Result EvaluateTerminal(const IFormulaContext * context, unsigned index) const;
+	Result EvaluateFunction (const IFormulaContext * context, unsigned * pindex) const;
+	Result EvaluateTerminal (const IFormulaContext * context, unsigned index) const;
 
 private:		// Internal helper structures
 	struct Term {
-		enum Flags {
-			// Mutually exclusive type flags
-			FLAG_IS_LITERAL		= 1 << 0,
-			FLAG_IS_EVALUATOR	= 1 << 1,
-			FLAG_IS_OPERATOR	= 1 << 2,
-			FLAG_IS_TOKEN		= 1 << 3,
+		enum Type {
+			TERM_TYPE_LITERAL,
+			TERM_TYPE_EVALUATOR,
+			TERM_TYPE_OPERATOR,
+			TERM_TYPE_TOKEN,
 		};
 
 		union PayloadUnion {
@@ -114,7 +93,7 @@ private:		// Internal helper structures
 			} scopedToken;
 		} payload;
 
-		unsigned flags;
+		Type type;
 	};
 
 private:		// Internal state

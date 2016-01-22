@@ -166,15 +166,13 @@ public:			// ITerminalEvaluator interface
 
 		--(*pindex);
 
-		const Formula::Term & term = termSource.m_terms[*pindex];
-		if(!(term.flags & Formula::Term::FLAG_IS_TOKEN)) {
+		unsigned parameterListScope = 0;
+		unsigned parameterListName = 0;
+		if (!termSource.EvaluateScopedToken(*pindex, &parameterListScope, &parameterListName)) {
 			ret.code = RESULT_CODE_SYNTAX_ERROR;
 			ret.value = 0.0;
 			return ret;
 		}
-
-		unsigned parameterListScope = term.payload.scopedToken.scope;
-		unsigned parameterListName = term.payload.scopedToken.token;
 
 		if(!context) {
 			ret.code = RESULT_CODE_MISSING_DEFINITION;

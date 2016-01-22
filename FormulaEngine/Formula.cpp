@@ -9,16 +9,6 @@ Formula::Formula() {
 }
 
 
-Formula::Formula(Formula && other) {
-	std::swap(m_terms, other.m_terms);
-}
-
-Formula & Formula::operator = (Formula && other) {
-	std::swap(m_terms, other.m_terms);
-	return *this;
-}
-
-
 Result Formula::Evaluate(const IFormulaContext * context) const {
 	Result ret;
 
@@ -45,10 +35,10 @@ Result Formula::EvaluateFunction(const IFormulaContext * context, unsigned * pin
 }
 
 Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned * pindex) const {
-	if(m_terms[*pindex].flags & Term::FLAG_IS_EVALUATOR)
+	if(m_terms[*pindex].type == Term::TERM_TYPE_EVALUATOR)
 		return EvaluateFunction(context, pindex);
 
-	if((*pindex == 0) || !(m_terms[*pindex].flags & Term::FLAG_IS_OPERATOR))
+	if((*pindex == 0) || (m_terms[*pindex].type != Term::TERM_TYPE_OPERATOR))
 		return EvaluateTerminal(context, *pindex);
 
 	Operator op = m_terms[*pindex].payload.op;
@@ -132,12 +122,12 @@ Result Formula::EvaluateSubexpression(const IFormulaContext * context, unsigned 
 Result Formula::EvaluateTerminal(const IFormulaContext * context, unsigned index) const {
 	Result ret;
 
-	if(m_terms[index].flags & Term::FLAG_IS_TOKEN) {
+	if(m_terms[index].type == Term::TERM_TYPE_TOKEN) {
 		ret = context->ResolveNumber(*context, m_terms[index].payload.scopedToken.scope, m_terms[index].payload.scopedToken.token);
 		return ret;
 	}
 
-	if(!(m_terms[index].flags & Term::FLAG_IS_LITERAL)) {
+	if(m_terms[index].type != Term::TERM_TYPE_LITERAL) {
 		ret.code = RESULT_CODE_SYNTAX_ERROR;
 		ret.value = 0.0;
 		return ret;
@@ -149,10 +139,23 @@ Result Formula::EvaluateTerminal(const IFormulaContext * context, unsigned index
 	return ret;
 }
 
+bool Formula::EvaluateScopedToken (unsigned index, unsigned * outScope, unsigned * outToken) const {
+	if (m_terms[index].type != Term::TERM_TYPE_TOKEN)
+		return false;
+
+	if (outScope)
+		*outScope = m_terms[index].payload.scopedToken.scope;
+
+	if (outToken)
+		*outToken = m_terms[index].payload.scopedToken.token;
+
+	return true;
+}
+
 
 void Formula::Push(double literalValue) {
 	Term t;
-	t.flags = Term::FLAG_IS_LITERAL;
+	t.type = Term::TERM_TYPE_LITERAL;
 	t.payload.literalValue = literalValue;
 
 	m_terms.emplace_back(t);
@@ -160,7 +163,7 @@ void Formula::Push(double literalValue) {
 
 void Formula::Push(const ITerminalEvaluator & evaluator) {
 	Term t;
-	t.flags = Term::FLAG_IS_EVALUATOR;
+	t.type = Term::TERM_TYPE_EVALUATOR;
 	t.payload.evaluator = const_cast<ITerminalEvaluator *>(&evaluator);
 
 	m_terms.emplace_back(t);
@@ -168,7 +171,7 @@ void Formula::Push(const ITerminalEvaluator & evaluator) {
 
 void Formula::Push(Operator op) {
 	Term t;
-	t.flags = Term::FLAG_IS_OPERATOR;
+	t.type = Term::TERM_TYPE_OPERATOR;
 	t.payload.op = op;
 
 	m_terms.emplace_back(t);
@@ -176,7 +179,7 @@ void Formula::Push(Operator op) {
 
 void Formula::Push(unsigned scope, unsigned token) {
 	Term t;
-	t.flags = Term::FLAG_IS_TOKEN;
+	t.type = Term::TERM_TYPE_TOKEN;
 	t.payload.scopedToken.scope = scope;
 	t.payload.scopedToken.token = token;
 

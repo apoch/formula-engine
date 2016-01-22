@@ -91,13 +91,14 @@ RoomNetwork::RoomNetwork (const char * jsonFileName, TokenPool * tokens, ScriptW
 		if (nameiter == roomobj.end() || !nameiter->second.is<std::string>())
 			continue;
 
-		unsigned nameToken = tokens->AddToken(nameiter->second.get<std::string>());
+		tokens->AddToken(nameiter->second.get<std::string>());
+
 		auto conniter = roomobj.find("connections");
 		if (conniter == roomobj.end() || !conniter->second.is<picojson::object>())
 			continue;
 
-		Room * room = FindRoom(tokens->AddToken(nameiter->second.get<std::string>()));
-		assert(room != nullptr);
+		Room * gameRoom = FindRoom(tokens->AddToken(nameiter->second.get<std::string>()));
+		assert(gameRoom != nullptr);
 
 		for (const auto & conn : conniter->second.get<picojson::object>()) {
 			unsigned dirToken = tokens->AddToken(conn.first);
@@ -107,7 +108,7 @@ RoomNetwork::RoomNetwork (const char * jsonFileName, TokenPool * tokens, ScriptW
 			if (!otherRoom)
 				continue;
 
-			room->AddConnection(dirToken, otherRoom);
+			gameRoom->AddConnection(dirToken, otherRoom);
 		}
 	}
 }

@@ -50,9 +50,9 @@ Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigne
 }
 
 ListResult SimplePropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	((void)(context));
-	((void)(scope));
-	((void)(token));
+	ref(context);
+	ref(scope);
+	ref(token);
 
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
@@ -118,9 +118,9 @@ Result FormulaPropertyBag::ResolveNumber(const IFormulaContext & context, unsign
 }
 
 ListResult FormulaPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	((void)(context));
-	((void)(scope));
-	((void)(token));
+	ref(context);
+	ref(scope);
+	ref(token);
 
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
@@ -306,9 +306,10 @@ void ScopedPropertyBag::PopulateNamedBindings (ScopedPropertyBag * other) const 
 }
 
 void ScopedPropertyBag::Set(unsigned token, const Result & value) {
-	((void)(token));
-	((void)(value));
-	assert(false);
+	ref(token);
+	ref(value);
+
+	assert(false);		// Not implemented
 }
 
 
@@ -346,9 +347,9 @@ Result BindingPropertyBag::ResolveNumber(const IFormulaContext & context, unsign
 }
 
 ListResult BindingPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	((void)(context));
-	((void)(scope));
-	((void)(token));
+	ref(context);
+	ref(scope);
+	ref(token);
 
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
@@ -373,8 +374,8 @@ const char * TextPropertyBag::GetLine(unsigned token) const {
 
 
 Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	((void)(context));
-	((void)(scope));
+	ref(context);
+	ref(scope);
 
 	Result ret;
 	ret.type = RESULT_TYPE_TOKEN;
@@ -385,9 +386,9 @@ Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned 
 }
 
 ListResult TextPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	((void)(context));
-	((void)(scope));
-	((void)(token));
+	ref(context);
+	ref(scope);
+	ref(token);
 
 	ListResult ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;

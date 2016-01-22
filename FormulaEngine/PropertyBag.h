@@ -123,12 +123,12 @@ public:
 
 public:			// ForEach loop support
 	template <typename FunctorT>
-	ResultCode ListEnumerate(unsigned listToken, const FunctorT & functor) const {
+	ResultCode ListEnumerate (unsigned listToken, const FunctorT & functor) const {
 		auto iter = m_lists.find(listToken);
-		if(iter == m_lists.end())
+		if (iter == m_lists.end())
 			return RESULT_CODE_MISSING_DEFINITION;
 
-		for(auto scriptable : iter->second)
+		for (auto scriptable : iter->second)
 			functor(scriptable);
 
 		return RESULT_CODE_OK;

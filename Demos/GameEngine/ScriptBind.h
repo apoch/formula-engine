@@ -105,6 +105,8 @@ public:			// Construction
 
 public:			// Goal state and property interface
 	void SetGoalState (unsigned token, unsigned tokenValue) override {
+		ref(token);
+		ref(tokenValue);
 		assert(false);		// Not implemented
 	}
 
@@ -121,6 +123,8 @@ public:			// Goal state and property interface
 	}
 
 	unsigned GetPropertyBinding (unsigned token, unsigned * out) const override {
+		ref(token);
+		ref(out);
 		return 0;			// Not implemented
 	}
 

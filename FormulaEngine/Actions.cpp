@@ -234,7 +234,7 @@ IAction * ActionListAddEntry::Clone() const {
 }
 
 ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	((void)(scopes));
+	ref(scopes);
 
 	target->GetScopes().ListAddEntry(m_listToken, *world->GetScriptable(m_targetToken));
 

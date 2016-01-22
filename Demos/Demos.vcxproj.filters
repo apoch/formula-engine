@@ -18,6 +18,9 @@
     <Filter Include="Test Core">
       <UniqueIdentifier>{e243b4ba-d35c-497a-92c3-d8c5021b7b85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared Support Headers">
+      <UniqueIdentifier>{d11e2b95-608e-421c-95eb-ef75800d9c12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulation.h">
@@ -37,6 +40,12 @@
     </ClInclude>
     <ClInclude Include="Tests.h">
       <Filter>Test Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\picojson.h">
+      <Filter>Shared Support Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Utilities.h">
+      <Filter>Shared Support Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

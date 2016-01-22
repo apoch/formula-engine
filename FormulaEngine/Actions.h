@@ -28,6 +28,32 @@ struct IAction {
 };
 
 
+
+
+
+class ActionSet {
+public:			// Construction and destruction
+	ActionSet();
+	ActionSet(ActionSet && other);
+	ActionSet(const ActionSet & other);
+	~ActionSet();
+
+	ActionSet & operator= (const ActionSet & other) = delete;
+
+public:			// Setup interface
+	void AddAction(IAction * action);
+
+public:			// Execution interface
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
+
+private:		// Internal state
+	std::vector<IAction *> m_actions;
+	ScopedPropertyBag * m_scopeCache;
+};
+
+
+
 class ActionEventTrigger : public IAction {
 public:
 	ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr);
@@ -60,17 +86,7 @@ private:
 class ActionSetProperty : public IAction {
 public:
 	ActionSetProperty(unsigned targetToken, Formula && payload);
-	IAction * Clone() const override;
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
-private:
-	unsigned m_targetToken;
-	Formula m_payload;
-};
-
-class ActionSetFormula : public IAction {
-public:
-	ActionSetFormula(unsigned targetToken, Formula && payload);
 	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
@@ -117,32 +133,6 @@ private:
 	unsigned m_targetToken;
 	Formula m_formula;
 };
-
-
-
-class ActionSet {
-public:			// Construction and destruction
-	ActionSet();
-	ActionSet(ActionSet && other);
-	ActionSet(const ActionSet & other);
-	~ActionSet();
-
-	ActionSet & operator= (const ActionSet & other) = delete;
-
-public:			// Setup interface
-	void AddAction(IAction * action);
-
-public:			// Execution interface
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
-
-private:		// Internal state
-	std::vector<IAction *> m_actions;
-	ScopedPropertyBag * m_scopeCache;
-};
-
-
-
 
 
 class ActionConditionalBlock : public IAction {

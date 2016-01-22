@@ -7,7 +7,7 @@
     <Filter Include="Precompiled Header">
       <UniqueIdentifier>{3ece316a-699a-44eb-a208-4ad8822b8548}</UniqueIdentifier>
     </Filter>
-    <Filter Include="External Libraries">
+    <Filter Include="Shared Support Headers">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
@@ -47,10 +47,13 @@
       <Filter>Formula Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\picojson.h">
-      <Filter>External Libraries</Filter>
+      <Filter>Shared Support Headers</Filter>
     </ClInclude>
     <ClInclude Include="Pch.h">
       <Filter>Precompiled Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Utilities.h">
+      <Filter>Shared Support Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

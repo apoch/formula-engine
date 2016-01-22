@@ -12,6 +12,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Shared Support Headers">
+      <UniqueIdentifier>{bec694e2-e785-45f4-ab79-73a328959e6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FormulaMUD.cpp">
@@ -51,6 +54,12 @@
     </ClInclude>
     <ClInclude Include="Bindings.h">
       <Filter>FormulaMUD Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\picojson.h">
+      <Filter>Shared Support Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Utilities.h">
+      <Filter>Shared Support Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

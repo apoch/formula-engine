@@ -28,3 +28,6 @@
 // Third party library includes
 #include "Shared/PicoJSON.h"
 
+// Utility includes
+#include "Shared/Utilities.h"
+
