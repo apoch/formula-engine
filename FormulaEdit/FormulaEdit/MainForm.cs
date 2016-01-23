@@ -53,6 +53,8 @@ namespace FormulaEdit
             {
                 CommandListBox.Items.Add(cmd);
             }
+
+            CommandListBox_SelectedIndexChanged(null, null);
         }
 
         private void CommandListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,6 +83,8 @@ namespace FormulaEdit
             cmd.command = CommandName.Text;
             cmd.@event = CommandEventName.Text;
             cmd.helpText = CommandHelpTextBox.Text;
+
+            RefreshCommandsTab();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -97,6 +101,27 @@ namespace FormulaEdit
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void AddCommandButton_Click(object sender, EventArgs e)
+        {
+            var cmd = new MudData.Command();
+            cmd.command = "unnamed";
+            cmd.@event = "CMD_unnamed";
+            cmd.helpText = "Unspecified";
+
+            CurrentLoadedData.Commands.Add(cmd);
+            RefreshCommandsTab();
+        }
+
+        private void RemoveCommandButton_Click(object sender, EventArgs e)
+        {
+            if (CommandListBox.SelectedItem == null)
+                return;
+
+            var cmd = CommandListBox.SelectedItem as MudData.Command;
+            CurrentLoadedData.Commands.Remove(cmd);
+            RefreshCommandsTab();
         }
     }
 }

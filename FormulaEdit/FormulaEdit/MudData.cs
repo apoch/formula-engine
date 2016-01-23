@@ -15,6 +15,7 @@ namespace FormulaEdit
         {
             var ret = new MudData();
             ret.LoadCommandsFrom(folderName + "\\CommandList.json");
+            ret.LoadRoomsFrom(folderName + "\\Rooms.json");
 
             return ret;
         }
@@ -45,7 +46,58 @@ namespace FormulaEdit
         }
 
 
+        [DataContract]
+        public class FormulaList
+        {
+            [DataMember]
+            public string name = "";
+
+            [DataMember]
+            public List<string> contents = null;
+        }
+
+
+        [DataContract]
+        public class FormulaEvent
+        {
+            [DataMember]
+            public string name = "";
+
+            [DataMember]
+            public List<Dictionary<string, string>> actions = null;
+        }
+
+
+        [DataContract]
+        public class Room
+        {
+            [DataMember]
+            public string name = "";
+
+            [DataMember]
+            public string description = "";
+
+            [DataMember]
+            public Dictionary<string, string> connections = null;
+
+            [DataMember]
+            public List<FormulaList> lists = null;
+
+            [DataMember]
+            public List<FormulaEvent> events = null;
+        }
+
+
+        [DataContract]
+        private class RoomListJSONWrapper
+        {
+            [DataMember]
+            public List<Room> rooms = null;
+        }
+
+
         public List<Command> Commands = null;
+        public List<Room> Rooms = null;
 
 
         private void LoadCommandsFrom(string fileName)
@@ -77,6 +129,22 @@ namespace FormulaEdit
             outfile.Flush();
             outfile.Close();
             outfile.Dispose();
+        }
+
+
+        private void LoadRoomsFrom(string fileName)
+        {
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+
+            var serializer = new DataContractJsonSerializer(typeof(RoomListJSONWrapper), settings);
+            var infile = new FileStream(fileName, FileMode.Open);
+
+            var obj = serializer.ReadObject(infile) as RoomListJSONWrapper;
+            Rooms = obj.rooms;
+
+            infile.Close();
+            infile.Dispose();
         }
     }
 }

@@ -101,6 +101,7 @@
             this.RemoveCommandButton.TabIndex = 2;
             this.RemoveCommandButton.Text = "Remove";
             this.RemoveCommandButton.UseVisualStyleBackColor = true;
+            this.RemoveCommandButton.Click += new System.EventHandler(this.RemoveCommandButton_Click);
             // 
             // AddCommandButton
             // 
@@ -111,6 +112,7 @@
             this.AddCommandButton.TabIndex = 1;
             this.AddCommandButton.Text = "Add";
             this.AddCommandButton.UseVisualStyleBackColor = true;
+            this.AddCommandButton.Click += new System.EventHandler(this.AddCommandButton_Click);
             // 
             // CommandListBox
             // 
