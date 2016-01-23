@@ -14,3 +14,5 @@ ipch/**
 *.sdf
 *.opensdf
 *.opendb
+FormulaEdit/FormulaEdit/bin/**
+FormulaEdit/FormulaEdit/obj/**
