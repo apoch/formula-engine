@@ -20,7 +20,6 @@
       "event": "CMD_west",
       "helpText": "Move to the west, if that is possible."
     },
-
     {
       "command": "look",
       "event": "CMD_look",
@@ -34,7 +33,7 @@
     {
       "command": "drop",
       "event": "CMD_drop",
-      "helpText":  "Drop an item. Obviously, you can't drop something you're not carrying."
+      "helpText": "Drop an item. Obviously, you can't drop something you're not carrying."
     },
     {
       "command": "carrying",
