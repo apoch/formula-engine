@@ -15,6 +15,19 @@ namespace FormulaEdit
         MudData CurrentLoadedData = null;
 
 
+
+        private class RoomConnection
+        {
+            public string Direction = "";
+            public string Endpoint = "";
+
+            public override string ToString()
+            {
+                return Direction + " -> " + Endpoint;
+            }
+        }
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -37,6 +50,7 @@ namespace FormulaEdit
         private void RefreshControls()
         {
             RefreshCommandsTab();
+            RefreshRoomsTab();
         }
 
         private void RefreshCommandsTab()
@@ -55,6 +69,24 @@ namespace FormulaEdit
             }
 
             CommandListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RefreshRoomsTab()
+        {
+            RoomListBox.Items.Clear();
+
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Rooms == null)
+                return;
+
+            foreach (MudData.Room room in CurrentLoadedData.Rooms)
+            {
+                RoomListBox.Items.Add(room);
+            }
+
+            RoomListBox_SelectedIndexChanged(null, null);
         }
 
         private void CommandListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -122,6 +154,121 @@ namespace FormulaEdit
             var cmd = CommandListBox.SelectedItem as MudData.Command;
             CurrentLoadedData.Commands.Remove(cmd);
             RefreshCommandsTab();
+        }
+
+        private void RoomListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RoomConnectionsListBox.Items.Clear();
+            RoomConnectionEndpointListBox.Items.Clear();
+            RoomListsListBox.Items.Clear();
+            RoomEventListBox.Items.Clear();
+
+            if (RoomListBox.SelectedItem == null)
+            {
+                RoomInternalName.Text = "";
+                RoomDescription.Text = "";
+            }
+            else
+            {
+                var room = RoomListBox.SelectedItem as MudData.Room;
+
+                RoomInternalName.Text = room.name;
+                RoomDescription.Text = room.description;
+
+                foreach (var conn in room.connections)
+                {
+                    var connWrap = new RoomConnection();
+                    connWrap.Direction = conn.Key;
+                    connWrap.Endpoint = conn.Value;
+
+                    RoomConnectionsListBox.Items.Add(connWrap);
+                }
+
+                RoomConnectionsListBox_SelectedIndexChanged(null, null);
+
+                if (room.lists != null)
+                {
+                    foreach (var list in room.lists)
+                    {
+                        RoomListsListBox.Items.Add(list);
+                    }
+                }
+
+                RoomListsListBox_SelectedIndexChanged(null, null);
+
+                if (room.events != null)
+                {
+                    foreach (var item in room.events)
+                    {
+                        RoomEventListBox.Items.Add(item);
+                    }
+                }
+
+                RoomEventListBox_SelectedIndexChanged(null, null);
+            }
+        }
+
+        private void RoomConnectionsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RoomConnectionEndpointListBox.Items.Clear();
+
+            if (RoomConnectionsListBox.SelectedItem == null)
+            {
+                RoomConnectionDirection.Text = "";
+            }
+            else
+            {
+                var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
+
+                RoomConnectionDirection.Text = conn.Direction;
+
+                var room = RoomListBox.SelectedItem as MudData.Room;
+
+                foreach (MudData.Room r in RoomListBox.Items)
+                {
+                    if (r == room)
+                        continue;
+
+                    RoomConnectionEndpointListBox.Items.Add(r);
+
+                    if (r.name == conn.Endpoint)
+                        RoomConnectionEndpointListBox.SelectedItem = r;
+                }
+            }
+        }
+
+        private void RoomListsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (RoomListsListBox.SelectedItem == null)
+            {
+                RoomListName.Text = "";
+                RoomListContents.Text = "";
+            }
+            else
+            {
+                var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
+
+                RoomListName.Text = list.name;
+                RoomListContents.Text = string.Join("\r\n", list.contents);
+            }
+        }
+
+        private void RoomEventListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RoomEventLayoutPanel.Controls.Clear();
+
+            if (RoomEventListBox.SelectedItem == null)
+            {
+                RoomEventCode.Text = "";
+            }
+            else
+            {
+                var theEvent = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
+
+                RoomEventCode.Text = theEvent.name;
+
+                ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel);
+            }
         }
     }
 }

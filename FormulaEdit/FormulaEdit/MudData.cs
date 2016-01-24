@@ -54,6 +54,12 @@ namespace FormulaEdit
 
             [DataMember]
             public List<string> contents = null;
+
+
+            public override string ToString()
+            {
+                return name;
+            }
         }
 
 
@@ -65,6 +71,12 @@ namespace FormulaEdit
 
             [DataMember]
             public List<Dictionary<string, string>> actions = null;
+
+
+            public override string ToString()
+            {
+                return name;
+            }
         }
 
 
@@ -85,6 +97,12 @@ namespace FormulaEdit
 
             [DataMember]
             public List<FormulaEvent> events = null;
+
+
+            public override string ToString()
+            {
+                return name;
+            }
         }
 
 
