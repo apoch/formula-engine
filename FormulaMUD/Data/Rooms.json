@@ -55,7 +55,19 @@
         "west": "StartRoom"
       },
       "description": "You have discovered a hidden room! Well done!",
-      "events": [ ],
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
       "lists": [
         {
           "contents": [

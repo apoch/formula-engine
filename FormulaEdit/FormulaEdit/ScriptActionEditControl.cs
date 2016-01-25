@@ -36,6 +36,30 @@ namespace FormulaEdit
             }
         }
 
+        private Dictionary<string, string> PopulateActionDictionary()
+        {
+            var ret = new Dictionary<string, string>();
+
+            ret["action"] = ActionComboBox.Text;
+            foreach (DataGridViewRow row in ActionDataGrid.Rows)
+            {
+                var cells = row.Cells;
+
+                if (cells.Count != 2)
+                    continue;
+
+                if (cells[0].Value == null)
+                    continue;
+
+                if (cells[1].Value == null)
+                    continue;
+
+                ret[cells[0].Value.ToString()] = cells[1].Value.ToString();
+            }
+
+            return ret;
+        }
+
 
         public static void PopulatePanel(List<Dictionary<string, string>> actions, Panel panel)
         {
@@ -49,6 +73,18 @@ namespace FormulaEdit
 
                 editor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             }
+        }
+
+        public static List<Dictionary<string, string>> PopulateMudData(ContainerControl.ControlCollection controls)
+        {
+            var ret = new List<Dictionary<string, string>>();
+
+            foreach (ScriptActionEditControl ctl in controls)
+            {
+                ret.Add(ctl.PopulateActionDictionary());
+            }
+
+            return ret;
         }
     }
 }

@@ -403,5 +403,68 @@ namespace FormulaEdit
 
             RoomListBox_SelectedIndexChanged(null, null);
         }
+
+        private void RoomEventAddButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+
+            var item = new MudData.FormulaEvent();
+            item.name = "unnamed";
+
+            room.events.Add(item);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomEventRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomEventListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
+
+            room.events.Remove(item);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomEventApplyButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomEventListBox.SelectedItem == null)
+                return;
+
+            var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
+
+            item.name = RoomEventCode.Text;
+            item.actions = ScriptActionEditControl.PopulateMudData(RoomEventLayoutPanel.Controls);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomEventNewActionButton_Click(object sender, EventArgs e)
+        {
+            RoomEventLayoutPanel.Controls.Clear();
+
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomEventListBox.SelectedItem == null)
+                return;
+
+            var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
+            item.actions.Add(new Dictionary<string, string>());
+
+            ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
+        }
     }
 }

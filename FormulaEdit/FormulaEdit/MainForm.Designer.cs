@@ -84,6 +84,9 @@
             this.RoomRemoveButton = new System.Windows.Forms.Button();
             this.RoomAddButton = new System.Windows.Forms.Button();
             this.RoomApplyButton = new System.Windows.Forms.Button();
+            this.RoomEventApplyButton = new System.Windows.Forms.Button();
+            this.RoomEventRemoveButton = new System.Windows.Forms.Button();
+            this.RoomEventAddButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -451,6 +454,9 @@
             // 
             // RoomEventsTab
             // 
+            this.RoomEventsTab.Controls.Add(this.RoomEventApplyButton);
+            this.RoomEventsTab.Controls.Add(this.RoomEventRemoveButton);
+            this.RoomEventsTab.Controls.Add(this.RoomEventAddButton);
             this.RoomEventsTab.Controls.Add(this.RoomEventNewActionButton);
             this.RoomEventsTab.Controls.Add(this.RoomEventLayoutPanel);
             this.RoomEventsTab.Controls.Add(this.LabelRoomEventCode);
@@ -636,6 +642,7 @@
             this.RoomEventNewActionButton.TabIndex = 4;
             this.RoomEventNewActionButton.Text = "New Action";
             this.RoomEventNewActionButton.UseVisualStyleBackColor = true;
+            this.RoomEventNewActionButton.Click += new System.EventHandler(this.RoomEventNewActionButton_Click);
             // 
             // RoomRemoveButton
             // 
@@ -668,6 +675,39 @@
             this.RoomApplyButton.Text = "Apply Changes";
             this.RoomApplyButton.UseVisualStyleBackColor = true;
             this.RoomApplyButton.Click += new System.EventHandler(this.RoomApplyButton_Click);
+            // 
+            // RoomEventApplyButton
+            // 
+            this.RoomEventApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomEventApplyButton.Location = new System.Drawing.Point(381, 202);
+            this.RoomEventApplyButton.Name = "RoomEventApplyButton";
+            this.RoomEventApplyButton.Size = new System.Drawing.Size(109, 39);
+            this.RoomEventApplyButton.TabIndex = 18;
+            this.RoomEventApplyButton.Text = "Apply";
+            this.RoomEventApplyButton.UseVisualStyleBackColor = true;
+            this.RoomEventApplyButton.Click += new System.EventHandler(this.RoomEventApplyButton_Click);
+            // 
+            // RoomEventRemoveButton
+            // 
+            this.RoomEventRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomEventRemoveButton.Location = new System.Drawing.Point(266, 202);
+            this.RoomEventRemoveButton.Name = "RoomEventRemoveButton";
+            this.RoomEventRemoveButton.Size = new System.Drawing.Size(109, 39);
+            this.RoomEventRemoveButton.TabIndex = 17;
+            this.RoomEventRemoveButton.Text = "Remove";
+            this.RoomEventRemoveButton.UseVisualStyleBackColor = true;
+            this.RoomEventRemoveButton.Click += new System.EventHandler(this.RoomEventRemoveButton_Click);
+            // 
+            // RoomEventAddButton
+            // 
+            this.RoomEventAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomEventAddButton.Location = new System.Drawing.Point(151, 202);
+            this.RoomEventAddButton.Name = "RoomEventAddButton";
+            this.RoomEventAddButton.Size = new System.Drawing.Size(109, 39);
+            this.RoomEventAddButton.TabIndex = 16;
+            this.RoomEventAddButton.Text = "Add";
+            this.RoomEventAddButton.UseVisualStyleBackColor = true;
+            this.RoomEventAddButton.Click += new System.EventHandler(this.RoomEventAddButton_Click);
             // 
             // MainForm
             // 
@@ -757,6 +797,9 @@
         private System.Windows.Forms.Button RoomRemoveButton;
         private System.Windows.Forms.Button RoomAddButton;
         private System.Windows.Forms.Button RoomApplyButton;
+        private System.Windows.Forms.Button RoomEventApplyButton;
+        private System.Windows.Forms.Button RoomEventRemoveButton;
+        private System.Windows.Forms.Button RoomEventAddButton;
     }
 }
 

@@ -71,7 +71,7 @@ namespace FormulaEdit
             public string name = "";
 
             [DataMember]
-            public List<Dictionary<string, string>> actions = null;
+            public List<Dictionary<string, string>> actions = new List<Dictionary<string, string>>();
 
 
             public override string ToString()
