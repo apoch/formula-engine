@@ -249,7 +249,7 @@ namespace FormulaEdit
                 var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
 
                 RoomListName.Text = list.name;
-                RoomListContents.Text = string.Join("\r\n", list.contents);
+                RoomListContents.Text = (list.contents != null) ? string.Join("\r\n", list.contents) : "";
             }
         }
 
@@ -269,6 +269,139 @@ namespace FormulaEdit
 
                 ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel);
             }
+        }
+
+        private void RoomConnectionAddButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            room.connections.Add("unnamed", "unspecified");
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomConnectionRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomConnectionsListBox.SelectedItem == null)
+                return;
+
+            var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
+            var room = RoomListBox.SelectedItem as MudData.Room;
+
+            room.connections.Remove(conn.Direction);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomConnectionApplyButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomConnectionsListBox.SelectedItem == null)
+                return;
+
+            if (RoomConnectionEndpointListBox.SelectedItem == null)
+                return;
+
+            var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
+            var room = RoomListBox.SelectedItem as MudData.Room;
+
+            room.connections.Remove(conn.Direction);
+
+            conn.Direction = RoomConnectionDirection.Text;
+            conn.Endpoint = (RoomConnectionEndpointListBox.SelectedItem as MudData.Room).name;
+
+            room.connections.Add(conn.Direction, conn.Endpoint);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomAddButton_Click(object sender, EventArgs e)
+        {
+            var room = new MudData.Room();
+            room.name = "Unnamed";
+
+            CurrentLoadedData.Rooms.Add(room);
+
+            RefreshRoomsTab();
+        }
+
+        private void RoomRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            CurrentLoadedData.Rooms.Remove(room);
+
+            RefreshRoomsTab();
+        }
+
+        private void RoomApplyButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            room.name = RoomInternalName.Text;
+            room.description = RoomDescription.Text;
+
+            RefreshRoomsTab();
+        }
+
+        private void RoomListAddButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+
+            var newlist = new MudData.FormulaList();
+            newlist.name = "unnamed";
+
+            room.lists.Add(newlist);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomListRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomListsListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
+
+            room.lists.Remove(list);
+
+            RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RoomListApplyButton_Click(object sender, EventArgs e)
+        {
+            if (RoomListBox.SelectedItem == null)
+                return;
+
+            if (RoomListsListBox.SelectedItem == null)
+                return;
+
+            var room = RoomListBox.SelectedItem as MudData.Room;
+            var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
+
+            list.name = RoomListName.Text;
+
+            list.contents = new List<string>(RoomListContents.Text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
+
+            RoomListBox_SelectedIndexChanged(null, null);
         }
     }
 }

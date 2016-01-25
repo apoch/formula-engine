@@ -23,6 +23,7 @@ namespace FormulaEdit
         public void SaveToFolder(string folderName)
         {
             SaveCommandsTo(folderName + "\\CommandList.json");
+            SaveRoomsTo(folderName + "\\Rooms.json");
         }
 
         [DataContract]
@@ -90,13 +91,13 @@ namespace FormulaEdit
             public string description = "";
 
             [DataMember]
-            public Dictionary<string, string> connections = null;
+            public Dictionary<string, string> connections = new Dictionary<string, string>();
 
             [DataMember]
-            public List<FormulaList> lists = null;
+            public List<FormulaList> lists = new List<FormulaList>();
 
             [DataMember]
-            public List<FormulaEvent> events = null;
+            public List<FormulaEvent> events = new List<FormulaEvent>();
 
 
             public override string ToString()
@@ -163,6 +164,28 @@ namespace FormulaEdit
 
             infile.Close();
             infile.Dispose();
+        }
+
+        private void SaveRoomsTo(string fileName)
+        {
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+
+            var serializer = new DataContractJsonSerializer(typeof(RoomListJSONWrapper), settings);
+
+            var outfile = new FileStream(fileName, FileMode.Create);
+            var writer = JsonReaderWriterFactory.CreateJsonWriter(outfile, Encoding.UTF8, false, true, "  ");
+
+            var wrap = new RoomListJSONWrapper();
+            wrap.rooms = Rooms;
+
+            serializer.WriteObject(writer, wrap);
+
+            writer.Flush();
+
+            outfile.Flush();
+            outfile.Close();
+            outfile.Dispose();
         }
     }
 }

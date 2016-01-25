@@ -81,6 +81,9 @@
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
             this.RoomEventLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RoomEventNewActionButton = new System.Windows.Forms.Button();
+            this.RoomRemoveButton = new System.Windows.Forms.Button();
+            this.RoomAddButton = new System.Windows.Forms.Button();
+            this.RoomApplyButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -222,6 +225,9 @@
             // 
             // RoomsTab
             // 
+            this.RoomsTab.Controls.Add(this.RoomApplyButton);
+            this.RoomsTab.Controls.Add(this.RoomRemoveButton);
+            this.RoomsTab.Controls.Add(this.RoomAddButton);
             this.RoomsTab.Controls.Add(this.RoomTabControls);
             this.RoomsTab.Controls.Add(this.RoomDescription);
             this.RoomsTab.Controls.Add(this.LabelRoomDescription);
@@ -277,6 +283,7 @@
             this.RoomConnectionApplyButton.TabIndex = 7;
             this.RoomConnectionApplyButton.Text = "Apply";
             this.RoomConnectionApplyButton.UseVisualStyleBackColor = true;
+            this.RoomConnectionApplyButton.Click += new System.EventHandler(this.RoomConnectionApplyButton_Click);
             // 
             // RoomConnectionRemoveButton
             // 
@@ -287,6 +294,7 @@
             this.RoomConnectionRemoveButton.TabIndex = 6;
             this.RoomConnectionRemoveButton.Text = "Remove";
             this.RoomConnectionRemoveButton.UseVisualStyleBackColor = true;
+            this.RoomConnectionRemoveButton.Click += new System.EventHandler(this.RoomConnectionRemoveButton_Click);
             // 
             // RoomConnectionAddButton
             // 
@@ -297,6 +305,7 @@
             this.RoomConnectionAddButton.TabIndex = 5;
             this.RoomConnectionAddButton.Text = "Add";
             this.RoomConnectionAddButton.UseVisualStyleBackColor = true;
+            this.RoomConnectionAddButton.Click += new System.EventHandler(this.RoomConnectionAddButton_Click);
             // 
             // RoomConnectionEndpointListBox
             // 
@@ -371,6 +380,7 @@
             this.RoomListApplyButton.TabIndex = 15;
             this.RoomListApplyButton.Text = "Apply";
             this.RoomListApplyButton.UseVisualStyleBackColor = true;
+            this.RoomListApplyButton.Click += new System.EventHandler(this.RoomListApplyButton_Click);
             // 
             // RoomListRemoveButton
             // 
@@ -381,6 +391,7 @@
             this.RoomListRemoveButton.TabIndex = 14;
             this.RoomListRemoveButton.Text = "Remove";
             this.RoomListRemoveButton.UseVisualStyleBackColor = true;
+            this.RoomListRemoveButton.Click += new System.EventHandler(this.RoomListRemoveButton_Click);
             // 
             // RoomListAddButton
             // 
@@ -391,6 +402,7 @@
             this.RoomListAddButton.TabIndex = 13;
             this.RoomListAddButton.Text = "Add";
             this.RoomListAddButton.UseVisualStyleBackColor = true;
+            this.RoomListAddButton.Click += new System.EventHandler(this.RoomListAddButton_Click);
             // 
             // RoomListContents
             // 
@@ -625,6 +637,38 @@
             this.RoomEventNewActionButton.Text = "New Action";
             this.RoomEventNewActionButton.UseVisualStyleBackColor = true;
             // 
+            // RoomRemoveButton
+            // 
+            this.RoomRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomRemoveButton.Location = new System.Drawing.Point(102, 417);
+            this.RoomRemoveButton.Name = "RoomRemoveButton";
+            this.RoomRemoveButton.Size = new System.Drawing.Size(89, 27);
+            this.RoomRemoveButton.TabIndex = 7;
+            this.RoomRemoveButton.Text = "Remove";
+            this.RoomRemoveButton.UseVisualStyleBackColor = true;
+            this.RoomRemoveButton.Click += new System.EventHandler(this.RoomRemoveButton_Click);
+            // 
+            // RoomAddButton
+            // 
+            this.RoomAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomAddButton.Location = new System.Drawing.Point(6, 417);
+            this.RoomAddButton.Name = "RoomAddButton";
+            this.RoomAddButton.Size = new System.Drawing.Size(89, 27);
+            this.RoomAddButton.TabIndex = 6;
+            this.RoomAddButton.Text = "Add";
+            this.RoomAddButton.UseVisualStyleBackColor = true;
+            this.RoomAddButton.Click += new System.EventHandler(this.RoomAddButton_Click);
+            // 
+            // RoomApplyButton
+            // 
+            this.RoomApplyButton.Location = new System.Drawing.Point(476, 7);
+            this.RoomApplyButton.Name = "RoomApplyButton";
+            this.RoomApplyButton.Size = new System.Drawing.Size(131, 34);
+            this.RoomApplyButton.TabIndex = 8;
+            this.RoomApplyButton.Text = "Apply Changes";
+            this.RoomApplyButton.UseVisualStyleBackColor = true;
+            this.RoomApplyButton.Click += new System.EventHandler(this.RoomApplyButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -710,6 +754,9 @@
         private System.Windows.Forms.Label LabelRoomEventCode;
         private System.Windows.Forms.FlowLayoutPanel RoomEventLayoutPanel;
         private System.Windows.Forms.Button RoomEventNewActionButton;
+        private System.Windows.Forms.Button RoomRemoveButton;
+        private System.Windows.Forms.Button RoomAddButton;
+        private System.Windows.Forms.Button RoomApplyButton;
     }
 }
 

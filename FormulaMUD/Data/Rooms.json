@@ -1,14 +1,13 @@
 {
   "rooms": [
     {
-      "name": "StartRoom",
-      "description": "You are in a starter room. There is an exit to the north.",
       "connections": {
-        "north": "NorthRoom"
+        "north": "NorthRoom",
+        "east": "HiddenRoom"
       },
+      "description": "You are in a starter room. There is an exit to the north.",
       "events": [
         {
-          "name": "OnUserEnter",
           "actions": [
             {
               "action": "SetGoalState",
@@ -16,25 +15,20 @@
               "property": "SendRoomDescription",
               "value": "0"
             }
-          ]
+          ],
+          "name": "OnUserEnter"
         }
-      ]
+      ],
+      "lists": [ ],
+      "name": "StartRoom"
     },
     {
-      "name": "NorthRoom",
-      "description": "You find yourself in a tiny room.",
       "connections": {
         "south": "StartRoom"
       },
-      "lists": [
-        {
-          "name": "Items",
-          "contents": [ "Doodad" ]
-        }
-      ],
+      "description": "You find yourself in a tiny room.",
       "events": [
         {
-          "name": "OnUserEnter",
           "actions": [
             {
               "action": "SetGoalState",
@@ -42,9 +36,35 @@
               "property": "SendRoomDescription",
               "value": "0"
             }
-          ]
+          ],
+          "name": "OnUserEnter"
         }
-      ]
+      ],
+      "lists": [
+        {
+          "contents": [
+            "Doodad"
+          ],
+          "name": "Items"
+        }
+      ],
+      "name": "NorthRoom"
+    },
+    {
+      "connections": {
+        "west": "StartRoom"
+      },
+      "description": "You have discovered a hidden room! Well done!",
+      "events": [ ],
+      "lists": [
+        {
+          "contents": [
+            "Doodad"
+          ],
+          "name": "Items"
+        }
+      ],
+      "name": "HiddenRoom"
     }
   ]
 }
