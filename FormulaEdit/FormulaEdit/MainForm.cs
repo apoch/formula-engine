@@ -51,6 +51,7 @@ namespace FormulaEdit
         {
             RefreshCommandsTab();
             RefreshRoomsTab();
+            RefreshUserTab();
         }
 
         private void RefreshCommandsTab()
@@ -87,6 +88,57 @@ namespace FormulaEdit
             }
 
             RoomListBox_SelectedIndexChanged(null, null);
+        }
+
+        private void RefreshUserTab()
+        {
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name != "User")
+                    continue;
+
+                RefreshUserBindingsTab(archetype);
+                RefreshUserListsTab(archetype);
+                RefreshUserPropertiesTab(archetype);
+                RefreshUserEventsTab(archetype);
+
+                break;
+            }
+        }
+
+
+        private void RefreshUserBindingsTab(MudData.Archetype userArchetype)
+        {
+            // TODO
+        }
+
+        private void RefreshUserListsTab(MudData.Archetype userArchetype)
+        {
+            // TODO
+        }
+
+        private void RefreshUserPropertiesTab(MudData.Archetype userArchetype)
+        {
+            // TODO
+        }
+
+        private void RefreshUserEventsTab(MudData.Archetype userArchetype)
+        {
+            UserEventsListBox.Items.Clear();
+
+            if (userArchetype.events == null)
+                return;
+
+            foreach (var e in userArchetype.events)
+            {
+                UserEventsListBox.Items.Add(e);
+            }
         }
 
         private void CommandListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -462,9 +514,26 @@ namespace FormulaEdit
                 return;
 
             var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
-            item.actions.Add(new Dictionary<string, string>());
+            item.actions.Add(new MudData.FormulaAction());
 
             ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // TODO - remove all the dead functions
+        }
+
+        private void UserEventsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UserEventActionsPanel.Controls.Clear();
+
+            if (UserEventsListBox.SelectedItem == null)
+                return;
+
+            var item = UserEventsListBox.SelectedItem as MudData.FormulaEvent;
+
+            ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel);
         }
     }
 }

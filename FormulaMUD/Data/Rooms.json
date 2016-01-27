@@ -43,7 +43,7 @@
       "lists": [
         {
           "contents": [
-            "Doodad"
+            "ITEM_Doodad"
           ],
           "name": "Items"
         }
@@ -71,7 +71,7 @@
       "lists": [
         {
           "contents": [
-            "Doodad"
+            "ITEM_Doodad"
           ],
           "name": "Items"
         }

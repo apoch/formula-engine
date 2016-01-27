@@ -56,10 +56,28 @@
     <Compile Include="MudData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptActionEditControl.cs">
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ScriptActionEditControl.Designer.cs">
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.Designer.cs">
+      <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlForEach.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlForEach.Designer.cs">
+      <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.Designer.cs">
+      <DependentUpon>ScriptActionControlSetGoalState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\ScriptActionEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\ScriptActionEditControl.Designer.cs">
       <DependentUpon>ScriptActionEditControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
@@ -74,7 +92,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ScriptActionEditControl.resx">
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.resx">
+      <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlForEach.resx">
+      <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.resx">
+      <DependentUpon>ScriptActionControlSetGoalState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\ScriptActionEditControl.resx">
       <DependentUpon>ScriptActionEditControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

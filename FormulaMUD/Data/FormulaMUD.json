@@ -206,7 +206,7 @@
     },
 
     {
-      "name": "Doodad",
+      "name": "ITEM_Doodad",
       "properties": {
         "Title": "TEXT:ITEM_DOODAD"
       }

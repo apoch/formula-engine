@@ -30,10 +30,7 @@
         {
             this.LabelAction = new System.Windows.Forms.Label();
             this.ActionComboBox = new System.Windows.Forms.ComboBox();
-            this.ActionDataGrid = new System.Windows.Forms.DataGridView();
-            this.ActionKeyColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ActionValueColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.ActionDataGrid)).BeginInit();
+            this.ContainerPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // LabelAction
@@ -64,41 +61,29 @@
             this.ActionComboBox.Size = new System.Drawing.Size(167, 21);
             this.ActionComboBox.TabIndex = 1;
             // 
-            // ActionDataGrid
+            // ContainerPanel
             // 
-            this.ActionDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ContainerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ActionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ActionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ActionKeyColumn,
-            this.ActionValueColumn});
-            this.ActionDataGrid.Location = new System.Drawing.Point(3, 30);
-            this.ActionDataGrid.Name = "ActionDataGrid";
-            this.ActionDataGrid.Size = new System.Drawing.Size(253, 63);
-            this.ActionDataGrid.TabIndex = 2;
-            // 
-            // ActionKeyColumn
-            // 
-            this.ActionKeyColumn.HeaderText = "Key";
-            this.ActionKeyColumn.Name = "ActionKeyColumn";
-            // 
-            // ActionValueColumn
-            // 
-            this.ActionValueColumn.HeaderText = "Value";
-            this.ActionValueColumn.Name = "ActionValueColumn";
+            this.ContainerPanel.AutoSize = true;
+            this.ContainerPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.ContainerPanel.Location = new System.Drawing.Point(8, 30);
+            this.ContainerPanel.Name = "ContainerPanel";
+            this.ContainerPanel.Size = new System.Drawing.Size(245, 60);
+            this.ContainerPanel.TabIndex = 2;
             // 
             // ScriptActionEditControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.ActionDataGrid);
+            this.AutoSize = true;
+            this.Controls.Add(this.ContainerPanel);
             this.Controls.Add(this.ActionComboBox);
             this.Controls.Add(this.LabelAction);
             this.MinimumSize = new System.Drawing.Size(259, 96);
             this.Name = "ScriptActionEditControl";
             this.Size = new System.Drawing.Size(259, 96);
-            ((System.ComponentModel.ISupportInitialize)(this.ActionDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,8 +93,6 @@
 
         private System.Windows.Forms.Label LabelAction;
         private System.Windows.Forms.ComboBox ActionComboBox;
-        private System.Windows.Forms.DataGridView ActionDataGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActionKeyColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActionValueColumn;
+        private System.Windows.Forms.FlowLayoutPanel ContainerPanel;
     }
 }

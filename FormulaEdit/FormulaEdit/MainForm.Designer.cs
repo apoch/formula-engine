@@ -87,6 +87,13 @@
             this.RoomEventApplyButton = new System.Windows.Forms.Button();
             this.RoomEventRemoveButton = new System.Windows.Forms.Button();
             this.RoomEventAddButton = new System.Windows.Forms.Button();
+            this.UserEditorTabs = new System.Windows.Forms.TabControl();
+            this.UserBindingsTab = new System.Windows.Forms.TabPage();
+            this.UserListsTab = new System.Windows.Forms.TabPage();
+            this.UserPropertiesTab = new System.Windows.Forms.TabPage();
+            this.UserEventsTab = new System.Windows.Forms.TabPage();
+            this.UserEventsListBox = new System.Windows.Forms.ListBox();
+            this.UserEventActionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -94,7 +101,10 @@
             this.RoomConnectionsTab.SuspendLayout();
             this.RoomListsTab.SuspendLayout();
             this.RoomEventsTab.SuspendLayout();
+            this.UserTab.SuspendLayout();
             this.PrimaryMenuStrip.SuspendLayout();
+            this.UserEditorTabs.SuspendLayout();
+            this.UserEventsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainEditorTabs
@@ -222,7 +232,7 @@
             this.CommandListBox.FormattingEnabled = true;
             this.CommandListBox.Location = new System.Drawing.Point(7, 7);
             this.CommandListBox.Name = "CommandListBox";
-            this.CommandListBox.Size = new System.Drawing.Size(184, 381);
+            this.CommandListBox.Size = new System.Drawing.Size(184, 394);
             this.CommandListBox.TabIndex = 0;
             this.CommandListBox.SelectedIndexChanged += new System.EventHandler(this.CommandListBox_SelectedIndexChanged);
             // 
@@ -538,7 +548,7 @@
             this.RoomListBox.FormattingEnabled = true;
             this.RoomListBox.Location = new System.Drawing.Point(7, 7);
             this.RoomListBox.Name = "RoomListBox";
-            this.RoomListBox.Size = new System.Drawing.Size(184, 381);
+            this.RoomListBox.Size = new System.Drawing.Size(184, 394);
             this.RoomListBox.TabIndex = 0;
             this.RoomListBox.SelectedIndexChanged += new System.EventHandler(this.RoomListBox_SelectedIndexChanged);
             // 
@@ -562,6 +572,7 @@
             // 
             // UserTab
             // 
+            this.UserTab.Controls.Add(this.UserEditorTabs);
             this.UserTab.Location = new System.Drawing.Point(4, 22);
             this.UserTab.Name = "UserTab";
             this.UserTab.Size = new System.Drawing.Size(729, 450);
@@ -709,6 +720,87 @@
             this.RoomEventAddButton.UseVisualStyleBackColor = true;
             this.RoomEventAddButton.Click += new System.EventHandler(this.RoomEventAddButton_Click);
             // 
+            // UserEditorTabs
+            // 
+            this.UserEditorTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.UserEditorTabs.Controls.Add(this.UserBindingsTab);
+            this.UserEditorTabs.Controls.Add(this.UserListsTab);
+            this.UserEditorTabs.Controls.Add(this.UserPropertiesTab);
+            this.UserEditorTabs.Controls.Add(this.UserEventsTab);
+            this.UserEditorTabs.Location = new System.Drawing.Point(3, 3);
+            this.UserEditorTabs.Name = "UserEditorTabs";
+            this.UserEditorTabs.SelectedIndex = 0;
+            this.UserEditorTabs.Size = new System.Drawing.Size(723, 444);
+            this.UserEditorTabs.TabIndex = 0;
+            // 
+            // UserBindingsTab
+            // 
+            this.UserBindingsTab.Location = new System.Drawing.Point(4, 22);
+            this.UserBindingsTab.Name = "UserBindingsTab";
+            this.UserBindingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.UserBindingsTab.Size = new System.Drawing.Size(715, 418);
+            this.UserBindingsTab.TabIndex = 0;
+            this.UserBindingsTab.Text = "Bindings";
+            this.UserBindingsTab.UseVisualStyleBackColor = true;
+            // 
+            // UserListsTab
+            // 
+            this.UserListsTab.Location = new System.Drawing.Point(4, 22);
+            this.UserListsTab.Name = "UserListsTab";
+            this.UserListsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.UserListsTab.Size = new System.Drawing.Size(715, 418);
+            this.UserListsTab.TabIndex = 1;
+            this.UserListsTab.Text = "Lists";
+            this.UserListsTab.UseVisualStyleBackColor = true;
+            // 
+            // UserPropertiesTab
+            // 
+            this.UserPropertiesTab.Location = new System.Drawing.Point(4, 22);
+            this.UserPropertiesTab.Name = "UserPropertiesTab";
+            this.UserPropertiesTab.Size = new System.Drawing.Size(715, 418);
+            this.UserPropertiesTab.TabIndex = 2;
+            this.UserPropertiesTab.Text = "Properties";
+            this.UserPropertiesTab.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsTab
+            // 
+            this.UserEventsTab.Controls.Add(this.UserEventActionsPanel);
+            this.UserEventsTab.Controls.Add(this.UserEventsListBox);
+            this.UserEventsTab.Location = new System.Drawing.Point(4, 22);
+            this.UserEventsTab.Name = "UserEventsTab";
+            this.UserEventsTab.Size = new System.Drawing.Size(715, 418);
+            this.UserEventsTab.TabIndex = 3;
+            this.UserEventsTab.Text = "Events";
+            this.UserEventsTab.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsListBox
+            // 
+            this.UserEventsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserEventsListBox.FormattingEnabled = true;
+            this.UserEventsListBox.Location = new System.Drawing.Point(3, 3);
+            this.UserEventsListBox.Name = "UserEventsListBox";
+            this.UserEventsListBox.Size = new System.Drawing.Size(164, 407);
+            this.UserEventsListBox.TabIndex = 0;
+            this.UserEventsListBox.SelectedIndexChanged += new System.EventHandler(this.UserEventsListBox_SelectedIndexChanged);
+            // 
+            // UserEventActionsPanel
+            // 
+            this.UserEventActionsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.UserEventActionsPanel.AutoScroll = true;
+            this.UserEventActionsPanel.BackColor = System.Drawing.Color.Transparent;
+            this.UserEventActionsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.UserEventActionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.UserEventActionsPanel.Location = new System.Drawing.Point(173, 38);
+            this.UserEventActionsPanel.Name = "UserEventActionsPanel";
+            this.UserEventActionsPanel.Size = new System.Drawing.Size(539, 327);
+            this.UserEventActionsPanel.TabIndex = 1;
+            this.UserEventActionsPanel.WrapContents = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -720,6 +812,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormulaEdit";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainEditorTabs.ResumeLayout(false);
             this.CommandsTab.ResumeLayout(false);
             this.CommandsTab.PerformLayout();
@@ -732,8 +825,11 @@
             this.RoomListsTab.PerformLayout();
             this.RoomEventsTab.ResumeLayout(false);
             this.RoomEventsTab.PerformLayout();
+            this.UserTab.ResumeLayout(false);
             this.PrimaryMenuStrip.ResumeLayout(false);
             this.PrimaryMenuStrip.PerformLayout();
+            this.UserEditorTabs.ResumeLayout(false);
+            this.UserEventsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -800,6 +896,13 @@
         private System.Windows.Forms.Button RoomEventApplyButton;
         private System.Windows.Forms.Button RoomEventRemoveButton;
         private System.Windows.Forms.Button RoomEventAddButton;
+        private System.Windows.Forms.TabControl UserEditorTabs;
+        private System.Windows.Forms.TabPage UserBindingsTab;
+        private System.Windows.Forms.TabPage UserListsTab;
+        private System.Windows.Forms.TabPage UserPropertiesTab;
+        private System.Windows.Forms.TabPage UserEventsTab;
+        private System.Windows.Forms.ListBox UserEventsListBox;
+        private System.Windows.Forms.FlowLayoutPanel UserEventActionsPanel;
     }
 }
 
