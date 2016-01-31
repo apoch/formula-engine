@@ -74,6 +74,12 @@
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlForEach.Designer.cs">
       <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlIf.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlIf.Designer.cs">
+      <DependentUpon>ScriptActionControlIf.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlListTransfer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlForEach.resx">
       <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlIf.resx">
+      <DependentUpon>ScriptActionControlIf.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlListTransfer.resx">
       <DependentUpon>ScriptActionControlListTransfer.cs</DependentUpon>

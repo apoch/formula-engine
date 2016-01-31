@@ -146,7 +146,7 @@ namespace FormulaEdit
             }
             else if (action.GetType() == typeof(MudData.FormulaActionIf))
             {
-                // TODO
+                ctl = new ScriptActionControlIf(action as MudData.FormulaActionIf);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionListTransfer))
             {
