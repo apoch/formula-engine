@@ -196,7 +196,7 @@ namespace FormulaEdit
             public string list = "";
 
             [DataMember]
-            public List<FormulaAction> actions = null;
+            public List<FormulaAction> actions = new List<FormulaAction>();
         }
 
         [DataContract]

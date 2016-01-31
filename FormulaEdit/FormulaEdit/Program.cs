@@ -19,4 +19,18 @@ namespace FormulaEdit
             Application.Run(new MainForm());
         }
     }
+
+
+    internal class Utilities
+    {
+        static internal void ResizeControls(FlowLayoutPanel parent)
+        {
+            int w = parent.ClientRectangle.Width - 10;
+
+            foreach (Control c in parent.Controls)
+            {
+                c.Width = w;
+            }
+        }
+    }
 }

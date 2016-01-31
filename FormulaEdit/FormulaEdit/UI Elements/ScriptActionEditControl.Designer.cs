@@ -30,7 +30,7 @@
         {
             this.LabelAction = new System.Windows.Forms.Label();
             this.ActionComboBox = new System.Windows.Forms.ComboBox();
-            this.ContainerPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.ContainerPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // LabelAction
@@ -60,6 +60,7 @@
             this.ActionComboBox.Name = "ActionComboBox";
             this.ActionComboBox.Size = new System.Drawing.Size(167, 21);
             this.ActionComboBox.TabIndex = 1;
+            this.ActionComboBox.SelectedIndexChanged += new System.EventHandler(this.ActionComboBox_SelectedIndexChanged);
             // 
             // ContainerPanel
             // 
@@ -67,10 +68,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ContainerPanel.AutoSize = true;
-            this.ContainerPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.ContainerPanel.Location = new System.Drawing.Point(8, 30);
+            this.ContainerPanel.Location = new System.Drawing.Point(6, 30);
             this.ContainerPanel.Name = "ContainerPanel";
-            this.ContainerPanel.Size = new System.Drawing.Size(245, 60);
+            this.ContainerPanel.Size = new System.Drawing.Size(248, 62);
             this.ContainerPanel.TabIndex = 2;
             // 
             // ScriptActionEditControl
@@ -93,6 +93,6 @@
 
         private System.Windows.Forms.Label LabelAction;
         private System.Windows.Forms.ComboBox ActionComboBox;
-        private System.Windows.Forms.FlowLayoutPanel ContainerPanel;
+        private System.Windows.Forms.Panel ContainerPanel;
     }
 }

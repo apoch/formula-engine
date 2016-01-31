@@ -18,6 +18,8 @@ namespace FormulaEdit
         public ScriptActionEditControl()
         {
             InitializeComponent();
+
+            Paint += ScriptActionEditControl_Paint;
         }
 
         internal ScriptActionEditControl(MudData.FormulaAction containerAction)
@@ -25,38 +27,9 @@ namespace FormulaEdit
             InitializeComponent();
 
             ActionComboBox.SelectedItem = containerAction.action;
+            CreateEditorControls(containerAction);
 
-            Control ctl = null;
-            MudData.FormulaAction action = containerAction.InternalAction;
-            if (action == null)
-                action = containerAction;
-
-            if (action.GetType() == typeof(MudData.FormulaActionAddSelfToList))
-            {
-                ctl = new ScriptActionControlAddSelfToList(action as MudData.FormulaActionAddSelfToList);
-            }
-            else if (action.GetType() == typeof(MudData.FormulaActionCreateListMember))
-            {
-                // TODO
-            }
-            else if (action.GetType() == typeof(MudData.FormulaActionIf))
-            {
-                // TODO
-            }
-            else if (action.GetType() == typeof(MudData.FormulaActionForEach))
-            {
-                ctl = new ScriptActionControlForEach(action as MudData.FormulaActionForEach);
-            }
-            else if (action.GetType() == typeof(MudData.FormulaActionSetGoalState))
-            {
-                ctl = new ScriptActionControlSetGoalState(action as MudData.FormulaActionSetGoalState);
-            }
-
-            if (ctl != null)
-            {
-                ContainerPanel.Controls.Add(ctl);
-                ctl.Dock = DockStyle.Top;
-            }
+            Paint += ScriptActionEditControl_Paint;
         }
 
         private MudData.FormulaAction PopulateActionDictionary()
@@ -71,17 +44,22 @@ namespace FormulaEdit
         }
 
 
-        internal static void PopulatePanel(List<MudData.FormulaAction> actions, Panel panel)
+        private void ScriptActionEditControl_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawLine(Pens.Black, 0, 0, Width, 0);
+        }
+
+
+        internal static void PopulatePanel(List<MudData.FormulaAction> actions, FlowLayoutPanel panel)
         {
             foreach (var action in actions)
             {
                 var editor = new ScriptActionEditControl(action);
                 panel.Controls.Add(editor);
-
-                editor.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-                editor.AutoSize = true;
             }
 
+            panel.PerformLayout();
+            Utilities.ResizeControls(panel);
             panel.Refresh();
         }
 
@@ -96,5 +74,111 @@ namespace FormulaEdit
 
             return ret;
         }
+
+        private void ActionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MudData.FormulaAction action = null;
+
+            if (ActionComboBox.Text == "AddSelfToList")
+            {
+                action = new MudData.FormulaActionAddSelfToList();
+            }
+            else if (ActionComboBox.Text == "CreateListMember")
+            {
+                action = new MudData.FormulaActionCreateListMember();
+            }
+            else if (ActionComboBox.Text == "foreach")
+            {
+                action = new MudData.FormulaActionForEach();
+            }
+            else if (ActionComboBox.Text == "if")
+            {
+                action = new MudData.FormulaActionIf();
+            }
+            else if (ActionComboBox.Text == "ListTransfer")
+            {
+                action = new MudData.FormulaActionListTransfer();
+            }
+            else if (ActionComboBox.Text == "RepeatEvent")
+            {
+                action = new MudData.FormulaActionRepeatEvent();
+            }
+            else if (ActionComboBox.Text == "SetGoalState")
+            {
+                action = new MudData.FormulaActionSetGoalState();
+            }
+            else if (ActionComboBox.Text == "SetProperty")
+            {
+                action = new MudData.FormulaActionSetProperty();
+            }
+            else if (ActionComboBox.Text == "TriggerEvent")
+            {
+                action = new MudData.FormulaActionTriggerEvent();
+            }
+            else
+            {
+                action = new MudData.FormulaAction();
+            }
+
+            CreateEditorControls(action);
+        }
+
+        private void CreateEditorControls(MudData.FormulaAction containerAction)
+        {
+            ContainerPanel.Controls.Clear();
+
+            Control ctl = null;
+            MudData.FormulaAction action = containerAction.InternalAction;
+            if (action == null)
+                action = containerAction;
+
+            if (action.GetType() == typeof(MudData.FormulaActionAddSelfToList))
+            {
+                ctl = new ScriptActionControlAddSelfToList(action as MudData.FormulaActionAddSelfToList);
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionCreateListMember))
+            {
+                ctl = new ScriptActionControlCreateListMember(action as MudData.FormulaActionCreateListMember);
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionForEach))
+            {
+                ctl = new ScriptActionControlForEach(action as MudData.FormulaActionForEach);
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionIf))
+            {
+                // TODO
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionListTransfer))
+            {
+                ctl = new ScriptActionControlListTransfer(action as MudData.FormulaActionListTransfer);
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionRepeatEvent))
+            {
+                // TODO
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionSetGoalState))
+            {
+                ctl = new ScriptActionControlSetGoalState(action as MudData.FormulaActionSetGoalState);
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionSetProperty))
+            {
+                // TODO
+            }
+            else if (action.GetType() == typeof(MudData.FormulaActionTriggerEvent))
+            {
+                // TODO
+            }
+
+            if (ctl != null)
+            {
+                ContainerPanel.Controls.Add(ctl);
+                ctl.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                MessageBox.Show("Missing support for actions of this type: " + action.GetType().ToString(), "FormulaEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

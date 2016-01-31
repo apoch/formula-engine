@@ -62,11 +62,23 @@
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.Designer.cs">
       <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlCreateListMember.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlCreateListMember.Designer.cs">
+      <DependentUpon>ScriptActionControlCreateListMember.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlForEach.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlForEach.Designer.cs">
       <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlListTransfer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlListTransfer.Designer.cs">
+      <DependentUpon>ScriptActionControlListTransfer.cs</DependentUpon>
     </Compile>
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.cs">
       <SubType>UserControl</SubType>
@@ -95,8 +107,14 @@
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.resx">
       <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlCreateListMember.resx">
+      <DependentUpon>ScriptActionControlCreateListMember.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlForEach.resx">
       <DependentUpon>ScriptActionControlForEach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlListTransfer.resx">
+      <DependentUpon>ScriptActionControlListTransfer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.resx">
       <DependentUpon>ScriptActionControlSetGoalState.cs</DependentUpon>

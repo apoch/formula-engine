@@ -32,6 +32,18 @@ namespace FormulaEdit
         {
             InitializeComponent();
 
+
+            UserEventActionsPanel.Resize += (ctl, args) =>
+            {
+                Utilities.ResizeControls(UserEventActionsPanel);
+            };
+
+            RoomEventLayoutPanel.Resize += (ctl, args) =>
+            {
+                Utilities.ResizeControls(RoomEventLayoutPanel);
+            };
+
+
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
         }
 

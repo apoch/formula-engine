@@ -10,19 +10,19 @@ using System.Windows.Forms;
 
 namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
-    public partial class ScriptActionControlForEach : UserControl
+    public partial class ScriptActionControlCreateListMember : UserControl
     {
-        internal ScriptActionControlForEach(MudData.FormulaActionForEach action)
+        internal ScriptActionControlCreateListMember(MudData.FormulaActionCreateListMember action)
         {
             InitializeComponent();
 
             ListComboBox.Text = action.list;
+            ArchetypeComboBox.Text = action.archetype;
 
-            ActionsFlowPanel.Resize += (ctl, args) => {
-                Utilities.ResizeControls(ActionsFlowPanel);
-            };
-
-            ScriptActionEditControl.PopulatePanel(action.actions, ActionsFlowPanel);
+            foreach (var kvp in action.@params)
+            {
+                ParamDataGridView.Rows.Add(new object[] { kvp.Key, kvp.Value });
+            }
         }
     }
 }
