@@ -54,6 +54,8 @@
             // 
             // TargetComboBox
             // 
+            this.TargetComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.TargetComboBox.FormattingEnabled = true;
             this.TargetComboBox.Location = new System.Drawing.Point(50, 8);
             this.TargetComboBox.Name = "TargetComboBox";
@@ -62,6 +64,8 @@
             // 
             // ListComboBox
             // 
+            this.ListComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ListComboBox.FormattingEnabled = true;
             this.ListComboBox.Location = new System.Drawing.Point(50, 37);
             this.ListComboBox.Name = "ListComboBox";

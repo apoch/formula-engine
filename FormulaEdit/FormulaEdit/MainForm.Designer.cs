@@ -812,7 +812,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormulaEdit";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainEditorTabs.ResumeLayout(false);
             this.CommandsTab.ResumeLayout(false);
             this.CommandsTab.PerformLayout();

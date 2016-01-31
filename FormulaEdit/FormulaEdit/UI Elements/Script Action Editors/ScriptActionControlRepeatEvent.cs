@@ -2,14 +2,14 @@
 
 namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
-    public partial class ScriptActionControlCreateListMember : UserControl
+    public partial class ScriptActionControlRepeatEvent : UserControl
     {
-        internal ScriptActionControlCreateListMember(MudData.FormulaActionCreateListMember action)
+        internal ScriptActionControlRepeatEvent(MudData.FormulaActionRepeatEvent action)
         {
             InitializeComponent();
 
-            ListComboBox.Text = action.list;
-            ArchetypeComboBox.Text = action.archetype;
+            EventComboBox.Text = action.@event;
+            RepeatCountTextBox.Text = action.count;
 
             foreach (var kvp in action.@params)
             {

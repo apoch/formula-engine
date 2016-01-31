@@ -92,6 +92,24 @@
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.Designer.cs">
       <DependentUpon>ScriptActionControlSetGoalState.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetProperty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlSetProperty.Designer.cs">
+      <DependentUpon>ScriptActionControlSetProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlRepeatEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlRepeatEvent.Designer.cs">
+      <DependentUpon>ScriptActionControlRepeatEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlTriggerEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlTriggerEvent.Designer.cs">
+      <DependentUpon>ScriptActionControlTriggerEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI Elements\ScriptActionEditControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -127,6 +145,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlSetGoalState.resx">
       <DependentUpon>ScriptActionControlSetGoalState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlSetProperty.resx">
+      <DependentUpon>ScriptActionControlSetProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlRepeatEvent.resx">
+      <DependentUpon>ScriptActionControlRepeatEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlTriggerEvent.resx">
+      <DependentUpon>ScriptActionControlTriggerEvent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\ScriptActionEditControl.resx">
       <DependentUpon>ScriptActionEditControl.cs</DependentUpon>

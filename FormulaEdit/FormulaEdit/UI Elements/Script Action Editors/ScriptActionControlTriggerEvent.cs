@@ -2,14 +2,14 @@
 
 namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
-    public partial class ScriptActionControlCreateListMember : UserControl
+    public partial class ScriptActionControlTriggerEvent : UserControl
     {
-        internal ScriptActionControlCreateListMember(MudData.FormulaActionCreateListMember action)
+        internal ScriptActionControlTriggerEvent(MudData.FormulaActionTriggerEvent action)
         {
             InitializeComponent();
 
-            ListComboBox.Text = action.list;
-            ArchetypeComboBox.Text = action.archetype;
+            TargetComboBox.Text = action.target;
+            EventComboBox.Text = action.@event;
 
             foreach (var kvp in action.@params)
             {

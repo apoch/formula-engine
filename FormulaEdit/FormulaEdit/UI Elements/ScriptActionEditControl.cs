@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using FormulaEdit.UI_Elements.Script_Action_Editors;
@@ -154,7 +149,7 @@ namespace FormulaEdit
             }
             else if (action.GetType() == typeof(MudData.FormulaActionRepeatEvent))
             {
-                // TODO
+                ctl = new ScriptActionControlRepeatEvent(action as MudData.FormulaActionRepeatEvent);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionSetGoalState))
             {
@@ -162,11 +157,11 @@ namespace FormulaEdit
             }
             else if (action.GetType() == typeof(MudData.FormulaActionSetProperty))
             {
-                // TODO
+                ctl = new ScriptActionControlSetProperty(action as MudData.FormulaActionSetProperty);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionTriggerEvent))
             {
-                // TODO
+                ctl = new ScriptActionControlTriggerEvent(action as MudData.FormulaActionTriggerEvent);
             }
 
             if (ctl != null)

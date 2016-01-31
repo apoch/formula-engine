@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FormulaEdit
@@ -127,17 +121,17 @@ namespace FormulaEdit
 
         private void RefreshUserBindingsTab(MudData.Archetype userArchetype)
         {
-            // TODO
+            // TODO - user bindings tab implementation
         }
 
         private void RefreshUserListsTab(MudData.Archetype userArchetype)
         {
-            // TODO
+            // TODO - user lists tab implementation
         }
 
         private void RefreshUserPropertiesTab(MudData.Archetype userArchetype)
         {
-            // TODO
+            // TODO - user properties tab implementation
         }
 
         private void RefreshUserEventsTab(MudData.Archetype userArchetype)
@@ -529,11 +523,6 @@ namespace FormulaEdit
             item.actions.Add(new MudData.FormulaAction());
 
             ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // TODO - remove all the dead functions
         }
 
         private void UserEventsListBox_SelectedIndexChanged(object sender, EventArgs e)
