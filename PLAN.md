@@ -1,5 +1,13 @@
 ## formula-engine plans
 
+### Jan. 31, 2016
+FormulaEngine is officially going to be presented at GDC 2016... which is both exciting and daunting as it means I have a lot of preparation to do! Fortunately I can safely say that the code that is in FormulaMUD is a good representation of what I want to show off, and I'm treating everything else as a luxury.
+
+"Everything else" principally means FormulaEdit right now. I want to show that it's not hard to build a really snazzy UI that can make the creation of FormulaEngine content a lot less annoying. Mucking around in JSON files is not fun for anyone - well, except for Pat. Having a solid UI on top of the data makes creating FormulaMUD content a lot more fun, even in the nascent state that it's in right now.
+
+<br>
+
+
 ### Jan. 17, 2016
 Thanks to a flash of inspiration, my goals have shifted a bit on the demo side of this project. Instead of building the abstract demos that I had lined up previously, most of which were just meant to exercise specific features of the FormulaEngine code, I've decided to work on a simple MUD engine.
 
