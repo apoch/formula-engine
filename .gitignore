@@ -16,3 +16,4 @@ ipch/**
 *.opendb
 FormulaEdit/FormulaEdit/bin/**
 FormulaEdit/FormulaEdit/obj/**
+FormulaEdit/.vs/**
