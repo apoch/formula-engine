@@ -28,26 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.RemoveActionButton = new System.Windows.Forms.Button();
             this.AddActionButton = new System.Windows.Forms.Button();
             this.LabelActions = new System.Windows.Forms.Label();
             this.ActionsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConditionTextBox = new System.Windows.Forms.TextBox();
             this.LabelCondition = new System.Windows.Forms.Label();
-            this.RemoveElseActionButton = new System.Windows.Forms.Button();
             this.AddElseActionButton = new System.Windows.Forms.Button();
             this.LabelElse = new System.Windows.Forms.Label();
             this.ElseActionsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
-            // 
-            // RemoveActionButton
-            // 
-            this.RemoveActionButton.Location = new System.Drawing.Point(123, 29);
-            this.RemoveActionButton.Name = "RemoveActionButton";
-            this.RemoveActionButton.Size = new System.Drawing.Size(33, 22);
-            this.RemoveActionButton.TabIndex = 9;
-            this.RemoveActionButton.Text = "-";
-            this.RemoveActionButton.UseVisualStyleBackColor = true;
             // 
             // AddActionButton
             // 
@@ -96,15 +85,6 @@
             this.LabelCondition.TabIndex = 11;
             this.LabelCondition.Text = "Condition:";
             // 
-            // RemoveElseActionButton
-            // 
-            this.RemoveElseActionButton.Location = new System.Drawing.Point(123, 195);
-            this.RemoveElseActionButton.Name = "RemoveElseActionButton";
-            this.RemoveElseActionButton.Size = new System.Drawing.Size(33, 22);
-            this.RemoveElseActionButton.TabIndex = 15;
-            this.RemoveElseActionButton.Text = "-";
-            this.RemoveElseActionButton.UseVisualStyleBackColor = true;
-            // 
             // AddElseActionButton
             // 
             this.AddElseActionButton.Location = new System.Drawing.Point(84, 195);
@@ -139,13 +119,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.RemoveElseActionButton);
             this.Controls.Add(this.AddElseActionButton);
             this.Controls.Add(this.LabelElse);
             this.Controls.Add(this.ElseActionsFlowPanel);
             this.Controls.Add(this.LabelCondition);
             this.Controls.Add(this.ConditionTextBox);
-            this.Controls.Add(this.RemoveActionButton);
             this.Controls.Add(this.AddActionButton);
             this.Controls.Add(this.LabelActions);
             this.Controls.Add(this.ActionsFlowPanel);
@@ -157,14 +135,11 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button RemoveActionButton;
         private System.Windows.Forms.Button AddActionButton;
         private System.Windows.Forms.Label LabelActions;
         private System.Windows.Forms.FlowLayoutPanel ActionsFlowPanel;
         private System.Windows.Forms.TextBox ConditionTextBox;
         private System.Windows.Forms.Label LabelCondition;
-        private System.Windows.Forms.Button RemoveElseActionButton;
         private System.Windows.Forms.Button AddElseActionButton;
         private System.Windows.Forms.Label LabelElse;
         private System.Windows.Forms.FlowLayoutPanel ElseActionsFlowPanel;

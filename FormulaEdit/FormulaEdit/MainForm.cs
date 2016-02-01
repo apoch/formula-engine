@@ -530,11 +530,20 @@ namespace FormulaEdit
             UserEventActionsPanel.Controls.Clear();
 
             if (UserEventsListBox.SelectedItem == null)
+            {
+                UserEventsEventCodeTextBox.Text = "";
                 return;
+            }
 
             var item = UserEventsListBox.SelectedItem as MudData.FormulaEvent;
 
+            UserEventsEventCodeTextBox.Text = item.name;
             ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel);
+        }
+
+        private void UserPropertiesAddPropertyButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -33,7 +33,6 @@
             this.ActionsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.LabelActions = new System.Windows.Forms.Label();
             this.AddActionButton = new System.Windows.Forms.Button();
-            this.RemoveActionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ListComboBox
@@ -85,21 +84,11 @@
             this.AddActionButton.Text = "+";
             this.AddActionButton.UseVisualStyleBackColor = true;
             // 
-            // RemoveActionButton
-            // 
-            this.RemoveActionButton.Location = new System.Drawing.Point(93, 30);
-            this.RemoveActionButton.Name = "RemoveActionButton";
-            this.RemoveActionButton.Size = new System.Drawing.Size(33, 22);
-            this.RemoveActionButton.TabIndex = 5;
-            this.RemoveActionButton.Text = "-";
-            this.RemoveActionButton.UseVisualStyleBackColor = true;
-            // 
             // ScriptActionControlForEach
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.RemoveActionButton);
             this.Controls.Add(this.AddActionButton);
             this.Controls.Add(this.LabelActions);
             this.Controls.Add(this.ActionsFlowPanel);
@@ -120,6 +109,5 @@
         private System.Windows.Forms.FlowLayoutPanel ActionsFlowPanel;
         private System.Windows.Forms.Label LabelActions;
         private System.Windows.Forms.Button AddActionButton;
-        private System.Windows.Forms.Button RemoveActionButton;
     }
 }

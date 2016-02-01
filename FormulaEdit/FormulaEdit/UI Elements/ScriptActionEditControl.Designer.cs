@@ -31,6 +31,7 @@
             this.LabelAction = new System.Windows.Forms.Label();
             this.ActionComboBox = new System.Windows.Forms.ComboBox();
             this.ContainerPanel = new System.Windows.Forms.Panel();
+            this.DeleteActionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LabelAction
@@ -73,11 +74,22 @@
             this.ContainerPanel.Size = new System.Drawing.Size(248, 62);
             this.ContainerPanel.TabIndex = 2;
             // 
+            // DeleteActionButton
+            // 
+            this.DeleteActionButton.Font = new System.Drawing.Font("Segoe UI Symbol", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeleteActionButton.Location = new System.Drawing.Point(222, 3);
+            this.DeleteActionButton.Name = "DeleteActionButton";
+            this.DeleteActionButton.Size = new System.Drawing.Size(22, 22);
+            this.DeleteActionButton.TabIndex = 3;
+            this.DeleteActionButton.Text = "✘";
+            this.DeleteActionButton.UseVisualStyleBackColor = true;
+            // 
             // ScriptActionEditControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.DeleteActionButton);
             this.Controls.Add(this.ContainerPanel);
             this.Controls.Add(this.ActionComboBox);
             this.Controls.Add(this.LabelAction);
@@ -94,5 +106,6 @@
         private System.Windows.Forms.Label LabelAction;
         private System.Windows.Forms.ComboBox ActionComboBox;
         private System.Windows.Forms.Panel ContainerPanel;
+        private System.Windows.Forms.Button DeleteActionButton;
     }
 }
