@@ -78,15 +78,43 @@
             this.LabelInternalRoomName = new System.Windows.Forms.Label();
             this.RoomListBox = new System.Windows.Forms.ListBox();
             this.ItemsTab = new System.Windows.Forms.TabPage();
+            this.RemoveItemButton = new System.Windows.Forms.Button();
+            this.AddItemButton = new System.Windows.Forms.Button();
+            this.ItemsListBox = new System.Windows.Forms.ListBox();
             this.TextTab = new System.Windows.Forms.TabPage();
             this.UserTab = new System.Windows.Forms.TabPage();
             this.UserEditorTabs = new System.Windows.Forms.TabControl();
-            this.UserBindingsTab = new System.Windows.Forms.TabPage();
-            this.UserListsTab = new System.Windows.Forms.TabPage();
-            this.UserPropertiesTab = new System.Windows.Forms.TabPage();
             this.UserEventsTab = new System.Windows.Forms.TabPage();
+            this.UserEventsApplyButton = new System.Windows.Forms.Button();
+            this.UserEventsRemoveEventButton = new System.Windows.Forms.Button();
+            this.UserEventsAddEventButton = new System.Windows.Forms.Button();
+            this.UserEventsNewActionButton = new System.Windows.Forms.Button();
+            this.LabelUserEventsEventCode = new System.Windows.Forms.Label();
+            this.UserEventsEventCodeTextBox = new System.Windows.Forms.TextBox();
             this.UserEventActionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.UserEventsListBox = new System.Windows.Forms.ListBox();
+            this.UserPropertiesTab = new System.Windows.Forms.TabPage();
+            this.LabelUserPropertiesFormula = new System.Windows.Forms.Label();
+            this.UserPropertiesPropertyFormulaTextBox = new System.Windows.Forms.TextBox();
+            this.LabelUserPropertiesPropertyName = new System.Windows.Forms.Label();
+            this.UserPropertiesPropertyNameTextBox = new System.Windows.Forms.TextBox();
+            this.UserPropertiesApplyButton = new System.Windows.Forms.Button();
+            this.UserPropertiesRemovePropertyButton = new System.Windows.Forms.Button();
+            this.UserPropertiesAddPropertyButton = new System.Windows.Forms.Button();
+            this.UserPropertiesListBox = new System.Windows.Forms.ListBox();
+            this.UserListsTab = new System.Windows.Forms.TabPage();
+            this.LabelUserListsContents = new System.Windows.Forms.Label();
+            this.UserListsListContentsTextBox = new System.Windows.Forms.TextBox();
+            this.LabelUserListsListName = new System.Windows.Forms.Label();
+            this.UserListsListNameTextBox = new System.Windows.Forms.TextBox();
+            this.UserListsApplyChangesButton = new System.Windows.Forms.Button();
+            this.UserListsRemoveListButton = new System.Windows.Forms.Button();
+            this.UserListsAddListButton = new System.Windows.Forms.Button();
+            this.UserListsListBox = new System.Windows.Forms.ListBox();
+            this.UserBindingsTab = new System.Windows.Forms.TabPage();
+            this.UserBindingsApplyButton = new System.Windows.Forms.Button();
+            this.UserBindingsTextBox = new System.Windows.Forms.TextBox();
+            this.LabelUserBindingsHint = new System.Windows.Forms.Label();
             this.PrimaryMenuStrip = new System.Windows.Forms.MenuStrip();
             this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,31 +122,16 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
-            this.UserEventsEventCodeTextBox = new System.Windows.Forms.TextBox();
-            this.LabelUserEventsEventCode = new System.Windows.Forms.Label();
-            this.UserEventsNewActionButton = new System.Windows.Forms.Button();
-            this.UserEventsAddEventButton = new System.Windows.Forms.Button();
-            this.UserEventsRemoveEventButton = new System.Windows.Forms.Button();
-            this.UserEventsApplyButton = new System.Windows.Forms.Button();
-            this.LabelUserBindingsHint = new System.Windows.Forms.Label();
-            this.UserBindingsTextBox = new System.Windows.Forms.TextBox();
-            this.UserBindingsApplyButton = new System.Windows.Forms.Button();
-            this.UserPropertiesListBox = new System.Windows.Forms.ListBox();
-            this.UserPropertiesApplyButton = new System.Windows.Forms.Button();
-            this.UserPropertiesRemovePropertyButton = new System.Windows.Forms.Button();
-            this.UserPropertiesAddPropertyButton = new System.Windows.Forms.Button();
-            this.UserPropertiesPropertyNameTextBox = new System.Windows.Forms.TextBox();
-            this.LabelUserPropertiesPropertyName = new System.Windows.Forms.Label();
-            this.UserPropertiesPropertyFormulaTextBox = new System.Windows.Forms.TextBox();
-            this.LabelUserPropertiesFormula = new System.Windows.Forms.Label();
-            this.UserListsApplyChangesButton = new System.Windows.Forms.Button();
-            this.UserListsRemoveListButton = new System.Windows.Forms.Button();
-            this.UserListsAddListButton = new System.Windows.Forms.Button();
-            this.UserListsListBox = new System.Windows.Forms.ListBox();
-            this.UserListsListNameTextBox = new System.Windows.Forms.TextBox();
-            this.LabelUserListsListName = new System.Windows.Forms.Label();
-            this.UserListsListContentsTextBox = new System.Windows.Forms.TextBox();
-            this.LabelUserListsContents = new System.Windows.Forms.Label();
+            this.ItemNameTextBox = new System.Windows.Forms.TextBox();
+            this.LabelItemName = new System.Windows.Forms.Label();
+            this.ItemApplyChangesButton = new System.Windows.Forms.Button();
+            this.RemoveTextButton = new System.Windows.Forms.Button();
+            this.AddTextButton = new System.Windows.Forms.Button();
+            this.TextListBox = new System.Windows.Forms.ListBox();
+            this.LabelTextToken = new System.Windows.Forms.Label();
+            this.TextTokenTextBox = new System.Windows.Forms.TextBox();
+            this.TextDataBox = new System.Windows.Forms.TextBox();
+            this.TextApplyButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -126,12 +139,14 @@
             this.RoomConnectionsTab.SuspendLayout();
             this.RoomListsTab.SuspendLayout();
             this.RoomEventsTab.SuspendLayout();
+            this.ItemsTab.SuspendLayout();
+            this.TextTab.SuspendLayout();
             this.UserTab.SuspendLayout();
             this.UserEditorTabs.SuspendLayout();
-            this.UserBindingsTab.SuspendLayout();
-            this.UserListsTab.SuspendLayout();
-            this.UserPropertiesTab.SuspendLayout();
             this.UserEventsTab.SuspendLayout();
+            this.UserPropertiesTab.SuspendLayout();
+            this.UserListsTab.SuspendLayout();
+            this.UserBindingsTab.SuspendLayout();
             this.PrimaryMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -671,6 +686,12 @@
             // 
             // ItemsTab
             // 
+            this.ItemsTab.Controls.Add(this.ItemApplyChangesButton);
+            this.ItemsTab.Controls.Add(this.LabelItemName);
+            this.ItemsTab.Controls.Add(this.ItemNameTextBox);
+            this.ItemsTab.Controls.Add(this.RemoveItemButton);
+            this.ItemsTab.Controls.Add(this.AddItemButton);
+            this.ItemsTab.Controls.Add(this.ItemsListBox);
             this.ItemsTab.Location = new System.Drawing.Point(4, 22);
             this.ItemsTab.Name = "ItemsTab";
             this.ItemsTab.Size = new System.Drawing.Size(729, 450);
@@ -678,8 +699,45 @@
             this.ItemsTab.Text = "Items";
             this.ItemsTab.UseVisualStyleBackColor = true;
             // 
+            // RemoveItemButton
+            // 
+            this.RemoveItemButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RemoveItemButton.Location = new System.Drawing.Point(102, 417);
+            this.RemoveItemButton.Name = "RemoveItemButton";
+            this.RemoveItemButton.Size = new System.Drawing.Size(89, 27);
+            this.RemoveItemButton.TabIndex = 10;
+            this.RemoveItemButton.Text = "Remove";
+            this.RemoveItemButton.UseVisualStyleBackColor = true;
+            // 
+            // AddItemButton
+            // 
+            this.AddItemButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AddItemButton.Location = new System.Drawing.Point(6, 417);
+            this.AddItemButton.Name = "AddItemButton";
+            this.AddItemButton.Size = new System.Drawing.Size(89, 27);
+            this.AddItemButton.TabIndex = 9;
+            this.AddItemButton.Text = "Add";
+            this.AddItemButton.UseVisualStyleBackColor = true;
+            // 
+            // ItemsListBox
+            // 
+            this.ItemsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.ItemsListBox.FormattingEnabled = true;
+            this.ItemsListBox.Location = new System.Drawing.Point(7, 7);
+            this.ItemsListBox.Name = "ItemsListBox";
+            this.ItemsListBox.Size = new System.Drawing.Size(184, 394);
+            this.ItemsListBox.TabIndex = 8;
+            // 
             // TextTab
             // 
+            this.TextTab.Controls.Add(this.TextApplyButton);
+            this.TextTab.Controls.Add(this.TextDataBox);
+            this.TextTab.Controls.Add(this.TextTokenTextBox);
+            this.TextTab.Controls.Add(this.LabelTextToken);
+            this.TextTab.Controls.Add(this.RemoveTextButton);
+            this.TextTab.Controls.Add(this.AddTextButton);
+            this.TextTab.Controls.Add(this.TextListBox);
             this.TextTab.Location = new System.Drawing.Point(4, 22);
             this.TextTab.Name = "TextTab";
             this.TextTab.Size = new System.Drawing.Size(729, 450);
@@ -712,54 +770,6 @@
             this.UserEditorTabs.Size = new System.Drawing.Size(723, 444);
             this.UserEditorTabs.TabIndex = 0;
             // 
-            // UserBindingsTab
-            // 
-            this.UserBindingsTab.Controls.Add(this.UserBindingsApplyButton);
-            this.UserBindingsTab.Controls.Add(this.UserBindingsTextBox);
-            this.UserBindingsTab.Controls.Add(this.LabelUserBindingsHint);
-            this.UserBindingsTab.Location = new System.Drawing.Point(4, 22);
-            this.UserBindingsTab.Name = "UserBindingsTab";
-            this.UserBindingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.UserBindingsTab.Size = new System.Drawing.Size(715, 418);
-            this.UserBindingsTab.TabIndex = 0;
-            this.UserBindingsTab.Text = "Bindings";
-            this.UserBindingsTab.UseVisualStyleBackColor = true;
-            // 
-            // UserListsTab
-            // 
-            this.UserListsTab.Controls.Add(this.LabelUserListsContents);
-            this.UserListsTab.Controls.Add(this.UserListsListContentsTextBox);
-            this.UserListsTab.Controls.Add(this.LabelUserListsListName);
-            this.UserListsTab.Controls.Add(this.UserListsListNameTextBox);
-            this.UserListsTab.Controls.Add(this.UserListsApplyChangesButton);
-            this.UserListsTab.Controls.Add(this.UserListsRemoveListButton);
-            this.UserListsTab.Controls.Add(this.UserListsAddListButton);
-            this.UserListsTab.Controls.Add(this.UserListsListBox);
-            this.UserListsTab.Location = new System.Drawing.Point(4, 22);
-            this.UserListsTab.Name = "UserListsTab";
-            this.UserListsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.UserListsTab.Size = new System.Drawing.Size(715, 418);
-            this.UserListsTab.TabIndex = 1;
-            this.UserListsTab.Text = "Lists";
-            this.UserListsTab.UseVisualStyleBackColor = true;
-            // 
-            // UserPropertiesTab
-            // 
-            this.UserPropertiesTab.Controls.Add(this.LabelUserPropertiesFormula);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesPropertyFormulaTextBox);
-            this.UserPropertiesTab.Controls.Add(this.LabelUserPropertiesPropertyName);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesPropertyNameTextBox);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesApplyButton);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesRemovePropertyButton);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesAddPropertyButton);
-            this.UserPropertiesTab.Controls.Add(this.UserPropertiesListBox);
-            this.UserPropertiesTab.Location = new System.Drawing.Point(4, 22);
-            this.UserPropertiesTab.Name = "UserPropertiesTab";
-            this.UserPropertiesTab.Size = new System.Drawing.Size(715, 418);
-            this.UserPropertiesTab.TabIndex = 2;
-            this.UserPropertiesTab.Text = "Properties";
-            this.UserPropertiesTab.UseVisualStyleBackColor = true;
-            // 
             // UserEventsTab
             // 
             this.UserEventsTab.Controls.Add(this.UserEventsApplyButton);
@@ -776,6 +786,61 @@
             this.UserEventsTab.TabIndex = 3;
             this.UserEventsTab.Text = "Events";
             this.UserEventsTab.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsApplyButton
+            // 
+            this.UserEventsApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserEventsApplyButton.Location = new System.Drawing.Point(475, 371);
+            this.UserEventsApplyButton.Name = "UserEventsApplyButton";
+            this.UserEventsApplyButton.Size = new System.Drawing.Size(145, 38);
+            this.UserEventsApplyButton.TabIndex = 7;
+            this.UserEventsApplyButton.Text = "Apply Changes";
+            this.UserEventsApplyButton.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsRemoveEventButton
+            // 
+            this.UserEventsRemoveEventButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserEventsRemoveEventButton.Location = new System.Drawing.Point(324, 371);
+            this.UserEventsRemoveEventButton.Name = "UserEventsRemoveEventButton";
+            this.UserEventsRemoveEventButton.Size = new System.Drawing.Size(145, 39);
+            this.UserEventsRemoveEventButton.TabIndex = 6;
+            this.UserEventsRemoveEventButton.Text = "Remove Event";
+            this.UserEventsRemoveEventButton.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsAddEventButton
+            // 
+            this.UserEventsAddEventButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserEventsAddEventButton.Location = new System.Drawing.Point(173, 371);
+            this.UserEventsAddEventButton.Name = "UserEventsAddEventButton";
+            this.UserEventsAddEventButton.Size = new System.Drawing.Size(145, 39);
+            this.UserEventsAddEventButton.TabIndex = 5;
+            this.UserEventsAddEventButton.Text = "Add Event";
+            this.UserEventsAddEventButton.UseVisualStyleBackColor = true;
+            // 
+            // UserEventsNewActionButton
+            // 
+            this.UserEventsNewActionButton.Location = new System.Drawing.Point(455, 3);
+            this.UserEventsNewActionButton.Name = "UserEventsNewActionButton";
+            this.UserEventsNewActionButton.Size = new System.Drawing.Size(130, 29);
+            this.UserEventsNewActionButton.TabIndex = 4;
+            this.UserEventsNewActionButton.Text = "New Action";
+            this.UserEventsNewActionButton.UseVisualStyleBackColor = true;
+            // 
+            // LabelUserEventsEventCode
+            // 
+            this.LabelUserEventsEventCode.AutoSize = true;
+            this.LabelUserEventsEventCode.Location = new System.Drawing.Point(173, 11);
+            this.LabelUserEventsEventCode.Name = "LabelUserEventsEventCode";
+            this.LabelUserEventsEventCode.Size = new System.Drawing.Size(38, 13);
+            this.LabelUserEventsEventCode.TabIndex = 3;
+            this.LabelUserEventsEventCode.Text = "Event:";
+            // 
+            // UserEventsEventCodeTextBox
+            // 
+            this.UserEventsEventCodeTextBox.Location = new System.Drawing.Point(217, 8);
+            this.UserEventsEventCodeTextBox.Name = "UserEventsEventCodeTextBox";
+            this.UserEventsEventCodeTextBox.Size = new System.Drawing.Size(230, 20);
+            this.UserEventsEventCodeTextBox.TabIndex = 2;
             // 
             // UserEventActionsPanel
             // 
@@ -802,6 +867,230 @@
             this.UserEventsListBox.Size = new System.Drawing.Size(164, 407);
             this.UserEventsListBox.TabIndex = 0;
             this.UserEventsListBox.SelectedIndexChanged += new System.EventHandler(this.UserEventsListBox_SelectedIndexChanged);
+            // 
+            // UserPropertiesTab
+            // 
+            this.UserPropertiesTab.Controls.Add(this.LabelUserPropertiesFormula);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesPropertyFormulaTextBox);
+            this.UserPropertiesTab.Controls.Add(this.LabelUserPropertiesPropertyName);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesPropertyNameTextBox);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesApplyButton);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesRemovePropertyButton);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesAddPropertyButton);
+            this.UserPropertiesTab.Controls.Add(this.UserPropertiesListBox);
+            this.UserPropertiesTab.Location = new System.Drawing.Point(4, 22);
+            this.UserPropertiesTab.Name = "UserPropertiesTab";
+            this.UserPropertiesTab.Size = new System.Drawing.Size(715, 418);
+            this.UserPropertiesTab.TabIndex = 2;
+            this.UserPropertiesTab.Text = "Properties";
+            this.UserPropertiesTab.UseVisualStyleBackColor = true;
+            // 
+            // LabelUserPropertiesFormula
+            // 
+            this.LabelUserPropertiesFormula.AutoSize = true;
+            this.LabelUserPropertiesFormula.Location = new System.Drawing.Point(213, 140);
+            this.LabelUserPropertiesFormula.Name = "LabelUserPropertiesFormula";
+            this.LabelUserPropertiesFormula.Size = new System.Drawing.Size(47, 13);
+            this.LabelUserPropertiesFormula.TabIndex = 14;
+            this.LabelUserPropertiesFormula.Text = "Formula:";
+            // 
+            // UserPropertiesPropertyFormulaTextBox
+            // 
+            this.UserPropertiesPropertyFormulaTextBox.Location = new System.Drawing.Point(266, 137);
+            this.UserPropertiesPropertyFormulaTextBox.Name = "UserPropertiesPropertyFormulaTextBox";
+            this.UserPropertiesPropertyFormulaTextBox.Size = new System.Drawing.Size(286, 20);
+            this.UserPropertiesPropertyFormulaTextBox.TabIndex = 13;
+            // 
+            // LabelUserPropertiesPropertyName
+            // 
+            this.LabelUserPropertiesPropertyName.AutoSize = true;
+            this.LabelUserPropertiesPropertyName.Location = new System.Drawing.Point(182, 114);
+            this.LabelUserPropertiesPropertyName.Name = "LabelUserPropertiesPropertyName";
+            this.LabelUserPropertiesPropertyName.Size = new System.Drawing.Size(78, 13);
+            this.LabelUserPropertiesPropertyName.TabIndex = 12;
+            this.LabelUserPropertiesPropertyName.Text = "Property name:";
+            // 
+            // UserPropertiesPropertyNameTextBox
+            // 
+            this.UserPropertiesPropertyNameTextBox.Location = new System.Drawing.Point(266, 111);
+            this.UserPropertiesPropertyNameTextBox.Name = "UserPropertiesPropertyNameTextBox";
+            this.UserPropertiesPropertyNameTextBox.Size = new System.Drawing.Size(286, 20);
+            this.UserPropertiesPropertyNameTextBox.TabIndex = 11;
+            // 
+            // UserPropertiesApplyButton
+            // 
+            this.UserPropertiesApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserPropertiesApplyButton.Location = new System.Drawing.Point(475, 371);
+            this.UserPropertiesApplyButton.Name = "UserPropertiesApplyButton";
+            this.UserPropertiesApplyButton.Size = new System.Drawing.Size(145, 38);
+            this.UserPropertiesApplyButton.TabIndex = 10;
+            this.UserPropertiesApplyButton.Text = "Apply Changes";
+            this.UserPropertiesApplyButton.UseVisualStyleBackColor = true;
+            // 
+            // UserPropertiesRemovePropertyButton
+            // 
+            this.UserPropertiesRemovePropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserPropertiesRemovePropertyButton.Location = new System.Drawing.Point(324, 371);
+            this.UserPropertiesRemovePropertyButton.Name = "UserPropertiesRemovePropertyButton";
+            this.UserPropertiesRemovePropertyButton.Size = new System.Drawing.Size(145, 39);
+            this.UserPropertiesRemovePropertyButton.TabIndex = 9;
+            this.UserPropertiesRemovePropertyButton.Text = "Remove Property";
+            this.UserPropertiesRemovePropertyButton.UseVisualStyleBackColor = true;
+            // 
+            // UserPropertiesAddPropertyButton
+            // 
+            this.UserPropertiesAddPropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserPropertiesAddPropertyButton.Location = new System.Drawing.Point(173, 371);
+            this.UserPropertiesAddPropertyButton.Name = "UserPropertiesAddPropertyButton";
+            this.UserPropertiesAddPropertyButton.Size = new System.Drawing.Size(145, 39);
+            this.UserPropertiesAddPropertyButton.TabIndex = 8;
+            this.UserPropertiesAddPropertyButton.Text = "Add Property";
+            this.UserPropertiesAddPropertyButton.UseVisualStyleBackColor = true;
+            this.UserPropertiesAddPropertyButton.Click += new System.EventHandler(this.UserPropertiesAddPropertyButton_Click);
+            // 
+            // UserPropertiesListBox
+            // 
+            this.UserPropertiesListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserPropertiesListBox.FormattingEnabled = true;
+            this.UserPropertiesListBox.Location = new System.Drawing.Point(3, 3);
+            this.UserPropertiesListBox.Name = "UserPropertiesListBox";
+            this.UserPropertiesListBox.Size = new System.Drawing.Size(164, 407);
+            this.UserPropertiesListBox.TabIndex = 0;
+            // 
+            // UserListsTab
+            // 
+            this.UserListsTab.Controls.Add(this.LabelUserListsContents);
+            this.UserListsTab.Controls.Add(this.UserListsListContentsTextBox);
+            this.UserListsTab.Controls.Add(this.LabelUserListsListName);
+            this.UserListsTab.Controls.Add(this.UserListsListNameTextBox);
+            this.UserListsTab.Controls.Add(this.UserListsApplyChangesButton);
+            this.UserListsTab.Controls.Add(this.UserListsRemoveListButton);
+            this.UserListsTab.Controls.Add(this.UserListsAddListButton);
+            this.UserListsTab.Controls.Add(this.UserListsListBox);
+            this.UserListsTab.Location = new System.Drawing.Point(4, 22);
+            this.UserListsTab.Name = "UserListsTab";
+            this.UserListsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.UserListsTab.Size = new System.Drawing.Size(715, 418);
+            this.UserListsTab.TabIndex = 1;
+            this.UserListsTab.Text = "Lists";
+            this.UserListsTab.UseVisualStyleBackColor = true;
+            // 
+            // LabelUserListsContents
+            // 
+            this.LabelUserListsContents.AutoSize = true;
+            this.LabelUserListsContents.Location = new System.Drawing.Point(173, 41);
+            this.LabelUserListsContents.Name = "LabelUserListsContents";
+            this.LabelUserListsContents.Size = new System.Drawing.Size(138, 13);
+            this.LabelUserListsContents.TabIndex = 18;
+            this.LabelUserListsContents.Text = "Contents (one item per line):";
+            // 
+            // UserListsListContentsTextBox
+            // 
+            this.UserListsListContentsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserListsListContentsTextBox.Location = new System.Drawing.Point(173, 57);
+            this.UserListsListContentsTextBox.Multiline = true;
+            this.UserListsListContentsTextBox.Name = "UserListsListContentsTextBox";
+            this.UserListsListContentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.UserListsListContentsTextBox.Size = new System.Drawing.Size(447, 308);
+            this.UserListsListContentsTextBox.TabIndex = 17;
+            // 
+            // LabelUserListsListName
+            // 
+            this.LabelUserListsListName.AutoSize = true;
+            this.LabelUserListsListName.Location = new System.Drawing.Point(201, 9);
+            this.LabelUserListsListName.Name = "LabelUserListsListName";
+            this.LabelUserListsListName.Size = new System.Drawing.Size(55, 13);
+            this.LabelUserListsListName.TabIndex = 16;
+            this.LabelUserListsListName.Text = "List name:";
+            // 
+            // UserListsListNameTextBox
+            // 
+            this.UserListsListNameTextBox.Location = new System.Drawing.Point(262, 6);
+            this.UserListsListNameTextBox.Name = "UserListsListNameTextBox";
+            this.UserListsListNameTextBox.Size = new System.Drawing.Size(296, 20);
+            this.UserListsListNameTextBox.TabIndex = 15;
+            // 
+            // UserListsApplyChangesButton
+            // 
+            this.UserListsApplyChangesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserListsApplyChangesButton.Location = new System.Drawing.Point(475, 371);
+            this.UserListsApplyChangesButton.Name = "UserListsApplyChangesButton";
+            this.UserListsApplyChangesButton.Size = new System.Drawing.Size(145, 38);
+            this.UserListsApplyChangesButton.TabIndex = 14;
+            this.UserListsApplyChangesButton.Text = "Apply Changes";
+            this.UserListsApplyChangesButton.UseVisualStyleBackColor = true;
+            // 
+            // UserListsRemoveListButton
+            // 
+            this.UserListsRemoveListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserListsRemoveListButton.Location = new System.Drawing.Point(324, 371);
+            this.UserListsRemoveListButton.Name = "UserListsRemoveListButton";
+            this.UserListsRemoveListButton.Size = new System.Drawing.Size(145, 39);
+            this.UserListsRemoveListButton.TabIndex = 13;
+            this.UserListsRemoveListButton.Text = "Remove List";
+            this.UserListsRemoveListButton.UseVisualStyleBackColor = true;
+            // 
+            // UserListsAddListButton
+            // 
+            this.UserListsAddListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserListsAddListButton.Location = new System.Drawing.Point(173, 371);
+            this.UserListsAddListButton.Name = "UserListsAddListButton";
+            this.UserListsAddListButton.Size = new System.Drawing.Size(145, 39);
+            this.UserListsAddListButton.TabIndex = 12;
+            this.UserListsAddListButton.Text = "Add List";
+            this.UserListsAddListButton.UseVisualStyleBackColor = true;
+            // 
+            // UserListsListBox
+            // 
+            this.UserListsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.UserListsListBox.FormattingEnabled = true;
+            this.UserListsListBox.Location = new System.Drawing.Point(3, 3);
+            this.UserListsListBox.Name = "UserListsListBox";
+            this.UserListsListBox.Size = new System.Drawing.Size(164, 407);
+            this.UserListsListBox.TabIndex = 11;
+            // 
+            // UserBindingsTab
+            // 
+            this.UserBindingsTab.Controls.Add(this.UserBindingsApplyButton);
+            this.UserBindingsTab.Controls.Add(this.UserBindingsTextBox);
+            this.UserBindingsTab.Controls.Add(this.LabelUserBindingsHint);
+            this.UserBindingsTab.Location = new System.Drawing.Point(4, 22);
+            this.UserBindingsTab.Name = "UserBindingsTab";
+            this.UserBindingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.UserBindingsTab.Size = new System.Drawing.Size(715, 418);
+            this.UserBindingsTab.TabIndex = 0;
+            this.UserBindingsTab.Text = "Bindings";
+            this.UserBindingsTab.UseVisualStyleBackColor = true;
+            // 
+            // UserBindingsApplyButton
+            // 
+            this.UserBindingsApplyButton.Location = new System.Drawing.Point(292, 285);
+            this.UserBindingsApplyButton.Name = "UserBindingsApplyButton";
+            this.UserBindingsApplyButton.Size = new System.Drawing.Size(110, 41);
+            this.UserBindingsApplyButton.TabIndex = 2;
+            this.UserBindingsApplyButton.Text = "Apply";
+            this.UserBindingsApplyButton.UseVisualStyleBackColor = true;
+            // 
+            // UserBindingsTextBox
+            // 
+            this.UserBindingsTextBox.Location = new System.Drawing.Point(184, 116);
+            this.UserBindingsTextBox.Multiline = true;
+            this.UserBindingsTextBox.Name = "UserBindingsTextBox";
+            this.UserBindingsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.UserBindingsTextBox.Size = new System.Drawing.Size(327, 163);
+            this.UserBindingsTextBox.TabIndex = 1;
+            // 
+            // LabelUserBindingsHint
+            // 
+            this.LabelUserBindingsHint.AutoSize = true;
+            this.LabelUserBindingsHint.Location = new System.Drawing.Point(181, 100);
+            this.LabelUserBindingsHint.Name = "LabelUserBindingsHint";
+            this.LabelUserBindingsHint.Size = new System.Drawing.Size(199, 13);
+            this.LabelUserBindingsHint.TabIndex = 0;
+            this.LabelUserBindingsHint.Text = "C++ engine binding names (one per line):";
             // 
             // PrimaryMenuStrip
             // 
@@ -854,236 +1143,97 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
-            // UserEventsEventCodeTextBox
+            // ItemNameTextBox
             // 
-            this.UserEventsEventCodeTextBox.Location = new System.Drawing.Point(217, 8);
-            this.UserEventsEventCodeTextBox.Name = "UserEventsEventCodeTextBox";
-            this.UserEventsEventCodeTextBox.Size = new System.Drawing.Size(230, 20);
-            this.UserEventsEventCodeTextBox.TabIndex = 2;
+            this.ItemNameTextBox.Location = new System.Drawing.Point(289, 176);
+            this.ItemNameTextBox.Name = "ItemNameTextBox";
+            this.ItemNameTextBox.Size = new System.Drawing.Size(237, 20);
+            this.ItemNameTextBox.TabIndex = 11;
             // 
-            // LabelUserEventsEventCode
+            // LabelItemName
             // 
-            this.LabelUserEventsEventCode.AutoSize = true;
-            this.LabelUserEventsEventCode.Location = new System.Drawing.Point(173, 11);
-            this.LabelUserEventsEventCode.Name = "LabelUserEventsEventCode";
-            this.LabelUserEventsEventCode.Size = new System.Drawing.Size(38, 13);
-            this.LabelUserEventsEventCode.TabIndex = 3;
-            this.LabelUserEventsEventCode.Text = "Event:";
+            this.LabelItemName.AutoSize = true;
+            this.LabelItemName.Location = new System.Drawing.Point(224, 179);
+            this.LabelItemName.Name = "LabelItemName";
+            this.LabelItemName.Size = new System.Drawing.Size(59, 13);
+            this.LabelItemName.TabIndex = 12;
+            this.LabelItemName.Text = "Item name:";
             // 
-            // UserEventsNewActionButton
+            // ItemApplyChangesButton
             // 
-            this.UserEventsNewActionButton.Location = new System.Drawing.Point(455, 3);
-            this.UserEventsNewActionButton.Name = "UserEventsNewActionButton";
-            this.UserEventsNewActionButton.Size = new System.Drawing.Size(130, 29);
-            this.UserEventsNewActionButton.TabIndex = 4;
-            this.UserEventsNewActionButton.Text = "New Action";
-            this.UserEventsNewActionButton.UseVisualStyleBackColor = true;
+            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 176);
+            this.ItemApplyChangesButton.Name = "ItemApplyChangesButton";
+            this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 20);
+            this.ItemApplyChangesButton.TabIndex = 13;
+            this.ItemApplyChangesButton.Text = "Apply";
+            this.ItemApplyChangesButton.UseVisualStyleBackColor = true;
             // 
-            // UserEventsAddEventButton
+            // RemoveTextButton
             // 
-            this.UserEventsAddEventButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserEventsAddEventButton.Location = new System.Drawing.Point(173, 371);
-            this.UserEventsAddEventButton.Name = "UserEventsAddEventButton";
-            this.UserEventsAddEventButton.Size = new System.Drawing.Size(145, 39);
-            this.UserEventsAddEventButton.TabIndex = 5;
-            this.UserEventsAddEventButton.Text = "Add Event";
-            this.UserEventsAddEventButton.UseVisualStyleBackColor = true;
+            this.RemoveTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RemoveTextButton.Location = new System.Drawing.Point(102, 417);
+            this.RemoveTextButton.Name = "RemoveTextButton";
+            this.RemoveTextButton.Size = new System.Drawing.Size(89, 27);
+            this.RemoveTextButton.TabIndex = 13;
+            this.RemoveTextButton.Text = "Remove";
+            this.RemoveTextButton.UseVisualStyleBackColor = true;
             // 
-            // UserEventsRemoveEventButton
+            // AddTextButton
             // 
-            this.UserEventsRemoveEventButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserEventsRemoveEventButton.Location = new System.Drawing.Point(324, 371);
-            this.UserEventsRemoveEventButton.Name = "UserEventsRemoveEventButton";
-            this.UserEventsRemoveEventButton.Size = new System.Drawing.Size(145, 39);
-            this.UserEventsRemoveEventButton.TabIndex = 6;
-            this.UserEventsRemoveEventButton.Text = "Remove Event";
-            this.UserEventsRemoveEventButton.UseVisualStyleBackColor = true;
+            this.AddTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AddTextButton.Location = new System.Drawing.Point(6, 417);
+            this.AddTextButton.Name = "AddTextButton";
+            this.AddTextButton.Size = new System.Drawing.Size(89, 27);
+            this.AddTextButton.TabIndex = 12;
+            this.AddTextButton.Text = "Add";
+            this.AddTextButton.UseVisualStyleBackColor = true;
             // 
-            // UserEventsApplyButton
+            // TextListBox
             // 
-            this.UserEventsApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserEventsApplyButton.Location = new System.Drawing.Point(475, 371);
-            this.UserEventsApplyButton.Name = "UserEventsApplyButton";
-            this.UserEventsApplyButton.Size = new System.Drawing.Size(145, 38);
-            this.UserEventsApplyButton.TabIndex = 7;
-            this.UserEventsApplyButton.Text = "Apply Changes";
-            this.UserEventsApplyButton.UseVisualStyleBackColor = true;
-            // 
-            // LabelUserBindingsHint
-            // 
-            this.LabelUserBindingsHint.AutoSize = true;
-            this.LabelUserBindingsHint.Location = new System.Drawing.Point(181, 100);
-            this.LabelUserBindingsHint.Name = "LabelUserBindingsHint";
-            this.LabelUserBindingsHint.Size = new System.Drawing.Size(199, 13);
-            this.LabelUserBindingsHint.TabIndex = 0;
-            this.LabelUserBindingsHint.Text = "C++ engine binding names (one per line):";
-            // 
-            // UserBindingsTextBox
-            // 
-            this.UserBindingsTextBox.Location = new System.Drawing.Point(184, 116);
-            this.UserBindingsTextBox.Multiline = true;
-            this.UserBindingsTextBox.Name = "UserBindingsTextBox";
-            this.UserBindingsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.UserBindingsTextBox.Size = new System.Drawing.Size(327, 163);
-            this.UserBindingsTextBox.TabIndex = 1;
-            // 
-            // UserBindingsApplyButton
-            // 
-            this.UserBindingsApplyButton.Location = new System.Drawing.Point(292, 285);
-            this.UserBindingsApplyButton.Name = "UserBindingsApplyButton";
-            this.UserBindingsApplyButton.Size = new System.Drawing.Size(110, 41);
-            this.UserBindingsApplyButton.TabIndex = 2;
-            this.UserBindingsApplyButton.Text = "Apply";
-            this.UserBindingsApplyButton.UseVisualStyleBackColor = true;
-            // 
-            // UserPropertiesListBox
-            // 
-            this.UserPropertiesListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.TextListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserPropertiesListBox.FormattingEnabled = true;
-            this.UserPropertiesListBox.Location = new System.Drawing.Point(3, 3);
-            this.UserPropertiesListBox.Name = "UserPropertiesListBox";
-            this.UserPropertiesListBox.Size = new System.Drawing.Size(164, 407);
-            this.UserPropertiesListBox.TabIndex = 0;
+            this.TextListBox.FormattingEnabled = true;
+            this.TextListBox.Location = new System.Drawing.Point(7, 7);
+            this.TextListBox.Name = "TextListBox";
+            this.TextListBox.Size = new System.Drawing.Size(184, 394);
+            this.TextListBox.TabIndex = 11;
             // 
-            // UserPropertiesApplyButton
+            // LabelTextToken
             // 
-            this.UserPropertiesApplyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserPropertiesApplyButton.Location = new System.Drawing.Point(475, 371);
-            this.UserPropertiesApplyButton.Name = "UserPropertiesApplyButton";
-            this.UserPropertiesApplyButton.Size = new System.Drawing.Size(145, 38);
-            this.UserPropertiesApplyButton.TabIndex = 10;
-            this.UserPropertiesApplyButton.Text = "Apply Changes";
-            this.UserPropertiesApplyButton.UseVisualStyleBackColor = true;
+            this.LabelTextToken.AutoSize = true;
+            this.LabelTextToken.Location = new System.Drawing.Point(215, 10);
+            this.LabelTextToken.Name = "LabelTextToken";
+            this.LabelTextToken.Size = new System.Drawing.Size(41, 13);
+            this.LabelTextToken.TabIndex = 14;
+            this.LabelTextToken.Text = "Token:";
             // 
-            // UserPropertiesRemovePropertyButton
+            // TextTokenTextBox
             // 
-            this.UserPropertiesRemovePropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserPropertiesRemovePropertyButton.Location = new System.Drawing.Point(324, 371);
-            this.UserPropertiesRemovePropertyButton.Name = "UserPropertiesRemovePropertyButton";
-            this.UserPropertiesRemovePropertyButton.Size = new System.Drawing.Size(145, 39);
-            this.UserPropertiesRemovePropertyButton.TabIndex = 9;
-            this.UserPropertiesRemovePropertyButton.Text = "Remove Property";
-            this.UserPropertiesRemovePropertyButton.UseVisualStyleBackColor = true;
+            this.TextTokenTextBox.Location = new System.Drawing.Point(262, 7);
+            this.TextTokenTextBox.Name = "TextTokenTextBox";
+            this.TextTokenTextBox.Size = new System.Drawing.Size(321, 20);
+            this.TextTokenTextBox.TabIndex = 15;
             // 
-            // UserPropertiesAddPropertyButton
+            // TextDataBox
             // 
-            this.UserPropertiesAddPropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserPropertiesAddPropertyButton.Location = new System.Drawing.Point(173, 371);
-            this.UserPropertiesAddPropertyButton.Name = "UserPropertiesAddPropertyButton";
-            this.UserPropertiesAddPropertyButton.Size = new System.Drawing.Size(145, 39);
-            this.UserPropertiesAddPropertyButton.TabIndex = 8;
-            this.UserPropertiesAddPropertyButton.Text = "Add Property";
-            this.UserPropertiesAddPropertyButton.UseVisualStyleBackColor = true;
-            this.UserPropertiesAddPropertyButton.Click += new System.EventHandler(this.UserPropertiesAddPropertyButton_Click);
+            this.TextDataBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextDataBox.Location = new System.Drawing.Point(197, 33);
+            this.TextDataBox.Multiline = true;
+            this.TextDataBox.Name = "TextDataBox";
+            this.TextDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TextDataBox.Size = new System.Drawing.Size(529, 411);
+            this.TextDataBox.TabIndex = 16;
             // 
-            // UserPropertiesPropertyNameTextBox
+            // TextApplyButton
             // 
-            this.UserPropertiesPropertyNameTextBox.Location = new System.Drawing.Point(266, 111);
-            this.UserPropertiesPropertyNameTextBox.Name = "UserPropertiesPropertyNameTextBox";
-            this.UserPropertiesPropertyNameTextBox.Size = new System.Drawing.Size(286, 20);
-            this.UserPropertiesPropertyNameTextBox.TabIndex = 11;
-            // 
-            // LabelUserPropertiesPropertyName
-            // 
-            this.LabelUserPropertiesPropertyName.AutoSize = true;
-            this.LabelUserPropertiesPropertyName.Location = new System.Drawing.Point(182, 114);
-            this.LabelUserPropertiesPropertyName.Name = "LabelUserPropertiesPropertyName";
-            this.LabelUserPropertiesPropertyName.Size = new System.Drawing.Size(78, 13);
-            this.LabelUserPropertiesPropertyName.TabIndex = 12;
-            this.LabelUserPropertiesPropertyName.Text = "Property name:";
-            // 
-            // UserPropertiesPropertyFormulaTextBox
-            // 
-            this.UserPropertiesPropertyFormulaTextBox.Location = new System.Drawing.Point(266, 137);
-            this.UserPropertiesPropertyFormulaTextBox.Name = "UserPropertiesPropertyFormulaTextBox";
-            this.UserPropertiesPropertyFormulaTextBox.Size = new System.Drawing.Size(286, 20);
-            this.UserPropertiesPropertyFormulaTextBox.TabIndex = 13;
-            // 
-            // LabelUserPropertiesFormula
-            // 
-            this.LabelUserPropertiesFormula.AutoSize = true;
-            this.LabelUserPropertiesFormula.Location = new System.Drawing.Point(213, 140);
-            this.LabelUserPropertiesFormula.Name = "LabelUserPropertiesFormula";
-            this.LabelUserPropertiesFormula.Size = new System.Drawing.Size(47, 13);
-            this.LabelUserPropertiesFormula.TabIndex = 14;
-            this.LabelUserPropertiesFormula.Text = "Formula:";
-            // 
-            // UserListsApplyChangesButton
-            // 
-            this.UserListsApplyChangesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserListsApplyChangesButton.Location = new System.Drawing.Point(475, 371);
-            this.UserListsApplyChangesButton.Name = "UserListsApplyChangesButton";
-            this.UserListsApplyChangesButton.Size = new System.Drawing.Size(145, 38);
-            this.UserListsApplyChangesButton.TabIndex = 14;
-            this.UserListsApplyChangesButton.Text = "Apply Changes";
-            this.UserListsApplyChangesButton.UseVisualStyleBackColor = true;
-            // 
-            // UserListsRemoveListButton
-            // 
-            this.UserListsRemoveListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserListsRemoveListButton.Location = new System.Drawing.Point(324, 371);
-            this.UserListsRemoveListButton.Name = "UserListsRemoveListButton";
-            this.UserListsRemoveListButton.Size = new System.Drawing.Size(145, 39);
-            this.UserListsRemoveListButton.TabIndex = 13;
-            this.UserListsRemoveListButton.Text = "Remove List";
-            this.UserListsRemoveListButton.UseVisualStyleBackColor = true;
-            // 
-            // UserListsAddListButton
-            // 
-            this.UserListsAddListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserListsAddListButton.Location = new System.Drawing.Point(173, 371);
-            this.UserListsAddListButton.Name = "UserListsAddListButton";
-            this.UserListsAddListButton.Size = new System.Drawing.Size(145, 39);
-            this.UserListsAddListButton.TabIndex = 12;
-            this.UserListsAddListButton.Text = "Add List";
-            this.UserListsAddListButton.UseVisualStyleBackColor = true;
-            // 
-            // UserListsListBox
-            // 
-            this.UserListsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserListsListBox.FormattingEnabled = true;
-            this.UserListsListBox.Location = new System.Drawing.Point(3, 3);
-            this.UserListsListBox.Name = "UserListsListBox";
-            this.UserListsListBox.Size = new System.Drawing.Size(164, 407);
-            this.UserListsListBox.TabIndex = 11;
-            // 
-            // UserListsListNameTextBox
-            // 
-            this.UserListsListNameTextBox.Location = new System.Drawing.Point(262, 6);
-            this.UserListsListNameTextBox.Name = "UserListsListNameTextBox";
-            this.UserListsListNameTextBox.Size = new System.Drawing.Size(296, 20);
-            this.UserListsListNameTextBox.TabIndex = 15;
-            // 
-            // LabelUserListsListName
-            // 
-            this.LabelUserListsListName.AutoSize = true;
-            this.LabelUserListsListName.Location = new System.Drawing.Point(201, 9);
-            this.LabelUserListsListName.Name = "LabelUserListsListName";
-            this.LabelUserListsListName.Size = new System.Drawing.Size(55, 13);
-            this.LabelUserListsListName.TabIndex = 16;
-            this.LabelUserListsListName.Text = "List name:";
-            // 
-            // UserListsListContentsTextBox
-            // 
-            this.UserListsListContentsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.UserListsListContentsTextBox.Location = new System.Drawing.Point(173, 57);
-            this.UserListsListContentsTextBox.Multiline = true;
-            this.UserListsListContentsTextBox.Name = "UserListsListContentsTextBox";
-            this.UserListsListContentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.UserListsListContentsTextBox.Size = new System.Drawing.Size(447, 308);
-            this.UserListsListContentsTextBox.TabIndex = 17;
-            // 
-            // LabelUserListsContents
-            // 
-            this.LabelUserListsContents.AutoSize = true;
-            this.LabelUserListsContents.Location = new System.Drawing.Point(173, 41);
-            this.LabelUserListsContents.Name = "LabelUserListsContents";
-            this.LabelUserListsContents.Size = new System.Drawing.Size(138, 13);
-            this.LabelUserListsContents.TabIndex = 18;
-            this.LabelUserListsContents.Text = "Contents (one item per line):";
+            this.TextApplyButton.Location = new System.Drawing.Point(589, 7);
+            this.TextApplyButton.Name = "TextApplyButton";
+            this.TextApplyButton.Size = new System.Drawing.Size(137, 20);
+            this.TextApplyButton.TabIndex = 17;
+            this.TextApplyButton.Text = "Apply Changes";
+            this.TextApplyButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -1108,16 +1258,20 @@
             this.RoomListsTab.PerformLayout();
             this.RoomEventsTab.ResumeLayout(false);
             this.RoomEventsTab.PerformLayout();
+            this.ItemsTab.ResumeLayout(false);
+            this.ItemsTab.PerformLayout();
+            this.TextTab.ResumeLayout(false);
+            this.TextTab.PerformLayout();
             this.UserTab.ResumeLayout(false);
             this.UserEditorTabs.ResumeLayout(false);
-            this.UserBindingsTab.ResumeLayout(false);
-            this.UserBindingsTab.PerformLayout();
-            this.UserListsTab.ResumeLayout(false);
-            this.UserListsTab.PerformLayout();
-            this.UserPropertiesTab.ResumeLayout(false);
-            this.UserPropertiesTab.PerformLayout();
             this.UserEventsTab.ResumeLayout(false);
             this.UserEventsTab.PerformLayout();
+            this.UserPropertiesTab.ResumeLayout(false);
+            this.UserPropertiesTab.PerformLayout();
+            this.UserListsTab.ResumeLayout(false);
+            this.UserListsTab.PerformLayout();
+            this.UserBindingsTab.ResumeLayout(false);
+            this.UserBindingsTab.PerformLayout();
             this.PrimaryMenuStrip.ResumeLayout(false);
             this.PrimaryMenuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -1218,6 +1372,19 @@
         private System.Windows.Forms.Label LabelUserListsListName;
         private System.Windows.Forms.TextBox UserListsListContentsTextBox;
         private System.Windows.Forms.Label LabelUserListsContents;
+        private System.Windows.Forms.Button RemoveItemButton;
+        private System.Windows.Forms.Button AddItemButton;
+        private System.Windows.Forms.ListBox ItemsListBox;
+        private System.Windows.Forms.Label LabelItemName;
+        private System.Windows.Forms.TextBox ItemNameTextBox;
+        private System.Windows.Forms.Button ItemApplyChangesButton;
+        private System.Windows.Forms.Button RemoveTextButton;
+        private System.Windows.Forms.Button AddTextButton;
+        private System.Windows.Forms.ListBox TextListBox;
+        private System.Windows.Forms.Label LabelTextToken;
+        private System.Windows.Forms.TextBox TextDataBox;
+        private System.Windows.Forms.TextBox TextTokenTextBox;
+        private System.Windows.Forms.Button TextApplyButton;
     }
 }
 
