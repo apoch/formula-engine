@@ -111,7 +111,6 @@
             {
               "action": "foreach",
               "scriptable": "CurrentRoom",
-              "list": "Items",
               "actions": [
                 {
                   "action": "SetGoalState",
@@ -119,7 +118,8 @@
                   "property": "SendMessage",
                   "value": "other:Title"
                 }
-              ]
+              ],
+              "list": "Items"
             },
             {
               "action": "SetGoalState",
@@ -134,10 +134,10 @@
           "actions": [
             {
               "action": "ListTransfer",
-              "scriptable": "CurrentRoom",
+              "condition": "1",
               "list": "Items",
-              "targetList": "Inventory",
-              "condition": "1"
+              "scriptable": "CurrentRoom",
+              "targetList": "Inventory"
             }
           ],
           "name": "CMD_take"
@@ -146,10 +146,11 @@
           "actions": [
             {
               "action": "ListTransfer",
+              "condition": "1",
               "list": "Inventory",
-              "targetList": "Items",
+              "scriptable": { },
               "target": "CurrentRoom",
-              "condition": "1"
+              "targetList": "Items"
             }
           ],
           "name": "CMD_drop"
@@ -158,7 +159,6 @@
           "actions": [
             {
               "action": "foreach",
-              "list": "Inventory",
               "actions": [
                 {
                   "action": "SetGoalState",
@@ -166,7 +166,8 @@
                   "property": "SendMessage",
                   "value": "other:Title"
                 }
-              ]
+              ],
+              "list": "Inventory"
             }
           ],
           "name": "CMD_carrying"

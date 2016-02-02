@@ -78,10 +78,20 @@
             this.LabelInternalRoomName = new System.Windows.Forms.Label();
             this.RoomListBox = new System.Windows.Forms.ListBox();
             this.ItemsTab = new System.Windows.Forms.TabPage();
+            this.ItemApplyChangesButton = new System.Windows.Forms.Button();
+            this.LabelItemName = new System.Windows.Forms.Label();
+            this.ItemNameTextBox = new System.Windows.Forms.TextBox();
             this.RemoveItemButton = new System.Windows.Forms.Button();
             this.AddItemButton = new System.Windows.Forms.Button();
             this.ItemsListBox = new System.Windows.Forms.ListBox();
             this.TextTab = new System.Windows.Forms.TabPage();
+            this.TextApplyButton = new System.Windows.Forms.Button();
+            this.TextDataBox = new System.Windows.Forms.TextBox();
+            this.TextTokenTextBox = new System.Windows.Forms.TextBox();
+            this.LabelTextToken = new System.Windows.Forms.Label();
+            this.RemoveTextButton = new System.Windows.Forms.Button();
+            this.AddTextButton = new System.Windows.Forms.Button();
+            this.TextListBox = new System.Windows.Forms.ListBox();
             this.UserTab = new System.Windows.Forms.TabPage();
             this.UserEditorTabs = new System.Windows.Forms.TabControl();
             this.UserEventsTab = new System.Windows.Forms.TabPage();
@@ -122,16 +132,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
-            this.ItemNameTextBox = new System.Windows.Forms.TextBox();
-            this.LabelItemName = new System.Windows.Forms.Label();
-            this.ItemApplyChangesButton = new System.Windows.Forms.Button();
-            this.RemoveTextButton = new System.Windows.Forms.Button();
-            this.AddTextButton = new System.Windows.Forms.Button();
-            this.TextListBox = new System.Windows.Forms.ListBox();
-            this.LabelTextToken = new System.Windows.Forms.Label();
-            this.TextTokenTextBox = new System.Windows.Forms.TextBox();
-            this.TextDataBox = new System.Windows.Forms.TextBox();
-            this.TextApplyButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -699,6 +699,31 @@
             this.ItemsTab.Text = "Items";
             this.ItemsTab.UseVisualStyleBackColor = true;
             // 
+            // ItemApplyChangesButton
+            // 
+            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 176);
+            this.ItemApplyChangesButton.Name = "ItemApplyChangesButton";
+            this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 20);
+            this.ItemApplyChangesButton.TabIndex = 13;
+            this.ItemApplyChangesButton.Text = "Apply";
+            this.ItemApplyChangesButton.UseVisualStyleBackColor = true;
+            // 
+            // LabelItemName
+            // 
+            this.LabelItemName.AutoSize = true;
+            this.LabelItemName.Location = new System.Drawing.Point(224, 179);
+            this.LabelItemName.Name = "LabelItemName";
+            this.LabelItemName.Size = new System.Drawing.Size(59, 13);
+            this.LabelItemName.TabIndex = 12;
+            this.LabelItemName.Text = "Item name:";
+            // 
+            // ItemNameTextBox
+            // 
+            this.ItemNameTextBox.Location = new System.Drawing.Point(289, 176);
+            this.ItemNameTextBox.Name = "ItemNameTextBox";
+            this.ItemNameTextBox.Size = new System.Drawing.Size(237, 20);
+            this.ItemNameTextBox.TabIndex = 11;
+            // 
             // RemoveItemButton
             // 
             this.RemoveItemButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -744,6 +769,73 @@
             this.TextTab.TabIndex = 2;
             this.TextTab.Text = "Text";
             this.TextTab.UseVisualStyleBackColor = true;
+            // 
+            // TextApplyButton
+            // 
+            this.TextApplyButton.Location = new System.Drawing.Point(589, 7);
+            this.TextApplyButton.Name = "TextApplyButton";
+            this.TextApplyButton.Size = new System.Drawing.Size(137, 20);
+            this.TextApplyButton.TabIndex = 17;
+            this.TextApplyButton.Text = "Apply Changes";
+            this.TextApplyButton.UseVisualStyleBackColor = true;
+            // 
+            // TextDataBox
+            // 
+            this.TextDataBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextDataBox.Location = new System.Drawing.Point(197, 33);
+            this.TextDataBox.Multiline = true;
+            this.TextDataBox.Name = "TextDataBox";
+            this.TextDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TextDataBox.Size = new System.Drawing.Size(529, 411);
+            this.TextDataBox.TabIndex = 16;
+            // 
+            // TextTokenTextBox
+            // 
+            this.TextTokenTextBox.Location = new System.Drawing.Point(262, 7);
+            this.TextTokenTextBox.Name = "TextTokenTextBox";
+            this.TextTokenTextBox.Size = new System.Drawing.Size(321, 20);
+            this.TextTokenTextBox.TabIndex = 15;
+            // 
+            // LabelTextToken
+            // 
+            this.LabelTextToken.AutoSize = true;
+            this.LabelTextToken.Location = new System.Drawing.Point(215, 10);
+            this.LabelTextToken.Name = "LabelTextToken";
+            this.LabelTextToken.Size = new System.Drawing.Size(41, 13);
+            this.LabelTextToken.TabIndex = 14;
+            this.LabelTextToken.Text = "Token:";
+            // 
+            // RemoveTextButton
+            // 
+            this.RemoveTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RemoveTextButton.Location = new System.Drawing.Point(102, 417);
+            this.RemoveTextButton.Name = "RemoveTextButton";
+            this.RemoveTextButton.Size = new System.Drawing.Size(89, 27);
+            this.RemoveTextButton.TabIndex = 13;
+            this.RemoveTextButton.Text = "Remove";
+            this.RemoveTextButton.UseVisualStyleBackColor = true;
+            // 
+            // AddTextButton
+            // 
+            this.AddTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AddTextButton.Location = new System.Drawing.Point(6, 417);
+            this.AddTextButton.Name = "AddTextButton";
+            this.AddTextButton.Size = new System.Drawing.Size(89, 27);
+            this.AddTextButton.TabIndex = 12;
+            this.AddTextButton.Text = "Add";
+            this.AddTextButton.UseVisualStyleBackColor = true;
+            // 
+            // TextListBox
+            // 
+            this.TextListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.TextListBox.FormattingEnabled = true;
+            this.TextListBox.Location = new System.Drawing.Point(7, 7);
+            this.TextListBox.Name = "TextListBox";
+            this.TextListBox.Size = new System.Drawing.Size(184, 394);
+            this.TextListBox.TabIndex = 11;
             // 
             // UserTab
             // 
@@ -796,6 +888,7 @@
             this.UserEventsApplyButton.TabIndex = 7;
             this.UserEventsApplyButton.Text = "Apply Changes";
             this.UserEventsApplyButton.UseVisualStyleBackColor = true;
+            this.UserEventsApplyButton.Click += new System.EventHandler(this.UserEventsApplyButton_Click);
             // 
             // UserEventsRemoveEventButton
             // 
@@ -1142,98 +1235,6 @@
             // FolderPicker
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
-            // 
-            // ItemNameTextBox
-            // 
-            this.ItemNameTextBox.Location = new System.Drawing.Point(289, 176);
-            this.ItemNameTextBox.Name = "ItemNameTextBox";
-            this.ItemNameTextBox.Size = new System.Drawing.Size(237, 20);
-            this.ItemNameTextBox.TabIndex = 11;
-            // 
-            // LabelItemName
-            // 
-            this.LabelItemName.AutoSize = true;
-            this.LabelItemName.Location = new System.Drawing.Point(224, 179);
-            this.LabelItemName.Name = "LabelItemName";
-            this.LabelItemName.Size = new System.Drawing.Size(59, 13);
-            this.LabelItemName.TabIndex = 12;
-            this.LabelItemName.Text = "Item name:";
-            // 
-            // ItemApplyChangesButton
-            // 
-            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 176);
-            this.ItemApplyChangesButton.Name = "ItemApplyChangesButton";
-            this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 20);
-            this.ItemApplyChangesButton.TabIndex = 13;
-            this.ItemApplyChangesButton.Text = "Apply";
-            this.ItemApplyChangesButton.UseVisualStyleBackColor = true;
-            // 
-            // RemoveTextButton
-            // 
-            this.RemoveTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.RemoveTextButton.Location = new System.Drawing.Point(102, 417);
-            this.RemoveTextButton.Name = "RemoveTextButton";
-            this.RemoveTextButton.Size = new System.Drawing.Size(89, 27);
-            this.RemoveTextButton.TabIndex = 13;
-            this.RemoveTextButton.Text = "Remove";
-            this.RemoveTextButton.UseVisualStyleBackColor = true;
-            // 
-            // AddTextButton
-            // 
-            this.AddTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AddTextButton.Location = new System.Drawing.Point(6, 417);
-            this.AddTextButton.Name = "AddTextButton";
-            this.AddTextButton.Size = new System.Drawing.Size(89, 27);
-            this.AddTextButton.TabIndex = 12;
-            this.AddTextButton.Text = "Add";
-            this.AddTextButton.UseVisualStyleBackColor = true;
-            // 
-            // TextListBox
-            // 
-            this.TextListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.TextListBox.FormattingEnabled = true;
-            this.TextListBox.Location = new System.Drawing.Point(7, 7);
-            this.TextListBox.Name = "TextListBox";
-            this.TextListBox.Size = new System.Drawing.Size(184, 394);
-            this.TextListBox.TabIndex = 11;
-            // 
-            // LabelTextToken
-            // 
-            this.LabelTextToken.AutoSize = true;
-            this.LabelTextToken.Location = new System.Drawing.Point(215, 10);
-            this.LabelTextToken.Name = "LabelTextToken";
-            this.LabelTextToken.Size = new System.Drawing.Size(41, 13);
-            this.LabelTextToken.TabIndex = 14;
-            this.LabelTextToken.Text = "Token:";
-            // 
-            // TextTokenTextBox
-            // 
-            this.TextTokenTextBox.Location = new System.Drawing.Point(262, 7);
-            this.TextTokenTextBox.Name = "TextTokenTextBox";
-            this.TextTokenTextBox.Size = new System.Drawing.Size(321, 20);
-            this.TextTokenTextBox.TabIndex = 15;
-            // 
-            // TextDataBox
-            // 
-            this.TextDataBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextDataBox.Location = new System.Drawing.Point(197, 33);
-            this.TextDataBox.Multiline = true;
-            this.TextDataBox.Name = "TextDataBox";
-            this.TextDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TextDataBox.Size = new System.Drawing.Size(529, 411);
-            this.TextDataBox.TabIndex = 16;
-            // 
-            // TextApplyButton
-            // 
-            this.TextApplyButton.Location = new System.Drawing.Point(589, 7);
-            this.TextApplyButton.Name = "TextApplyButton";
-            this.TextApplyButton.Size = new System.Drawing.Size(137, 20);
-            this.TextApplyButton.TabIndex = 17;
-            this.TextApplyButton.Text = "Apply Changes";
-            this.TextApplyButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

@@ -13,5 +13,16 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             ScriptActionEditControl.PopulatePanel(action.actions, ActionsFlowPanel);
             ScriptActionEditControl.PopulatePanel(action.@else, ElseActionsFlowPanel);
         }
+
+        internal MudData.FormulaActionIf GenerateMudDataAction()
+        {
+            var ret = new MudData.FormulaActionIf();
+            ret.action = "if";
+            ret.condition = ConditionTextBox.Text;
+            ret.actions = ScriptActionEditControl.PopulateMudData(ActionsFlowPanel.Controls);
+            ret.@else = ScriptActionEditControl.PopulateMudData(ElseActionsFlowPanel.Controls);
+
+            return ret;
+        }
     }
 }

@@ -14,5 +14,18 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             TargetListComboBox.Text = action.targetList;
             FilterConditionTextBox.Text = action.condition;
         }
+
+        internal MudData.FormulaActionListTransfer GenerateMudDataAction()
+        {
+            var ret = new MudData.FormulaActionListTransfer();
+            ret.action = "ListTransfer";
+            ret.condition = FilterConditionTextBox.Text;
+            ret.list = OriginListComboBox.Text;
+            ret.scriptable = ScriptableComboBox.Text;
+            ret.target = TargetComboBox.Text;
+            ret.targetList = TargetListComboBox.Text;
+
+            return ret;
+        }
     }
 }

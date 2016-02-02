@@ -29,11 +29,61 @@ namespace FormulaEdit
 
         private MudData.FormulaAction PopulateActionDictionary()
         {
+            MudData.FormulaAction action = null;
+
+            if (ActionComboBox.Text == "AddSelfToList")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlAddSelfToList;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "CreateListMember")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlCreateListMember;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "foreach")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlForEach;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "if")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlIf;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "ListTransfer")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlListTransfer;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "RepeatEvent")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlRepeatEvent;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "SetGoalState")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlSetGoalState;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "SetProperty")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlSetProperty;
+                action = ctl.GenerateMudDataAction();
+            }
+            else if (ActionComboBox.Text == "TriggerEvent")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlTriggerEvent;
+                action = ctl.GenerateMudDataAction();
+            }
+            else
+            {
+                action = null;
+            }
+
             var ret = new MudData.FormulaAction();
-
             ret.action = ActionComboBox.Text;
-
-            // TODO - capture stuff from grid!
+            ret.InternalAction = action;
 
             return ret;
         }
@@ -72,49 +122,7 @@ namespace FormulaEdit
 
         private void ActionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MudData.FormulaAction action = null;
-
-            if (ActionComboBox.Text == "AddSelfToList")
-            {
-                action = new MudData.FormulaActionAddSelfToList();
-            }
-            else if (ActionComboBox.Text == "CreateListMember")
-            {
-                action = new MudData.FormulaActionCreateListMember();
-            }
-            else if (ActionComboBox.Text == "foreach")
-            {
-                action = new MudData.FormulaActionForEach();
-            }
-            else if (ActionComboBox.Text == "if")
-            {
-                action = new MudData.FormulaActionIf();
-            }
-            else if (ActionComboBox.Text == "ListTransfer")
-            {
-                action = new MudData.FormulaActionListTransfer();
-            }
-            else if (ActionComboBox.Text == "RepeatEvent")
-            {
-                action = new MudData.FormulaActionRepeatEvent();
-            }
-            else if (ActionComboBox.Text == "SetGoalState")
-            {
-                action = new MudData.FormulaActionSetGoalState();
-            }
-            else if (ActionComboBox.Text == "SetProperty")
-            {
-                action = new MudData.FormulaActionSetProperty();
-            }
-            else if (ActionComboBox.Text == "TriggerEvent")
-            {
-                action = new MudData.FormulaActionTriggerEvent();
-            }
-            else
-            {
-                action = new MudData.FormulaAction();
-            }
-
+            MudData.FormulaAction action = GetRawActionFromDropdownSelection();
             CreateEditorControls(action);
         }
 
@@ -173,6 +181,55 @@ namespace FormulaEdit
             {
                 MessageBox.Show("Missing support for actions of this type: " + action.GetType().ToString(), "FormulaEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+
+        private MudData.FormulaAction GetRawActionFromDropdownSelection()
+        {
+            MudData.FormulaAction action = null;
+
+            if (ActionComboBox.Text == "AddSelfToList")
+            {
+                action = new MudData.FormulaActionAddSelfToList();
+            }
+            else if (ActionComboBox.Text == "CreateListMember")
+            {
+                action = new MudData.FormulaActionCreateListMember();
+            }
+            else if (ActionComboBox.Text == "foreach")
+            {
+                action = new MudData.FormulaActionForEach();
+            }
+            else if (ActionComboBox.Text == "if")
+            {
+                action = new MudData.FormulaActionIf();
+            }
+            else if (ActionComboBox.Text == "ListTransfer")
+            {
+                action = new MudData.FormulaActionListTransfer();
+            }
+            else if (ActionComboBox.Text == "RepeatEvent")
+            {
+                action = new MudData.FormulaActionRepeatEvent();
+            }
+            else if (ActionComboBox.Text == "SetGoalState")
+            {
+                action = new MudData.FormulaActionSetGoalState();
+            }
+            else if (ActionComboBox.Text == "SetProperty")
+            {
+                action = new MudData.FormulaActionSetProperty();
+            }
+            else if (ActionComboBox.Text == "TriggerEvent")
+            {
+                action = new MudData.FormulaActionTriggerEvent();
+            }
+            else
+            {
+                action = new MudData.FormulaAction();
+            }
+
+            return action;
         }
 
     }

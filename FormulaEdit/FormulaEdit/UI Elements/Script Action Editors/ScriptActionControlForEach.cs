@@ -16,5 +16,15 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
             ScriptActionEditControl.PopulatePanel(action.actions, ActionsFlowPanel);
         }
+
+        internal MudData.FormulaActionForEach GenerateMudDataAction()
+        {
+            var ret = new MudData.FormulaActionForEach();
+            ret.action = "foreach";
+            ret.list = ListComboBox.Text;
+            ret.actions = ScriptActionEditControl.PopulateMudData(ActionsFlowPanel.Controls);
+
+            return ret;
+        }
     }
 }

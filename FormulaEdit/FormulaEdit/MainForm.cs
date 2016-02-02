@@ -545,5 +545,18 @@ namespace FormulaEdit
         {
 
         }
+
+        private void UserEventsApplyButton_Click(object sender, EventArgs e)
+        {
+            if (UserEventsListBox.SelectedItem == null)
+                return;
+
+            var item = UserEventsListBox.SelectedItem as MudData.FormulaEvent;
+
+            item.name = UserEventsEventCodeTextBox.Text;
+            item.actions = ScriptActionEditControl.PopulateMudData(UserEventActionsPanel.Controls);
+
+            UserEventsListBox_SelectedIndexChanged(null, null);
+        }
     }
 }

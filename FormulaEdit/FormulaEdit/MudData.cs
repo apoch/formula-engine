@@ -86,6 +86,27 @@ namespace FormulaEdit
                 set { edo = value; }
             }
 
+            [OnSerializing]
+            internal void SerializationInProgress(StreamingContext context)
+            {
+                if (InternalAction == null)
+                    return;
+
+                var settings = new DataContractJsonSerializerSettings();
+                settings.UseSimpleDictionaryFormat = true;
+
+                var serializer = new DataContractJsonSerializer(InternalAction.GetType(), settings);
+                var stream = new MemoryStream();
+
+                serializer.WriteObject(stream, InternalAction);
+                stream.Position = 0;
+
+                var deserializer = new DataContractJsonSerializer(typeof(FormulaAction), settings);
+                var temp = deserializer.ReadObject(stream) as FormulaAction;
+
+                edo = temp.edo;
+            }
+
             [OnDeserialized]
             internal void DeserializationComplete(StreamingContext context)
             {
@@ -212,10 +233,12 @@ namespace FormulaEdit
             [DataMember]
             public string condition = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public string scriptable = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public string target = "";
 
             [DataMember]

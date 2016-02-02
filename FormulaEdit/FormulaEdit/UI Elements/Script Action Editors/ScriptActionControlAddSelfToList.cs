@@ -11,5 +11,15 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             TargetComboBox.Text = action.target;
             ListComboBox.Text = action.list;
         }
+
+        internal MudData.FormulaActionAddSelfToList GenerateMudDataAction()
+        {
+            var ret = new MudData.FormulaActionAddSelfToList();
+            ret.action = "AddSelfToList";
+            ret.target = TargetComboBox.Text;
+            ret.list = ListComboBox.Text;
+
+            return ret;
+        }
     }
 }
