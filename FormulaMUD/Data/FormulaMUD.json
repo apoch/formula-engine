@@ -7,19 +7,11 @@
       "name": "Item"
     },
     {
-      "name": "User",
       "bindings": [
         "User"
       ],
-      "lists": [
-        {
-          "name": "Inventory",
-          "contents": [ ]
-        }
-      ],
       "events": [
         {
-          "name": "OnCreate",
           "actions": [
             {
               "action": "SetGoalState",
@@ -39,10 +31,10 @@
               "property": "EnterRoom",
               "value": "TEXT:StartRoom"
             }
-          ]
+          ],
+          "name": "OnCreate"
         },
         {
-          "name": "EnterConnectedRoomFailed",
           "actions": [
             {
               "action": "SetGoalState",
@@ -50,10 +42,10 @@
               "property": "SendMessage",
               "value": "TEXT:USER_TRAVEL_FAILED"
             }
-          ]
+          ],
+          "name": "EnterConnectedRoomFailed"
         },
         {
-          "name": "Poll",
           "actions": [
             {
               "action": "SetGoalState",
@@ -61,10 +53,10 @@
               "property": "PollInput",
               "value": "0"
             }
-          ]
+          ],
+          "name": "Poll"
         },
         {
-          "name": "CMD_north",
           "actions": [
             {
               "action": "SetGoalState",
@@ -72,10 +64,10 @@
               "property": "EnterConnectedRoom",
               "value": "TEXT:north"
             }
-          ]
+          ],
+          "name": "CMD_north"
         },
         {
-          "name": "CMD_south",
           "actions": [
             {
               "action": "SetGoalState",
@@ -83,10 +75,10 @@
               "property": "EnterConnectedRoom",
               "value": "TEXT:south"
             }
-          ]
+          ],
+          "name": "CMD_south"
         },
         {
-          "name": "CMD_east",
           "actions": [
             {
               "action": "SetGoalState",
@@ -94,10 +86,10 @@
               "property": "EnterConnectedRoom",
               "value": "TEXT:east"
             }
-          ]
+          ],
+          "name": "CMD_east"
         },
         {
-          "name": "CMD_west",
           "actions": [
             {
               "action": "SetGoalState",
@@ -105,10 +97,10 @@
               "property": "EnterConnectedRoom",
               "value": "TEXT:west"
             }
-          ]
+          ],
+          "name": "CMD_west"
         },
         {
-          "name": "CMD_look",
           "actions": [
             {
               "action": "SetGoalState",
@@ -135,10 +127,10 @@
               "property": "SendMessage",
               "value": "TEXT:USER_LOOK_ITEMS_FOOTER"
             }
-          ]
+          ],
+          "name": "CMD_look"
         },
         {
-          "name": "CMD_take",
           "actions": [
             {
               "action": "ListTransfer",
@@ -147,10 +139,10 @@
               "targetList": "Inventory",
               "condition": "1"
             }
-          ]
+          ],
+          "name": "CMD_take"
         },
         {
-          "name": "CMD_drop",
           "actions": [
             {
               "action": "ListTransfer",
@@ -159,10 +151,10 @@
               "target": "CurrentRoom",
               "condition": "1"
             }
-          ]
+          ],
+          "name": "CMD_drop"
         },
         {
-          "name": "CMD_carrying",
           "actions": [
             {
               "action": "foreach",
@@ -176,35 +168,41 @@
                 }
               ]
             }
-          ]
-        }
-      ]
-    }
-  ],
-
-  "scriptables": [
-    {
-      "name": "MasterControl",
-      "lists": [
-        {
-          "name": "ConnectedUsers",
-          "contents": [ ]
+          ],
+          "name": "CMD_carrying"
         }
       ],
+      "lists": [
+        {
+          "contents": [ ],
+          "name": "Inventory"
+        }
+      ],
+      "name": "User"
+    }
+  ],
+  "scriptables": [
+    {
       "events": [
         {
-          "name": "OnUserConnect",
           "actions": [
             {
               "action": "CreateListMember",
               "archetype": "User",
               "list": "ConnectedUsers"
             }
-          ]
+          ],
+          "name": "OnUserConnect"
         }
-      ]
+      ],
+      "lists": [
+        {
+          "contents": [ ],
+          "name": "ConnectedUsers"
+        }
+      ],
+      "name": "MasterControl"
     },
-
     {
       "name": "ITEM_Doodad",
       "properties": {
@@ -212,19 +210,15 @@
       }
     }
   ],
-
   "textbags": [
     {
       "name": "TEXT",
       "textlines": {
         "USER_CONNECT_GREETING": "Hello user! Welcome to FormulaMUD!",
-        "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands\r\n",
-
+        "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands\u000d\u000a",
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
-
         "USER_LOOK_ITEMS_HEADER": "Items in this location:",
         "USER_LOOK_ITEMS_FOOTER": " ",
-
         "ITEM_DOODAD": "A useless doodad"
       }
     }

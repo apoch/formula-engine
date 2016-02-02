@@ -45,7 +45,8 @@ namespace FormulaEdit
         [DataContract]
         private class CommandListJSONWrapper
         {
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<Command> commands = null;
         }
 
@@ -56,7 +57,8 @@ namespace FormulaEdit
             [DataMember]
             public string name = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<string> contents = null;
 
 
@@ -170,7 +172,8 @@ namespace FormulaEdit
             [DataMember]
             public string archetype = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> @params = new Dictionary<string, string>();
         }
 
@@ -180,10 +183,12 @@ namespace FormulaEdit
             [DataMember]
             public string condition = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaAction> actions = new List<FormulaAction>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaAction> @else = new List<FormulaAction>();
         }
 
@@ -193,7 +198,8 @@ namespace FormulaEdit
             [DataMember]
             public string list = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaAction> actions = new List<FormulaAction>();
         }
 
@@ -225,7 +231,8 @@ namespace FormulaEdit
             [DataMember]
             public string count = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> @params = new Dictionary<string, string>();
         }
 
@@ -261,7 +268,8 @@ namespace FormulaEdit
             [DataMember]
             public string target = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> @params = new Dictionary<string, string>();
         }
 
@@ -273,7 +281,8 @@ namespace FormulaEdit
             [DataMember]
             public string name = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaAction> actions = new List<FormulaAction>();
 
             public override string ToString()
@@ -292,13 +301,16 @@ namespace FormulaEdit
             [DataMember]
             public string description = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> connections = new Dictionary<string, string>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaList> lists = new List<FormulaList>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaEvent> events = new List<FormulaEvent>();
 
 
@@ -312,7 +324,8 @@ namespace FormulaEdit
         [DataContract]
         private class RoomListJSONWrapper
         {
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<Room> rooms = null;
         }
 
@@ -324,16 +337,20 @@ namespace FormulaEdit
             [DataMember]
             public string name = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<string> bindings = new List<string>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaList> lists = new List<FormulaList>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaEvent> events = new List<FormulaEvent>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> properties = new Dictionary<string, string>();
 
 
@@ -349,13 +366,16 @@ namespace FormulaEdit
             [DataMember]
             public string name = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaList> lists = new List<FormulaList>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaEvent> events = new List<FormulaEvent>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> properties = new Dictionary<string, string>();
 
 
@@ -371,7 +391,8 @@ namespace FormulaEdit
             [DataMember]
             public string name = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public Dictionary<string, string> textlines = new Dictionary<string, string>();
 
 
@@ -385,13 +406,16 @@ namespace FormulaEdit
         [DataContract]
         private class MainJSONWrapper
         {
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<Archetype> archetypes = new List<Archetype>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<Scriptable> scriptables = new List<Scriptable>();
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<TextBag> textbags = new List<TextBag>();
         }
 
@@ -493,7 +517,26 @@ namespace FormulaEdit
 
         private void SaveMainTo(string fileName)
         {
-            // TODO - implement export of main JSON file
+            var settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            
+            var serializer = new DataContractJsonSerializer(typeof(MainJSONWrapper), settings);
+            var outfile = new FileStream(fileName, FileMode.Create);
+
+            var writer = JsonReaderWriterFactory.CreateJsonWriter(outfile, Encoding.UTF8, false, true, "  ");
+
+            var wrap = new MainJSONWrapper();
+            wrap.archetypes = Archetypes;
+            wrap.scriptables = Scriptables;
+            wrap.textbags = TextBags;
+
+            serializer.WriteObject(writer, wrap);
+
+            writer.Flush();
+
+            outfile.Flush();
+            outfile.Close();
+            outfile.Dispose();
         }
     }
 }
