@@ -707,6 +707,7 @@
             this.ItemApplyChangesButton.TabIndex = 13;
             this.ItemApplyChangesButton.Text = "Apply";
             this.ItemApplyChangesButton.UseVisualStyleBackColor = true;
+            this.ItemApplyChangesButton.Click += new System.EventHandler(this.ItemApplyChangesButton_Click);
             // 
             // LabelItemName
             // 
@@ -733,6 +734,7 @@
             this.RemoveItemButton.TabIndex = 10;
             this.RemoveItemButton.Text = "Remove";
             this.RemoveItemButton.UseVisualStyleBackColor = true;
+            this.RemoveItemButton.Click += new System.EventHandler(this.RemoveItemButton_Click);
             // 
             // AddItemButton
             // 
@@ -743,6 +745,7 @@
             this.AddItemButton.TabIndex = 9;
             this.AddItemButton.Text = "Add";
             this.AddItemButton.UseVisualStyleBackColor = true;
+            this.AddItemButton.Click += new System.EventHandler(this.AddItemButton_Click);
             // 
             // ItemsListBox
             // 
@@ -778,6 +781,7 @@
             this.TextApplyButton.TabIndex = 17;
             this.TextApplyButton.Text = "Apply Changes";
             this.TextApplyButton.UseVisualStyleBackColor = true;
+            this.TextApplyButton.Click += new System.EventHandler(this.TextApplyButton_Click);
             // 
             // TextDataBox
             // 
@@ -816,6 +820,7 @@
             this.RemoveTextButton.TabIndex = 13;
             this.RemoveTextButton.Text = "Remove";
             this.RemoveTextButton.UseVisualStyleBackColor = true;
+            this.RemoveTextButton.Click += new System.EventHandler(this.RemoveTextButton_Click);
             // 
             // AddTextButton
             // 
@@ -826,6 +831,7 @@
             this.AddTextButton.TabIndex = 12;
             this.AddTextButton.Text = "Add";
             this.AddTextButton.UseVisualStyleBackColor = true;
+            this.AddTextButton.Click += new System.EventHandler(this.AddTextButton_Click);
             // 
             // TextListBox
             // 
@@ -836,6 +842,7 @@
             this.TextListBox.Name = "TextListBox";
             this.TextListBox.Size = new System.Drawing.Size(184, 394);
             this.TextListBox.TabIndex = 11;
+            this.TextListBox.SelectedIndexChanged += new System.EventHandler(this.TextListBox_SelectedIndexChanged);
             // 
             // UserTab
             // 
@@ -899,6 +906,7 @@
             this.UserEventsRemoveEventButton.TabIndex = 6;
             this.UserEventsRemoveEventButton.Text = "Remove Event";
             this.UserEventsRemoveEventButton.UseVisualStyleBackColor = true;
+            this.UserEventsRemoveEventButton.Click += new System.EventHandler(this.UserEventsRemoveEventButton_Click);
             // 
             // UserEventsAddEventButton
             // 
@@ -909,6 +917,7 @@
             this.UserEventsAddEventButton.TabIndex = 5;
             this.UserEventsAddEventButton.Text = "Add Event";
             this.UserEventsAddEventButton.UseVisualStyleBackColor = true;
+            this.UserEventsAddEventButton.Click += new System.EventHandler(this.UserEventsAddEventButton_Click);
             // 
             // UserEventsNewActionButton
             // 
@@ -918,6 +927,7 @@
             this.UserEventsNewActionButton.TabIndex = 4;
             this.UserEventsNewActionButton.Text = "New Action";
             this.UserEventsNewActionButton.UseVisualStyleBackColor = true;
+            this.UserEventsNewActionButton.Click += new System.EventHandler(this.UserEventsNewActionButton_Click);
             // 
             // LabelUserEventsEventCode
             // 
@@ -1019,6 +1029,7 @@
             this.UserPropertiesApplyButton.TabIndex = 10;
             this.UserPropertiesApplyButton.Text = "Apply Changes";
             this.UserPropertiesApplyButton.UseVisualStyleBackColor = true;
+            this.UserPropertiesApplyButton.Click += new System.EventHandler(this.UserPropertiesApplyButton_Click);
             // 
             // UserPropertiesRemovePropertyButton
             // 
@@ -1029,6 +1040,7 @@
             this.UserPropertiesRemovePropertyButton.TabIndex = 9;
             this.UserPropertiesRemovePropertyButton.Text = "Remove Property";
             this.UserPropertiesRemovePropertyButton.UseVisualStyleBackColor = true;
+            this.UserPropertiesRemovePropertyButton.Click += new System.EventHandler(this.UserPropertiesRemovePropertyButton_Click);
             // 
             // UserPropertiesAddPropertyButton
             // 
@@ -1114,6 +1126,7 @@
             this.UserListsApplyChangesButton.TabIndex = 14;
             this.UserListsApplyChangesButton.Text = "Apply Changes";
             this.UserListsApplyChangesButton.UseVisualStyleBackColor = true;
+            this.UserListsApplyChangesButton.Click += new System.EventHandler(this.UserListsApplyChangesButton_Click);
             // 
             // UserListsRemoveListButton
             // 
@@ -1124,6 +1137,7 @@
             this.UserListsRemoveListButton.TabIndex = 13;
             this.UserListsRemoveListButton.Text = "Remove List";
             this.UserListsRemoveListButton.UseVisualStyleBackColor = true;
+            this.UserListsRemoveListButton.Click += new System.EventHandler(this.UserListsRemoveListButton_Click);
             // 
             // UserListsAddListButton
             // 
@@ -1134,6 +1148,7 @@
             this.UserListsAddListButton.TabIndex = 12;
             this.UserListsAddListButton.Text = "Add List";
             this.UserListsAddListButton.UseVisualStyleBackColor = true;
+            this.UserListsAddListButton.Click += new System.EventHandler(this.UserListsAddListButton_Click);
             // 
             // UserListsListBox
             // 
@@ -1144,6 +1159,7 @@
             this.UserListsListBox.Name = "UserListsListBox";
             this.UserListsListBox.Size = new System.Drawing.Size(164, 407);
             this.UserListsListBox.TabIndex = 11;
+            this.UserListsListBox.SelectedIndexChanged += new System.EventHandler(this.UserListsListBox_SelectedIndexChanged);
             // 
             // UserBindingsTab
             // 
@@ -1166,6 +1182,7 @@
             this.UserBindingsApplyButton.TabIndex = 2;
             this.UserBindingsApplyButton.Text = "Apply";
             this.UserBindingsApplyButton.UseVisualStyleBackColor = true;
+            this.UserBindingsApplyButton.Click += new System.EventHandler(this.UserBindingsApplyButton_Click);
             // 
             // UserBindingsTextBox
             // 
