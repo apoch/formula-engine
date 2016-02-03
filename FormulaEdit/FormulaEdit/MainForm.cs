@@ -57,6 +57,7 @@ namespace FormulaEdit
         {
             RefreshCommandsTab();
             RefreshRoomsTab();
+            RefreshItemsTab();
             RefreshTextTab();
             RefreshUserTab();
         }
@@ -116,6 +117,27 @@ namespace FormulaEdit
                 RefreshUserEventsTab(archetype);
 
                 break;
+            }
+        }
+
+        private void RefreshItemsTab()
+        {
+            ItemsListBox.Items.Clear();
+            ItemNameTextBox.Text = "";
+            ItemTextTokenTextBox.Text = "";
+
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Scriptables == null)
+                return;
+
+            foreach (var scriptable in CurrentLoadedData.Scriptables)
+            {
+                if (scriptable.name.StartsWith("ITEM_"))
+                {
+                    ItemsListBox.Items.Add(scriptable);
+                }
             }
         }
 
@@ -601,17 +623,57 @@ namespace FormulaEdit
 
         private void AddItemButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement item addition
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Scriptables == null)
+                return;
+
+            var scriptable = new MudData.Scriptable();
+            scriptable.name = "ITEM_unnamed";
+            scriptable.properties["Title"] = "TEXT:UNNAMED";
+
+            CurrentLoadedData.Scriptables.Add(scriptable);
+
+            RefreshItemsTab();
         }
 
         private void RemoveItemButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement item removal
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Scriptables == null)
+                return;
+
+            if (ItemsListBox.SelectedItem == null)
+                return;
+
+            CurrentLoadedData.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
+
+            RefreshItemsTab();
         }
 
         private void ItemApplyChangesButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement item editing
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Scriptables == null)
+                return;
+
+            if (ItemsListBox.SelectedItem == null)
+                return;
+
+            CurrentLoadedData.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
+
+            var scriptable = new MudData.Scriptable();
+            scriptable.name = ItemNameTextBox.Text;
+            scriptable.properties["Title"] = ItemTextTokenTextBox.Text;
+
+            CurrentLoadedData.Scriptables.Add(scriptable);
+
+            RefreshItemsTab();
         }
 
         private void AddTextButton_Click(object sender, EventArgs e)
@@ -937,6 +999,27 @@ namespace FormulaEdit
                     break;
                 }
             }
+        }
+
+        private void ItemsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Scriptables == null)
+                return;
+
+            if (ItemsListBox.SelectedItem == null)
+            {
+                ItemNameTextBox.Text = "";
+                ItemTextTokenTextBox.Text = "";
+
+                return;
+            }
+
+            var scriptable = ItemsListBox.SelectedItem as MudData.Scriptable;
+            ItemNameTextBox.Text = scriptable.name;
+            ItemTextTokenTextBox.Text = scriptable.properties["Title"];
         }
     }
 }

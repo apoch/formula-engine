@@ -132,6 +132,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
+            this.LabelItemTextToken = new System.Windows.Forms.Label();
+            this.ItemTextTokenTextBox = new System.Windows.Forms.TextBox();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -686,6 +688,8 @@
             // 
             // ItemsTab
             // 
+            this.ItemsTab.Controls.Add(this.ItemTextTokenTextBox);
+            this.ItemsTab.Controls.Add(this.LabelItemTextToken);
             this.ItemsTab.Controls.Add(this.ItemApplyChangesButton);
             this.ItemsTab.Controls.Add(this.LabelItemName);
             this.ItemsTab.Controls.Add(this.ItemNameTextBox);
@@ -701,9 +705,9 @@
             // 
             // ItemApplyChangesButton
             // 
-            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 176);
+            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 179);
             this.ItemApplyChangesButton.Name = "ItemApplyChangesButton";
-            this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 20);
+            this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 32);
             this.ItemApplyChangesButton.TabIndex = 13;
             this.ItemApplyChangesButton.Text = "Apply";
             this.ItemApplyChangesButton.UseVisualStyleBackColor = true;
@@ -756,6 +760,7 @@
             this.ItemsListBox.Name = "ItemsListBox";
             this.ItemsListBox.Size = new System.Drawing.Size(184, 394);
             this.ItemsListBox.TabIndex = 8;
+            this.ItemsListBox.SelectedIndexChanged += new System.EventHandler(this.ItemsListBox_SelectedIndexChanged);
             // 
             // TextTab
             // 
@@ -1253,6 +1258,22 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
+            // LabelItemTextToken
+            // 
+            this.LabelItemTextToken.AutoSize = true;
+            this.LabelItemTextToken.Location = new System.Drawing.Point(222, 209);
+            this.LabelItemTextToken.Name = "LabelItemTextToken";
+            this.LabelItemTextToken.Size = new System.Drawing.Size(61, 13);
+            this.LabelItemTextToken.TabIndex = 14;
+            this.LabelItemTextToken.Text = "Text token:";
+            // 
+            // ItemTextTokenTextBox
+            // 
+            this.ItemTextTokenTextBox.Location = new System.Drawing.Point(289, 206);
+            this.ItemTextTokenTextBox.Name = "ItemTextTokenTextBox";
+            this.ItemTextTokenTextBox.Size = new System.Drawing.Size(237, 20);
+            this.ItemTextTokenTextBox.TabIndex = 15;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1403,6 +1424,8 @@
         private System.Windows.Forms.TextBox TextDataBox;
         private System.Windows.Forms.TextBox TextTokenTextBox;
         private System.Windows.Forms.Button TextApplyButton;
+        private System.Windows.Forms.TextBox ItemTextTokenTextBox;
+        private System.Windows.Forms.Label LabelItemTextToken;
     }
 }
 

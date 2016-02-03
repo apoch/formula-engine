@@ -4,9 +4,6 @@
       "name": "Room"
     },
     {
-      "name": "Item"
-    },
-    {
       "bindings": [
         "User"
       ],
