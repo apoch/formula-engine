@@ -221,6 +221,10 @@ namespace FormulaEdit
 
             [DataMember(EmitDefaultValue = false)]
             [OptionalField]
+            public string scriptable = "";
+
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public List<FormulaAction> actions = new List<FormulaAction>();
         }
 

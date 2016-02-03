@@ -27,12 +27,14 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
         private void AddActionButton_Click(object sender, System.EventArgs e)
         {
-            // TODO - implement addition of actions to if statements
+            ActionsFlowPanel.Controls.Add(new ScriptActionEditControl(new MudData.FormulaActionSetGoalState()));
+            Utilities.ResizeControls(ActionsFlowPanel);
         }
 
         private void AddElseActionButton_Click(object sender, System.EventArgs e)
         {
-            // TODO - implement addition of actions to else blocks
+            ElseActionsFlowPanel.Controls.Add(new ScriptActionEditControl(new MudData.FormulaActionSetGoalState()));
+            Utilities.ResizeControls(ElseActionsFlowPanel);
         }
     }
 }

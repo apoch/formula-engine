@@ -9,6 +9,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             InitializeComponent();
 
             ListComboBox.Text = action.list;
+            ScriptableComboBox.Text = action.scriptable;
 
             ActionsFlowPanel.Resize += (ctl, args) => {
                 Utilities.ResizeControls(ActionsFlowPanel);
@@ -22,6 +23,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             var ret = new MudData.FormulaActionForEach();
             ret.action = "foreach";
             ret.list = ListComboBox.Text;
+            ret.scriptable = ScriptableComboBox.Text;
             ret.actions = ScriptActionEditControl.PopulateMudData(ActionsFlowPanel.Controls);
 
             return ret;
@@ -29,7 +31,8 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
         private void AddActionButton_Click(object sender, System.EventArgs e)
         {
-            // TODO - implement addition of actions to foreach loops
+            ActionsFlowPanel.Controls.Add(new ScriptActionEditControl(new MudData.FormulaActionSetGoalState()));
+            Utilities.ResizeControls(ActionsFlowPanel);
         }
     }
 }

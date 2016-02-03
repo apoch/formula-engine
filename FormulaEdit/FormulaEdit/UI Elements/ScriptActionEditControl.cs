@@ -234,7 +234,7 @@ namespace FormulaEdit
 
         private void DeleteActionButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement deletion of script actions
+            Parent.Controls.Remove(this);
         }
     }
 }
