@@ -557,7 +557,22 @@ namespace FormulaEdit
 
         private void UserPropertiesAddPropertyButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement addition of properties to user archetypes
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.properties.Add("unnamed", "0");
+
+                    RefreshUserPropertiesTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserEventsApplyButton_Click(object sender, EventArgs e)
@@ -601,17 +616,66 @@ namespace FormulaEdit
 
         private void AddTextButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement text addition
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.TextBags == null)
+                return;
+
+            foreach (var bag in CurrentLoadedData.TextBags)
+            {
+                if (bag.name == "TEXT")
+                {
+                    bag.textlines.Add("UNNAMED", "Enter text here");
+                    RefreshTextTab();
+                    break;
+                }
+            }
         }
 
         private void RemoveTextButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement text removal
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.TextBags == null)
+                return;
+
+            if (TextListBox.SelectedItem == null)
+                return;
+
+            foreach (var bag in CurrentLoadedData.TextBags)
+            {
+                if (bag.name == "TEXT")
+                {
+                    bag.textlines.Remove(TextListBox.SelectedItem.ToString());
+                    RefreshTextTab();
+                    break;
+                }
+            }
         }
 
         private void TextApplyButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement text editing
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.TextBags == null)
+                return;
+
+            if (TextListBox.SelectedItem == null)
+                return;
+
+            foreach (var bag in CurrentLoadedData.TextBags)
+            {
+                if (bag.name == "TEXT")
+                {
+                    bag.textlines.Remove(TextListBox.SelectedItem.ToString());
+                    bag.textlines.Add(TextTokenTextBox.Text, TextDataBox.Text);
+                    RefreshTextTab();
+                    break;
+                }
+            }
         }
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
@@ -631,12 +695,47 @@ namespace FormulaEdit
 
         private void UserPropertiesRemovePropertyButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement removal of properties from archetypes
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserPropertiesListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.properties.Remove(UserPropertiesListBox.SelectedItem.ToString());
+                    RefreshUserPropertiesTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserPropertiesApplyButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement editing of properties
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserPropertiesListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.properties.Remove(UserPropertiesListBox.SelectedItem.ToString());
+                    archetype.properties.Add(UserPropertiesPropertyNameTextBox.Text, UserPropertiesPropertyFormulaTextBox.Text);
+                    RefreshUserPropertiesTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)

@@ -216,7 +216,7 @@
       "name": "TEXT",
       "textlines": {
         "USER_CONNECT_GREETING": "Hello user! Welcome to FormulaMUD!",
-        "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands\u000d\u000a",
+        "USER_CONNECT_GREETING_TWO": "Use the help command to view all commands!\u000d\u000a",
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
         "USER_LOOK_ITEMS_HEADER": "Items in this location:",
         "USER_LOOK_ITEMS_FOOTER": " ",
