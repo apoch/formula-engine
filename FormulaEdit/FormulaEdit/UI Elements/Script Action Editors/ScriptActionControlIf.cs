@@ -24,5 +24,15 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
             return ret;
         }
+
+        private void AddActionButton_Click(object sender, System.EventArgs e)
+        {
+            // TODO - implement addition of actions to if statements
+        }
+
+        private void AddElseActionButton_Click(object sender, System.EventArgs e)
+        {
+            // TODO - implement addition of actions to else blocks
+        }
     }
 }

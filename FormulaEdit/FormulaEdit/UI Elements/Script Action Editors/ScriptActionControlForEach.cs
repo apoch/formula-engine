@@ -26,5 +26,10 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
             return ret;
         }
+
+        private void AddActionButton_Click(object sender, System.EventArgs e)
+        {
+            // TODO - implement addition of actions to foreach loops
+        }
     }
 }

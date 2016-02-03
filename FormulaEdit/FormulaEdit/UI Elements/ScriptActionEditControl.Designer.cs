@@ -71,7 +71,7 @@
             this.ContainerPanel.AutoSize = true;
             this.ContainerPanel.Location = new System.Drawing.Point(6, 30);
             this.ContainerPanel.Name = "ContainerPanel";
-            this.ContainerPanel.Size = new System.Drawing.Size(248, 62);
+            this.ContainerPanel.Size = new System.Drawing.Size(248, 114);
             this.ContainerPanel.TabIndex = 2;
             // 
             // DeleteActionButton
@@ -83,6 +83,7 @@
             this.DeleteActionButton.TabIndex = 3;
             this.DeleteActionButton.Text = "✘";
             this.DeleteActionButton.UseVisualStyleBackColor = true;
+            this.DeleteActionButton.Click += new System.EventHandler(this.DeleteActionButton_Click);
             // 
             // ScriptActionEditControl
             // 
@@ -95,7 +96,7 @@
             this.Controls.Add(this.LabelAction);
             this.MinimumSize = new System.Drawing.Size(259, 96);
             this.Name = "ScriptActionEditControl";
-            this.Size = new System.Drawing.Size(259, 96);
+            this.Size = new System.Drawing.Size(259, 150);
             this.ResumeLayout(false);
             this.PerformLayout();
 

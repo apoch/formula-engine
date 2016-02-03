@@ -680,17 +680,75 @@ namespace FormulaEdit
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement adding actions to user event handlers
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserEventsListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    var formulaEvent = UserEventsListBox.SelectedItem as MudData.FormulaEvent;
+                    formulaEvent.actions.Add(new MudData.FormulaActionSetGoalState());
+
+                    UserEventsListBox_SelectedIndexChanged(null, null);
+                    break;
+                }
+            }
         }
 
         private void UserEventsAddEventButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement adding events
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserEventsListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    var formulaEvent = new MudData.FormulaEvent();
+                    formulaEvent.name = "unnamed";
+
+                    archetype.events.Add(formulaEvent);
+
+                    RefreshUserEventsTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserEventsRemoveEventButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement removing events
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserEventsListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.events.Remove(UserEventsListBox.SelectedItem as MudData.FormulaEvent);
+
+                    RefreshUserEventsTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserPropertiesRemovePropertyButton_Click(object sender, EventArgs e)
@@ -740,22 +798,93 @@ namespace FormulaEdit
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement addition of lists to user archetypes
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    var list = new MudData.FormulaList();
+                    list.name = "unnamed";
+
+                    archetype.lists.Add(list);
+
+                    RefreshUserListsTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserListsRemoveListButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement removal of lists from user archetypes
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserListsListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.lists.Remove(UserListsListBox.SelectedItem as MudData.FormulaList);
+
+                    RefreshUserListsTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserListsApplyChangesButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement editing of lists on user archetypes
+            if (CurrentLoadedData == null)
+                return;
+
+            if (CurrentLoadedData.Archetypes == null)
+                return;
+
+            if (UserListsListBox.SelectedItem == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.lists.Remove(UserListsListBox.SelectedItem as MudData.FormulaList);
+
+                    var newList = new MudData.FormulaList();
+                    newList.name = UserListsListNameTextBox.Text;
+                    newList.contents = new List<string>(UserListsListContentsTextBox.Lines);
+
+                    archetype.lists.Add(newList);
+
+                    RefreshUserListsTab(archetype);
+                    break;
+                }
+            }
         }
 
         private void UserBindingsApplyButton_Click(object sender, EventArgs e)
         {
-            // TODO - implement editing of bindings
+            if (CurrentLoadedData == null)
+                return;
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    archetype.bindings = new List<string>(UserBindingsTextBox.Lines);
+
+                    break;
+                }
+            }
         }
 
 
@@ -789,15 +918,25 @@ namespace FormulaEdit
             {
                 TextTokenTextBox.Text = "";
                 TextDataBox.Text = "";
-
                 return;
             }
 
-            string key = TextListBox.SelectedItem.ToString();
-            string value = CurrentLoadedData.TextBags[0].textlines[key];
+            if (CurrentLoadedData == null)
+                return;
 
-            TextTokenTextBox.Text = key;
-            TextDataBox.Text = value;
+            if (CurrentLoadedData.TextBags == null)
+                return;
+
+            foreach (var bag in CurrentLoadedData.TextBags)
+            {
+                if (bag.name == "TEXT")
+                {
+                    TextTokenTextBox.Text = TextListBox.SelectedItem.ToString();
+                    TextDataBox.Text = bag.textlines[TextTokenTextBox.Text];
+
+                    break;
+                }
+            }
         }
     }
 }

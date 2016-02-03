@@ -50,6 +50,12 @@
             {
               "action": "SetGoalState",
               "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_PROMPT"
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
               "property": "PollInput",
               "value": "0"
             }
@@ -220,7 +226,8 @@
         "USER_TRAVEL_FAILED": "There are no exits in that direction.",
         "USER_LOOK_ITEMS_HEADER": "Items in this location:",
         "USER_LOOK_ITEMS_FOOTER": " ",
-        "ITEM_DOODAD": "A useless doodad"
+        "ITEM_DOODAD": "A useless doodad",
+        "USER_PROMPT": "Enter a command: "
       }
     }
   ]

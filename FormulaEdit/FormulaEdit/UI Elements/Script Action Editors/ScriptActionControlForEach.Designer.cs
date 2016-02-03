@@ -83,6 +83,7 @@
             this.AddActionButton.TabIndex = 4;
             this.AddActionButton.Text = "+";
             this.AddActionButton.UseVisualStyleBackColor = true;
+            this.AddActionButton.Click += new System.EventHandler(this.AddActionButton_Click);
             // 
             // ScriptActionControlForEach
             // 

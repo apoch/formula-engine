@@ -46,6 +46,7 @@
             this.AddActionButton.TabIndex = 8;
             this.AddActionButton.Text = "+";
             this.AddActionButton.UseVisualStyleBackColor = true;
+            this.AddActionButton.Click += new System.EventHandler(this.AddActionButton_Click);
             // 
             // LabelActions
             // 
@@ -93,6 +94,7 @@
             this.AddElseActionButton.TabIndex = 14;
             this.AddElseActionButton.Text = "+";
             this.AddElseActionButton.UseVisualStyleBackColor = true;
+            this.AddElseActionButton.Click += new System.EventHandler(this.AddElseActionButton_Click);
             // 
             // LabelElse
             // 
