@@ -671,6 +671,18 @@ namespace FormulaEdit
             scriptable.name = ItemNameTextBox.Text;
             scriptable.properties["Title"] = ItemTextTokenTextBox.Text;
 
+            foreach (DataGridViewRow row in ItemPropertiesDataGrid.Rows)
+            {
+                if (row.Cells.Count != 2)
+                    continue;
+
+                string key = row.Cells[0].Value.ToString();
+                string value = row.Cells[1].Value.ToString();
+
+                scriptable.properties[key] = value;
+            }
+
+
             CurrentLoadedData.Scriptables.Add(scriptable);
 
             RefreshItemsTab();
@@ -1003,6 +1015,8 @@ namespace FormulaEdit
 
         private void ItemsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ItemPropertiesDataGrid.Rows.Clear();
+
             if (CurrentLoadedData == null)
                 return;
 
@@ -1020,6 +1034,14 @@ namespace FormulaEdit
             var scriptable = ItemsListBox.SelectedItem as MudData.Scriptable;
             ItemNameTextBox.Text = scriptable.name;
             ItemTextTokenTextBox.Text = scriptable.properties["Title"];
+
+            foreach (var kvp in scriptable.properties)
+            {
+                if (kvp.Key == "Title")
+                    continue;
+
+                ItemPropertiesDataGrid.Rows.Add(new object[] { kvp.Key, kvp.Value });
+            }
         }
     }
 }

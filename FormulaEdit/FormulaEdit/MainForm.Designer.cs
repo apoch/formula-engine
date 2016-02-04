@@ -78,6 +78,8 @@
             this.LabelInternalRoomName = new System.Windows.Forms.Label();
             this.RoomListBox = new System.Windows.Forms.ListBox();
             this.ItemsTab = new System.Windows.Forms.TabPage();
+            this.ItemTextTokenTextBox = new System.Windows.Forms.TextBox();
+            this.LabelItemTextToken = new System.Windows.Forms.Label();
             this.ItemApplyChangesButton = new System.Windows.Forms.Button();
             this.LabelItemName = new System.Windows.Forms.Label();
             this.ItemNameTextBox = new System.Windows.Forms.TextBox();
@@ -132,8 +134,9 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
-            this.LabelItemTextToken = new System.Windows.Forms.Label();
-            this.ItemTextTokenTextBox = new System.Windows.Forms.TextBox();
+            this.ItemPropertiesDataGrid = new System.Windows.Forms.DataGridView();
+            this.ItemPropertyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemPropertyFormulaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -150,6 +153,7 @@
             this.UserListsTab.SuspendLayout();
             this.UserBindingsTab.SuspendLayout();
             this.PrimaryMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // MainEditorTabs
@@ -688,6 +692,7 @@
             // 
             // ItemsTab
             // 
+            this.ItemsTab.Controls.Add(this.ItemPropertiesDataGrid);
             this.ItemsTab.Controls.Add(this.ItemTextTokenTextBox);
             this.ItemsTab.Controls.Add(this.LabelItemTextToken);
             this.ItemsTab.Controls.Add(this.ItemApplyChangesButton);
@@ -703,9 +708,25 @@
             this.ItemsTab.Text = "Items";
             this.ItemsTab.UseVisualStyleBackColor = true;
             // 
+            // ItemTextTokenTextBox
+            // 
+            this.ItemTextTokenTextBox.Location = new System.Drawing.Point(289, 32);
+            this.ItemTextTokenTextBox.Name = "ItemTextTokenTextBox";
+            this.ItemTextTokenTextBox.Size = new System.Drawing.Size(237, 20);
+            this.ItemTextTokenTextBox.TabIndex = 15;
+            // 
+            // LabelItemTextToken
+            // 
+            this.LabelItemTextToken.AutoSize = true;
+            this.LabelItemTextToken.Location = new System.Drawing.Point(222, 35);
+            this.LabelItemTextToken.Name = "LabelItemTextToken";
+            this.LabelItemTextToken.Size = new System.Drawing.Size(61, 13);
+            this.LabelItemTextToken.TabIndex = 14;
+            this.LabelItemTextToken.Text = "Text token:";
+            // 
             // ItemApplyChangesButton
             // 
-            this.ItemApplyChangesButton.Location = new System.Drawing.Point(541, 179);
+            this.ItemApplyChangesButton.Location = new System.Drawing.Point(539, 12);
             this.ItemApplyChangesButton.Name = "ItemApplyChangesButton";
             this.ItemApplyChangesButton.Size = new System.Drawing.Size(107, 32);
             this.ItemApplyChangesButton.TabIndex = 13;
@@ -716,7 +737,7 @@
             // LabelItemName
             // 
             this.LabelItemName.AutoSize = true;
-            this.LabelItemName.Location = new System.Drawing.Point(224, 179);
+            this.LabelItemName.Location = new System.Drawing.Point(224, 10);
             this.LabelItemName.Name = "LabelItemName";
             this.LabelItemName.Size = new System.Drawing.Size(59, 13);
             this.LabelItemName.TabIndex = 12;
@@ -724,7 +745,7 @@
             // 
             // ItemNameTextBox
             // 
-            this.ItemNameTextBox.Location = new System.Drawing.Point(289, 176);
+            this.ItemNameTextBox.Location = new System.Drawing.Point(289, 7);
             this.ItemNameTextBox.Name = "ItemNameTextBox";
             this.ItemNameTextBox.Size = new System.Drawing.Size(237, 20);
             this.ItemNameTextBox.TabIndex = 11;
@@ -1258,21 +1279,29 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
-            // LabelItemTextToken
+            // ItemPropertiesDataGrid
             // 
-            this.LabelItemTextToken.AutoSize = true;
-            this.LabelItemTextToken.Location = new System.Drawing.Point(222, 209);
-            this.LabelItemTextToken.Name = "LabelItemTextToken";
-            this.LabelItemTextToken.Size = new System.Drawing.Size(61, 13);
-            this.LabelItemTextToken.TabIndex = 14;
-            this.LabelItemTextToken.Text = "Text token:";
+            this.ItemPropertiesDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ItemPropertiesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ItemPropertiesDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ItemPropertyNameColumn,
+            this.ItemPropertyFormulaColumn});
+            this.ItemPropertiesDataGrid.Location = new System.Drawing.Point(197, 58);
+            this.ItemPropertiesDataGrid.Name = "ItemPropertiesDataGrid";
+            this.ItemPropertiesDataGrid.Size = new System.Drawing.Size(529, 386);
+            this.ItemPropertiesDataGrid.TabIndex = 16;
             // 
-            // ItemTextTokenTextBox
+            // ItemPropertyNameColumn
             // 
-            this.ItemTextTokenTextBox.Location = new System.Drawing.Point(289, 206);
-            this.ItemTextTokenTextBox.Name = "ItemTextTokenTextBox";
-            this.ItemTextTokenTextBox.Size = new System.Drawing.Size(237, 20);
-            this.ItemTextTokenTextBox.TabIndex = 15;
+            this.ItemPropertyNameColumn.HeaderText = "Property";
+            this.ItemPropertyNameColumn.Name = "ItemPropertyNameColumn";
+            // 
+            // ItemPropertyFormulaColumn
+            // 
+            this.ItemPropertyFormulaColumn.HeaderText = "Formula";
+            this.ItemPropertyFormulaColumn.Name = "ItemPropertyFormulaColumn";
             // 
             // MainForm
             // 
@@ -1313,6 +1342,7 @@
             this.UserBindingsTab.PerformLayout();
             this.PrimaryMenuStrip.ResumeLayout(false);
             this.PrimaryMenuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1426,6 +1456,9 @@
         private System.Windows.Forms.Button TextApplyButton;
         private System.Windows.Forms.TextBox ItemTextTokenTextBox;
         private System.Windows.Forms.Label LabelItemTextToken;
+        private System.Windows.Forms.DataGridView ItemPropertiesDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemPropertyNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemPropertyFormulaColumn;
     }
 }
 
