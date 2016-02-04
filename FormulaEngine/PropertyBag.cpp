@@ -2,10 +2,10 @@
 
 #include "Formula.h"
 #include "Actions.h"
+#include "TokenPool.h"
 #include "PropertyBag.h"
 #include "EventHandler.h"
 #include "Scriptable.h"
-#include "TokenPool.h"
 #include "ScriptWorld.h"
 #include "Functions.h"
 
@@ -312,6 +312,14 @@ void ScopedPropertyBag::Set(unsigned token, const Result & value) {
 	assert(false);		// Not implemented
 }
 
+bool ScopedPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
+	if (!m_resolver.GetScope(scope))
+		return false;
+
+	return m_resolver.GetScope(scope)->ResolveToken(0, token, out);
+}
+
+
 
 WorldPropertyBag::WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes)
 	: m_world(world),
@@ -334,6 +342,20 @@ Result WorldPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned
 
 ListResult WorldPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	return m_scopes->ResolveList(context, scope, token);
+}
+
+bool WorldPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
+	if (!scope) {
+		*out = m_world->GetMagicBag(m_world->GetTokenPool().AddToken("TEXT"))->GetLine(token);
+		return true;
+	}
+
+	// TODO - gross hack
+	if (scope == 666) {
+		scope = m_world->GetTokenPool().AddToken("event");
+	}
+
+	return m_scopes->ResolveToken(scope, token, out);
 }
 
 
@@ -394,3 +416,48 @@ ListResult TextPropertyBag::ResolveList(const IFormulaContext & context, unsigne
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
 	return ret;
 }
+
+
+
+void TokenPropertyBag::Set (unsigned token, const Result & value) {
+	m_bag[token] = value;
+}
+
+
+Result TokenPropertyBag::ResolveNumber (const IFormulaContext & context, unsigned scope, unsigned token) const {
+	ref(context);
+	ref(scope);
+
+	auto iter = m_bag.find(token);
+	if (iter == m_bag.end()) {
+		Result ret;
+		ret.code = RESULT_CODE_MISSING_DEFINITION;
+		ret.value = 0.0;
+	}
+
+	return iter->second;
+}
+
+
+ListResult TokenPropertyBag::ResolveList (const IFormulaContext & context, unsigned scope, unsigned token) const {
+	ref(context);
+	ref(scope);
+	ref(token);
+
+	ListResult ret;
+	ret.code = RESULT_CODE_MISSING_DEFINITION;
+	return ret;
+}
+
+
+unsigned TokenPropertyBag::AddToken (const std::string & token) {
+	return m_pool.AddToken(token);
+}
+
+
+bool TokenPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
+	ref(scope);
+	*out = m_pool.GetStringFromToken(token);
+	return true;
+}
+

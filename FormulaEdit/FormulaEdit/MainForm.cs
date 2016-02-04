@@ -190,6 +190,7 @@ namespace FormulaEdit
                 CommandName.Text = "";
                 CommandEventName.Text = "";
                 CommandHelpTextBox.Text = "";
+                CommandParamTokens.Text = "";
 
                 return;
             }
@@ -198,6 +199,11 @@ namespace FormulaEdit
             CommandName.Text = cmd.command;
             CommandEventName.Text = cmd.@event;
             CommandHelpTextBox.Text = cmd.helpText;
+
+            if (cmd.@params == null)
+                CommandParamTokens.Text = "";
+            else
+                CommandParamTokens.Text = string.Join("\r\n", cmd.@params.ToArray());
         }
 
         private void CommandApplyButton_Click(object sender, EventArgs e)
@@ -209,6 +215,7 @@ namespace FormulaEdit
             cmd.command = CommandName.Text;
             cmd.@event = CommandEventName.Text;
             cmd.helpText = CommandHelpTextBox.Text;
+            cmd.@params = CommandParamTokens.Lines.Length > 0 ? new List<string>(CommandParamTokens.Lines) : null;
 
             RefreshCommandsTab();
         }

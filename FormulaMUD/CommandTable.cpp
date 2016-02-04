@@ -46,22 +46,44 @@ CommandTable::CommandTable(const char * jsonFileName, TokenPool * tokens) {
 		if (helpiter != command.end())
 			helpText = helpiter->second.get<std::string>();
 
+		auto paramiter = command.find("params");
+		if (paramiter != command.end()) {
+			auto paramtable = paramiter->second.get<picojson::array>();
+			for (const auto & param : paramtable)
+				data.params.push_back(param.get<std::string>());
+		}
+
 		data.eventId = tokens->AddToken(eventiter->second.get<std::string>());
-		data.numParams = 0;
 		data.helpText = helpText;
 
 		m_map[textiter->second.get<std::string>()] = data;
 	}
 }
 
-bool CommandTable::DispatchCommandToWorld(const std::string & command, ScriptWorld * world, Scriptable * user) {
+bool CommandTable::DispatchCommandToWorld(const std::string & command, std::stringstream & parser, ScriptWorld * world, Scriptable * user) {
 	auto iter = m_map.find(command);
 	if (iter == m_map.end())
 		return false;
 
-	// TODO - params
+	TokenPropertyBag * bag = nullptr;
+	for (const auto & param : iter->second.params) {
+		if (!bag)
+			bag = new TokenPropertyBag;
 
-	world->QueueEvent(user, iter->second.eventId, nullptr);
+		std::string value;
+		parser >> value;
+
+		unsigned valuetoken = bag->AddToken(value);
+
+		Result r;
+		r.code = RESULT_CODE_OK;
+		r.type = RESULT_TYPE_TOKEN;
+		r.token = valuetoken;
+		
+		bag->Set(world->GetTokenPool().AddToken(param), r);
+	}
+
+	world->QueueEvent(user, iter->second.eventId, bag);
 
 	return true;
 }

@@ -67,6 +67,86 @@ public:			// ITerminalEvaluator interface
 } s_functionDistance;
 
 
+static class FunctionEqual : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+		ret.code = RESULT_CODE_OK;
+		ret.value = 0.0f;
+
+		--(*pindex);
+		Result v2 = termSource.EvaluateSubexpression(context, pindex);
+		if (v2.code != RESULT_CODE_OK)
+			return v2;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if (v1.code != RESULT_CODE_OK)
+			return v1;
+
+		if (v1.type == v2.type) {
+			switch (v1.type) {
+			case RESULT_TYPE_SCALAR:
+				if (v1.value == v2.value)
+					ret.value = 1.0f;
+				break;
+
+			case RESULT_TYPE_TOKEN:
+				if (v1.token == v2.token)
+					ret.value = 1.0f;
+				break;
+
+			case RESULT_TYPE_VECTOR2:
+				if (v1.value == v2.value && v1.value2 == v2.value2)
+					ret.value = 1.0f;
+				break;
+
+			default:
+				assert(false);
+			}
+		}
+
+		return ret;
+	}
+} s_functionEqual;
+
+
+
+static class FunctionFuzzyMatch : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+		ret.code = RESULT_CODE_OK;
+		ret.value = 0.0f;
+
+		--(*pindex);
+		Result v2 = termSource.EvaluateSubexpression(context, pindex);
+		if (v2.code != RESULT_CODE_OK)
+			return v2;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if (v1.code != RESULT_CODE_OK)
+			return v1;
+
+		if (v1.type == v2.type) {
+			if (v1.type == RESULT_TYPE_TOKEN) {
+				std::string token1, token2;
+				if (context->ResolveToken(0, v1.token, &token1) && context->ResolveToken(666, v2.token, &token2)) {
+					if (token2.length() > 0 && token1.find(token2) != std::string::npos)
+						ret.value = 1.0f;
+				}
+			}
+		}
+
+		return ret;
+	}
+} s_functionFuzzyMatch;
+
+
+
 static class FunctionLimit : public ITerminalEvaluator {
 public:			// ITerminalEvaluator interface
 	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
@@ -232,6 +312,12 @@ const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 
 	if(!std::strcmp(str, "Distance"))
 		return &s_functionDistance;
+
+	if (!std::strcmp(str, "Equal"))
+		return &s_functionEqual;
+
+	if (!std::strcmp(str, "FuzzyMatch"))
+		return &s_functionFuzzyMatch;
 
 	if(!std::strcmp(str, "Limit"))
 		return &s_functionLimit;

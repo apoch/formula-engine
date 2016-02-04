@@ -349,7 +349,12 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	unsigned targetListToken = m_targetListToken;
 
 	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](const Scriptable * member) {
-		WorldPropertyBag bag(world, scopes);
+		ScopedPropertyBag newScopes;
+		newScopes.InstantiateFrom(scopes);
+		newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), member->GetScopes());
+
+		WorldPropertyBag bag(world, newScopes);
+
 		Result cond = condition->Evaluate(&bag);
 		if (cond.code != RESULT_CODE_OK)
 			return false;

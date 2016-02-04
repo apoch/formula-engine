@@ -34,6 +34,13 @@ struct IFormulaContext {
 
 	virtual Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const = 0;
 	virtual ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const = 0;
+
+	virtual bool ResolveToken (unsigned scope, unsigned token, std::string * out) const {
+		ref(scope);
+		ref(token);
+		ref(out);
+		return false;
+	}
 };
 
 

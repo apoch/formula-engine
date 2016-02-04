@@ -36,6 +36,10 @@ namespace FormulaEdit
             [DataMember]
             public string helpText = "";
 
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
+            public List<string> @params = null;
+
             public override string ToString()
             {
                 return command;

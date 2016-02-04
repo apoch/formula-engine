@@ -87,7 +87,7 @@ void User::PollInput (double) {
 		return;
 	}
 
-	if (m_worldState->commands->DispatchCommandToWorld(command, m_world, m_scriptable))
+	if (m_worldState->commands->DispatchCommandToWorld(command, parser, m_world, m_scriptable))
 		return;
 
 	std::cout << "What?" << std::endl;

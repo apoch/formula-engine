@@ -19,6 +19,7 @@ class TokenPool {
 public:
 	unsigned AddToken(const char str[]);
 	unsigned AddToken(const std::string & str);
+	unsigned FindToken(const std::string & str);
 	const std::string & GetStringFromToken(unsigned token) const;
 
 private:

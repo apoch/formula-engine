@@ -78,6 +78,9 @@
             this.LabelInternalRoomName = new System.Windows.Forms.Label();
             this.RoomListBox = new System.Windows.Forms.ListBox();
             this.ItemsTab = new System.Windows.Forms.TabPage();
+            this.ItemPropertiesDataGrid = new System.Windows.Forms.DataGridView();
+            this.ItemPropertyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemPropertyFormulaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemTextTokenTextBox = new System.Windows.Forms.TextBox();
             this.LabelItemTextToken = new System.Windows.Forms.Label();
             this.ItemApplyChangesButton = new System.Windows.Forms.Button();
@@ -134,9 +137,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
-            this.ItemPropertiesDataGrid = new System.Windows.Forms.DataGridView();
-            this.ItemPropertyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemPropertyFormulaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LabelCommandParamTokens = new System.Windows.Forms.Label();
+            this.CommandParamTokens = new System.Windows.Forms.TextBox();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -145,6 +147,7 @@
             this.RoomListsTab.SuspendLayout();
             this.RoomEventsTab.SuspendLayout();
             this.ItemsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).BeginInit();
             this.TextTab.SuspendLayout();
             this.UserTab.SuspendLayout();
             this.UserEditorTabs.SuspendLayout();
@@ -153,7 +156,6 @@
             this.UserListsTab.SuspendLayout();
             this.UserBindingsTab.SuspendLayout();
             this.PrimaryMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // MainEditorTabs
@@ -174,6 +176,8 @@
             // 
             // CommandsTab
             // 
+            this.CommandsTab.Controls.Add(this.CommandParamTokens);
+            this.CommandsTab.Controls.Add(this.LabelCommandParamTokens);
             this.CommandsTab.Controls.Add(this.CommandApplyButton);
             this.CommandsTab.Controls.Add(this.CommandHelpTextBox);
             this.CommandsTab.Controls.Add(this.LabelCommandHelpText);
@@ -208,7 +212,7 @@
             this.CommandHelpTextBox.Location = new System.Drawing.Point(203, 94);
             this.CommandHelpTextBox.Multiline = true;
             this.CommandHelpTextBox.Name = "CommandHelpTextBox";
-            this.CommandHelpTextBox.Size = new System.Drawing.Size(520, 97);
+            this.CommandHelpTextBox.Size = new System.Drawing.Size(520, 169);
             this.CommandHelpTextBox.TabIndex = 8;
             // 
             // LabelCommandHelpText
@@ -707,6 +711,30 @@
             this.ItemsTab.TabIndex = 3;
             this.ItemsTab.Text = "Items";
             this.ItemsTab.UseVisualStyleBackColor = true;
+            // 
+            // ItemPropertiesDataGrid
+            // 
+            this.ItemPropertiesDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ItemPropertiesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ItemPropertiesDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ItemPropertyNameColumn,
+            this.ItemPropertyFormulaColumn});
+            this.ItemPropertiesDataGrid.Location = new System.Drawing.Point(197, 58);
+            this.ItemPropertiesDataGrid.Name = "ItemPropertiesDataGrid";
+            this.ItemPropertiesDataGrid.Size = new System.Drawing.Size(529, 386);
+            this.ItemPropertiesDataGrid.TabIndex = 16;
+            // 
+            // ItemPropertyNameColumn
+            // 
+            this.ItemPropertyNameColumn.HeaderText = "Property";
+            this.ItemPropertyNameColumn.Name = "ItemPropertyNameColumn";
+            // 
+            // ItemPropertyFormulaColumn
+            // 
+            this.ItemPropertyFormulaColumn.HeaderText = "Formula";
+            this.ItemPropertyFormulaColumn.Name = "ItemPropertyFormulaColumn";
             // 
             // ItemTextTokenTextBox
             // 
@@ -1279,29 +1307,25 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
-            // ItemPropertiesDataGrid
+            // LabelCommandParamTokens
             // 
-            this.ItemPropertiesDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LabelCommandParamTokens.AutoSize = true;
+            this.LabelCommandParamTokens.Location = new System.Drawing.Point(200, 266);
+            this.LabelCommandParamTokens.Name = "LabelCommandParamTokens";
+            this.LabelCommandParamTokens.Size = new System.Drawing.Size(157, 13);
+            this.LabelCommandParamTokens.TabIndex = 10;
+            this.LabelCommandParamTokens.Text = "Parameter tokens (one per line):";
+            // 
+            // CommandParamTokens
+            // 
+            this.CommandParamTokens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ItemPropertiesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ItemPropertiesDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ItemPropertyNameColumn,
-            this.ItemPropertyFormulaColumn});
-            this.ItemPropertiesDataGrid.Location = new System.Drawing.Point(197, 58);
-            this.ItemPropertiesDataGrid.Name = "ItemPropertiesDataGrid";
-            this.ItemPropertiesDataGrid.Size = new System.Drawing.Size(529, 386);
-            this.ItemPropertiesDataGrid.TabIndex = 16;
-            // 
-            // ItemPropertyNameColumn
-            // 
-            this.ItemPropertyNameColumn.HeaderText = "Property";
-            this.ItemPropertyNameColumn.Name = "ItemPropertyNameColumn";
-            // 
-            // ItemPropertyFormulaColumn
-            // 
-            this.ItemPropertyFormulaColumn.HeaderText = "Formula";
-            this.ItemPropertyFormulaColumn.Name = "ItemPropertyFormulaColumn";
+            this.CommandParamTokens.Location = new System.Drawing.Point(203, 282);
+            this.CommandParamTokens.Multiline = true;
+            this.CommandParamTokens.Name = "CommandParamTokens";
+            this.CommandParamTokens.Size = new System.Drawing.Size(520, 165);
+            this.CommandParamTokens.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -1328,6 +1352,7 @@
             this.RoomEventsTab.PerformLayout();
             this.ItemsTab.ResumeLayout(false);
             this.ItemsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).EndInit();
             this.TextTab.ResumeLayout(false);
             this.TextTab.PerformLayout();
             this.UserTab.ResumeLayout(false);
@@ -1342,7 +1367,6 @@
             this.UserBindingsTab.PerformLayout();
             this.PrimaryMenuStrip.ResumeLayout(false);
             this.PrimaryMenuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ItemPropertiesDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1459,6 +1483,8 @@
         private System.Windows.Forms.DataGridView ItemPropertiesDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemPropertyNameColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemPropertyFormulaColumn;
+        private System.Windows.Forms.Label LabelCommandParamTokens;
+        private System.Windows.Forms.TextBox CommandParamTokens;
     }
 }
 

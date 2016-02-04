@@ -33,7 +33,10 @@
     {
       "command": "drop",
       "event": "CMD_drop",
-      "helpText": "Drop an item. Obviously, you can't drop something you're not carrying."
+      "helpText": "Drop an item. Obviously, you can't drop something you're not carrying.",
+      "params": [
+        "itemTitle"
+      ]
     },
     {
       "command": "carrying",

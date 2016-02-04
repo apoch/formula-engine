@@ -44,6 +44,16 @@ unsigned TokenPool::AddToken(const std::string & token) {
 }
 
 
+unsigned TokenPool::FindToken (const std::string & token) {
+	for (unsigned i = 0; i < m_pool.size(); ++i) {
+		if (m_pool[i] == token)
+			return i + 1;
+	}
+
+	return 0;
+}
+
+
 //
 // Given a token, look up the original string for it
 //

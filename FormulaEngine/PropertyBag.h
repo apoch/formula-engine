@@ -77,6 +77,13 @@ public:			// Configuration interface
 
 	void Clear();
 
+	template <typename FunctorT>
+	void EnumScopes (FunctorT callback) const {
+		for (const auto & kvp : m_bag) {
+			callback(kvp.second);
+		}
+	}
+
 private:		// Internal state
 	std::map<unsigned, const IFormulaContext *> m_bag;
 };
@@ -154,6 +161,7 @@ public:			// ForEach loop support
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
 	
 private:		// Internal state
 	std::map<unsigned, std::vector<const Scriptable *>> m_lists;
@@ -173,6 +181,7 @@ public:			// Construction
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
 
 private:		// Internal state
 	ScriptWorld * m_world;
@@ -191,5 +200,24 @@ public:			// Text configuration and retrieval
 
 private:		// Internal state
 	std::map<unsigned, std::string> m_bag;
+};
+
+
+class TokenPropertyBag : public IPropertyBag {
+public:			// IPropertyBag interface
+	void Set (unsigned token, const Result & value) override;
+
+public:			// IFormulaContext interface
+	Result ResolveNumber (const IFormulaContext & context, unsigned scope, unsigned token) const override;
+	ListResult ResolveList (const IFormulaContext & context, unsigned scope, unsigned token) const override;
+
+	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
+
+public:
+	unsigned AddToken (const std::string & token);
+
+private:
+	TokenPool m_pool;
+	std::map<unsigned, Result> m_bag;
 };
 

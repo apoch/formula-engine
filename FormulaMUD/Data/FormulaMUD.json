@@ -113,7 +113,6 @@
             },
             {
               "action": "foreach",
-              "scriptable": "CurrentRoom",
               "actions": [
                 {
                   "action": "SetGoalState",
@@ -122,7 +121,8 @@
                   "value": "other:Title"
                 }
               ],
-              "list": "Items"
+              "list": "Items",
+              "scriptable": "CurrentRoom"
             },
             {
               "action": "SetGoalState",
@@ -149,7 +149,7 @@
           "actions": [
             {
               "action": "ListTransfer",
-              "condition": "1",
+              "condition": "FuzzyMatch(other:Title, event:itemTitle)",
               "list": "Inventory",
               "scriptable": { },
               "target": "CurrentRoom",

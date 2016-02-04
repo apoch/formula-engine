@@ -3,10 +3,10 @@
 #include "DeserializerFactory.h"
 #include "Formula.h"
 #include "Actions.h"
+#include "TokenPool.h"
 #include "PropertyBag.h"
 #include "EventHandler.h"
 #include "Scriptable.h"
-#include "TokenPool.h"
 #include "ScriptWorld.h"
 #include "Parser.h"
 
