@@ -345,14 +345,12 @@ ListResult WorldPropertyBag::ResolveList(const IFormulaContext & context, unsign
 }
 
 bool WorldPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
-	if (!scope) {
-		*out = m_world->GetMagicBag(m_world->GetTokenPool().AddToken("TEXT"))->GetLine(token);
-		return true;
-	}
-
-	// TODO - gross hack
-	if (scope == 666) {
-		scope = m_world->GetTokenPool().AddToken("event");
+	if (m_world != nullptr && scope != 0) {
+		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
+		if(magic != nullptr) {
+			*out = magic->GetLine(token);
+			return true;
+		}
 	}
 
 	return m_scopes->ResolveToken(scope, token, out);
@@ -397,12 +395,12 @@ const char * TextPropertyBag::GetLine(unsigned token) const {
 
 Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	ref(context);
-	ref(scope);
 
 	Result ret;
 	ret.type = RESULT_TYPE_TOKEN;
 	ret.code = RESULT_CODE_OK;
 	ret.token = token;
+	ret.scope = scope;
 
 	return ret;
 }
@@ -428,14 +426,17 @@ Result TokenPropertyBag::ResolveNumber (const IFormulaContext & context, unsigne
 	ref(context);
 	ref(scope);
 
+	Result ret;
+
 	auto iter = m_bag.find(token);
 	if (iter == m_bag.end()) {
-		Result ret;
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
 		ret.value = 0.0;
+		return ret;
 	}
 
-	return iter->second;
+	ret = iter->second;
+	return ret;
 }
 
 

@@ -21,6 +21,7 @@ struct Result {
 	double     value  = 0.0;
 	double     value2 = 0.0;
 	unsigned   token  = 0;
+	unsigned   scope  = 0;
 };
 
 struct ListResult {
