@@ -137,6 +137,8 @@ public:			// ITerminalEvaluator interface
 				if (context->ResolveToken(v1.scope, v1.token, &token1) && context->ResolveToken(v2.scope, v2.token, &token2)) {
 					if (token2.length() > 0 && token1.find(token2) != std::string::npos)
 						ret.value = 1.0f;
+
+					// TODO - richer fuzzy text matching?
 				}
 			}
 		}
