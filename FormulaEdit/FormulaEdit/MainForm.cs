@@ -606,7 +606,7 @@ namespace FormulaEdit
                 return;
 
             var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
-            item.actions.Add(new MudData.FormulaAction());
+            item.actions.Add(new MudData.FormulaActionSetGoalState());
 
             ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
         }
