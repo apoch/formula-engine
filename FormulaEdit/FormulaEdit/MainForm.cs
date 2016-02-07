@@ -192,6 +192,7 @@ namespace FormulaEdit
                 CommandHelpTextBox.Text = "";
                 CommandParamTokens.Text = "";
 
+                UnhighlightCommitButton(CommandApplyButton);
                 return;
             }
 
@@ -204,6 +205,8 @@ namespace FormulaEdit
                 CommandParamTokens.Text = "";
             else
                 CommandParamTokens.Text = string.Join("\r\n", cmd.@params.ToArray());
+
+            UnhighlightCommitButton(CommandApplyButton);
         }
 
         private void CommandApplyButton_Click(object sender, EventArgs e)
@@ -218,6 +221,7 @@ namespace FormulaEdit
             cmd.@params = CommandParamTokens.Lines.Length > 0 ? new List<string>(CommandParamTokens.Lines) : null;
 
             RefreshCommandsTab();
+            UnhighlightCommitButton(CommandApplyButton);
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1049,6 +1053,38 @@ namespace FormulaEdit
 
                 ItemPropertiesDataGrid.Rows.Add(new object[] { kvp.Key, kvp.Value });
             }
+        }
+
+
+        private void HighlightCommitButton(Button b)
+        {
+            b.BackColor = System.Drawing.Color.Crimson;
+        }
+
+        private void UnhighlightCommitButton(Button b)
+        {
+            b.BackColor = System.Drawing.Color.Transparent;
+        }
+
+
+        private void CommandName_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(CommandApplyButton);
+        }
+
+        private void CommandEventName_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(CommandApplyButton);
+        }
+
+        private void CommandHelpTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(CommandApplyButton);
+        }
+
+        private void CommandParamTokens_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(CommandApplyButton);
         }
     }
 }
