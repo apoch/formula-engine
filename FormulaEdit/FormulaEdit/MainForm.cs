@@ -38,6 +38,12 @@ namespace FormulaEdit
             };
 
 
+            ItemPropertiesDataGrid.CellEndEdit += (ctl, args) =>
+            {
+                HighlightCommitButton(ItemApplyChangesButton);
+            };
+
+
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
         }
 
@@ -145,6 +151,7 @@ namespace FormulaEdit
         private void RefreshUserBindingsTab(MudData.Archetype userArchetype)
         {
             UserBindingsTextBox.Text = string.Join("\r\n", userArchetype.bindings);
+            UnhighlightCommitButton(UserBindingsApplyButton);
         }
 
         private void RefreshUserListsTab(MudData.Archetype userArchetype)
@@ -327,6 +334,8 @@ namespace FormulaEdit
 
                 RoomEventListBox_SelectedIndexChanged(null, null);
             }
+
+            UnhighlightCommitButton(RoomApplyButton);
         }
 
         private void RoomConnectionsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -356,6 +365,8 @@ namespace FormulaEdit
                         RoomConnectionEndpointListBox.SelectedItem = r;
                 }
             }
+
+            UnhighlightCommitButton(RoomConnectionApplyButton);
         }
 
         private void RoomListsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -372,6 +383,8 @@ namespace FormulaEdit
                 RoomListName.Text = list.name;
                 RoomListContents.Text = (list.contents != null) ? string.Join("\r\n", list.contents) : "";
             }
+
+            UnhighlightCommitButton(RoomListApplyButton);
         }
 
         private void RoomEventListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -390,6 +403,8 @@ namespace FormulaEdit
 
                 ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel);
             }
+
+            UnhighlightCommitButton(RoomEventApplyButton);
         }
 
         private void RoomConnectionAddButton_Click(object sender, EventArgs e)
@@ -448,6 +463,7 @@ namespace FormulaEdit
 
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
+            UnhighlightCommitButton(RoomConnectionApplyButton);
         }
 
         private void RoomAddButton_Click(object sender, EventArgs e)
@@ -495,6 +511,7 @@ namespace FormulaEdit
 
             RefreshRoomsTab();
             AutoSave();
+            UnhighlightCommitButton(RoomApplyButton);
         }
 
         private void RoomListAddButton_Click(object sender, EventArgs e)
@@ -545,6 +562,7 @@ namespace FormulaEdit
 
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
+            UnhighlightCommitButton(RoomListApplyButton);
         }
 
         private void RoomEventAddButton_Click(object sender, EventArgs e)
@@ -593,6 +611,7 @@ namespace FormulaEdit
 
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
+            UnhighlightCommitButton(RoomEventApplyButton);
         }
 
         private void RoomEventNewActionButton_Click(object sender, EventArgs e)
@@ -609,6 +628,7 @@ namespace FormulaEdit
             item.actions.Add(new MudData.FormulaActionSetGoalState());
 
             ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
+            HighlightCommitButton(RoomEventApplyButton);
         }
 
         private void UserEventsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -618,6 +638,7 @@ namespace FormulaEdit
             if (UserEventsListBox.SelectedItem == null)
             {
                 UserEventsEventCodeTextBox.Text = "";
+                UnhighlightCommitButton(UserEventsApplyButton);
                 return;
             }
 
@@ -625,6 +646,7 @@ namespace FormulaEdit
 
             UserEventsEventCodeTextBox.Text = item.name;
             ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel);
+            UnhighlightCommitButton(UserEventsApplyButton);
         }
 
         private void UserPropertiesAddPropertyButton_Click(object sender, EventArgs e)
@@ -659,6 +681,7 @@ namespace FormulaEdit
 
             UserEventsListBox_SelectedIndexChanged(null, null);
             AutoSave();
+            UnhighlightCommitButton(UserEventsApplyButton);
         }
 
         private void UserListsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -670,6 +693,8 @@ namespace FormulaEdit
 
             UserListsListNameTextBox.Text = list.name;
             UserListsListContentsTextBox.Text = string.Join("\r\n", list.contents);
+
+            UnhighlightCommitButton(UserListsApplyChangesButton);
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
@@ -738,6 +763,7 @@ namespace FormulaEdit
 
             RefreshItemsTab();
             AutoSave();
+            UnhighlightCommitButton(ItemApplyChangesButton);
         }
 
         private void AddTextButton_Click(object sender, EventArgs e)
@@ -804,6 +830,7 @@ namespace FormulaEdit
             }
 
             AutoSave();
+            UnhighlightCommitButton(TextApplyButton);
         }
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
@@ -828,6 +855,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            HighlightCommitButton(UserEventsApplyButton);
         }
 
         private void UserEventsAddEventButton_Click(object sender, EventArgs e)
@@ -924,6 +953,7 @@ namespace FormulaEdit
             }
 
             AutoSave();
+            UnhighlightCommitButton(UserPropertiesApplyButton);
         }
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)
@@ -1001,6 +1031,7 @@ namespace FormulaEdit
             }
 
             AutoSave();
+            UnhighlightCommitButton(UserListsApplyChangesButton);
         }
 
         private void UserBindingsApplyButton_Click(object sender, EventArgs e)
@@ -1019,6 +1050,7 @@ namespace FormulaEdit
             }
 
             AutoSave();
+            UnhighlightCommitButton(UserBindingsApplyButton);
         }
 
 
@@ -1052,6 +1084,7 @@ namespace FormulaEdit
             {
                 TextTokenTextBox.Text = "";
                 TextDataBox.Text = "";
+                UnhighlightCommitButton(TextApplyButton);
                 return;
             }
 
@@ -1071,6 +1104,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            UnhighlightCommitButton(TextApplyButton);
         }
 
         private void ItemsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1088,6 +1123,7 @@ namespace FormulaEdit
                 ItemNameTextBox.Text = "";
                 ItemTextTokenTextBox.Text = "";
 
+                UnhighlightCommitButton(ItemApplyChangesButton);
                 return;
             }
 
@@ -1102,6 +1138,8 @@ namespace FormulaEdit
 
                 ItemPropertiesDataGrid.Rows.Add(new object[] { kvp.Key, kvp.Value });
             }
+
+            UnhighlightCommitButton(ItemApplyChangesButton);
         }
 
 
@@ -1139,6 +1177,96 @@ namespace FormulaEdit
         private void saveOnCommitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveOnCommitToolStripMenuItem.Checked = !saveOnCommitToolStripMenuItem.Checked;
+        }
+
+        private void RoomInternalName_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomApplyButton);
+        }
+
+        private void RoomDescription_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomApplyButton);
+        }
+
+        private void RoomConnectionDirection_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomConnectionApplyButton);
+        }
+
+        private void RoomConnectionEndpointListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomConnectionApplyButton);
+        }
+
+        private void RoomListName_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomListApplyButton);
+        }
+
+        private void RoomListContents_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomListApplyButton);
+        }
+
+        private void RoomEventCode_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(RoomEventApplyButton);
+        }
+
+        private void ItemNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(ItemApplyChangesButton);
+        }
+
+        private void ItemTextTokenTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(ItemApplyChangesButton);
+        }
+
+        private void TextTokenTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(TextApplyButton);
+        }
+
+        private void TextDataBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(TextApplyButton);
+        }
+
+        private void UserEventsEventCodeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserEventsApplyButton);
+        }
+
+        private void UserPropertiesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // TODO - implement properties selection!
+        }
+
+        private void UserPropertiesPropertyNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserPropertiesApplyButton);
+        }
+
+        private void UserPropertiesPropertyFormulaTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserPropertiesApplyButton);
+        }
+
+        private void UserListsListNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserListsApplyChangesButton);
+        }
+
+        private void UserListsListContentsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserListsApplyChangesButton);
+        }
+
+        private void UserBindingsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(UserBindingsApplyButton);
         }
     }
 }

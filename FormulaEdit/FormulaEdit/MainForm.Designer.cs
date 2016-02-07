@@ -138,9 +138,9 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveOnCommitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -442,6 +442,7 @@
             this.RoomConnectionEndpointListBox.Name = "RoomConnectionEndpointListBox";
             this.RoomConnectionEndpointListBox.Size = new System.Drawing.Size(339, 134);
             this.RoomConnectionEndpointListBox.TabIndex = 4;
+            this.RoomConnectionEndpointListBox.SelectedIndexChanged += new System.EventHandler(this.RoomConnectionEndpointListBox_SelectedIndexChanged);
             // 
             // LabelRoomConnectionEndpoint
             // 
@@ -467,6 +468,7 @@
             this.RoomConnectionDirection.Name = "RoomConnectionDirection";
             this.RoomConnectionDirection.Size = new System.Drawing.Size(152, 20);
             this.RoomConnectionDirection.TabIndex = 1;
+            this.RoomConnectionDirection.TextChanged += new System.EventHandler(this.RoomConnectionDirection_TextChanged);
             // 
             // RoomConnectionsListBox
             // 
@@ -540,6 +542,7 @@
             this.RoomListContents.Name = "RoomListContents";
             this.RoomListContents.Size = new System.Drawing.Size(339, 134);
             this.RoomListContents.TabIndex = 12;
+            this.RoomListContents.TextChanged += new System.EventHandler(this.RoomListContents_TextChanged);
             // 
             // LabelRoomListContents
             // 
@@ -565,6 +568,7 @@
             this.RoomListName.Name = "RoomListName";
             this.RoomListName.Size = new System.Drawing.Size(152, 20);
             this.RoomListName.TabIndex = 9;
+            this.RoomListName.TextChanged += new System.EventHandler(this.RoomListName_TextChanged);
             // 
             // RoomListsListBox
             // 
@@ -664,6 +668,7 @@
             this.RoomEventCode.Name = "RoomEventCode";
             this.RoomEventCode.Size = new System.Drawing.Size(152, 20);
             this.RoomEventCode.TabIndex = 1;
+            this.RoomEventCode.TextChanged += new System.EventHandler(this.RoomEventCode_TextChanged);
             // 
             // RoomEventListBox
             // 
@@ -685,6 +690,7 @@
             this.RoomDescription.Name = "RoomDescription";
             this.RoomDescription.Size = new System.Drawing.Size(515, 107);
             this.RoomDescription.TabIndex = 4;
+            this.RoomDescription.TextChanged += new System.EventHandler(this.RoomDescription_TextChanged);
             // 
             // LabelRoomDescription
             // 
@@ -701,6 +707,7 @@
             this.RoomInternalName.Name = "RoomInternalName";
             this.RoomInternalName.Size = new System.Drawing.Size(172, 20);
             this.RoomInternalName.TabIndex = 2;
+            this.RoomInternalName.TextChanged += new System.EventHandler(this.RoomInternalName_TextChanged);
             // 
             // LabelInternalRoomName
             // 
@@ -771,6 +778,7 @@
             this.ItemTextTokenTextBox.Name = "ItemTextTokenTextBox";
             this.ItemTextTokenTextBox.Size = new System.Drawing.Size(237, 20);
             this.ItemTextTokenTextBox.TabIndex = 15;
+            this.ItemTextTokenTextBox.TextChanged += new System.EventHandler(this.ItemTextTokenTextBox_TextChanged);
             // 
             // LabelItemTextToken
             // 
@@ -806,6 +814,7 @@
             this.ItemNameTextBox.Name = "ItemNameTextBox";
             this.ItemNameTextBox.Size = new System.Drawing.Size(237, 20);
             this.ItemNameTextBox.TabIndex = 11;
+            this.ItemNameTextBox.TextChanged += new System.EventHandler(this.ItemNameTextBox_TextChanged);
             // 
             // RemoveItemButton
             // 
@@ -878,6 +887,7 @@
             this.TextDataBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TextDataBox.Size = new System.Drawing.Size(529, 411);
             this.TextDataBox.TabIndex = 16;
+            this.TextDataBox.TextChanged += new System.EventHandler(this.TextDataBox_TextChanged);
             // 
             // TextTokenTextBox
             // 
@@ -885,6 +895,7 @@
             this.TextTokenTextBox.Name = "TextTokenTextBox";
             this.TextTokenTextBox.Size = new System.Drawing.Size(321, 20);
             this.TextTokenTextBox.TabIndex = 15;
+            this.TextTokenTextBox.TextChanged += new System.EventHandler(this.TextTokenTextBox_TextChanged);
             // 
             // LabelTextToken
             // 
@@ -1029,6 +1040,7 @@
             this.UserEventsEventCodeTextBox.Name = "UserEventsEventCodeTextBox";
             this.UserEventsEventCodeTextBox.Size = new System.Drawing.Size(230, 20);
             this.UserEventsEventCodeTextBox.TabIndex = 2;
+            this.UserEventsEventCodeTextBox.TextChanged += new System.EventHandler(this.UserEventsEventCodeTextBox_TextChanged);
             // 
             // UserEventActionsPanel
             // 
@@ -1089,6 +1101,7 @@
             this.UserPropertiesPropertyFormulaTextBox.Name = "UserPropertiesPropertyFormulaTextBox";
             this.UserPropertiesPropertyFormulaTextBox.Size = new System.Drawing.Size(286, 20);
             this.UserPropertiesPropertyFormulaTextBox.TabIndex = 13;
+            this.UserPropertiesPropertyFormulaTextBox.TextChanged += new System.EventHandler(this.UserPropertiesPropertyFormulaTextBox_TextChanged);
             // 
             // LabelUserPropertiesPropertyName
             // 
@@ -1105,6 +1118,7 @@
             this.UserPropertiesPropertyNameTextBox.Name = "UserPropertiesPropertyNameTextBox";
             this.UserPropertiesPropertyNameTextBox.Size = new System.Drawing.Size(286, 20);
             this.UserPropertiesPropertyNameTextBox.TabIndex = 11;
+            this.UserPropertiesPropertyNameTextBox.TextChanged += new System.EventHandler(this.UserPropertiesPropertyNameTextBox_TextChanged);
             // 
             // UserPropertiesApplyButton
             // 
@@ -1149,6 +1163,7 @@
             this.UserPropertiesListBox.Size = new System.Drawing.Size(164, 407);
             this.UserPropertiesListBox.Sorted = true;
             this.UserPropertiesListBox.TabIndex = 0;
+            this.UserPropertiesListBox.SelectedIndexChanged += new System.EventHandler(this.UserPropertiesListBox_SelectedIndexChanged);
             // 
             // UserListsTab
             // 
@@ -1187,6 +1202,7 @@
             this.UserListsListContentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.UserListsListContentsTextBox.Size = new System.Drawing.Size(447, 308);
             this.UserListsListContentsTextBox.TabIndex = 17;
+            this.UserListsListContentsTextBox.TextChanged += new System.EventHandler(this.UserListsListContentsTextBox_TextChanged);
             // 
             // LabelUserListsListName
             // 
@@ -1203,6 +1219,7 @@
             this.UserListsListNameTextBox.Name = "UserListsListNameTextBox";
             this.UserListsListNameTextBox.Size = new System.Drawing.Size(296, 20);
             this.UserListsListNameTextBox.TabIndex = 15;
+            this.UserListsListNameTextBox.TextChanged += new System.EventHandler(this.UserListsListNameTextBox_TextChanged);
             // 
             // UserListsApplyChangesButton
             // 
@@ -1280,6 +1297,7 @@
             this.UserBindingsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.UserBindingsTextBox.Size = new System.Drawing.Size(327, 163);
             this.UserBindingsTextBox.TabIndex = 1;
+            this.UserBindingsTextBox.TextChanged += new System.EventHandler(this.UserBindingsTextBox_TextChanged);
             // 
             // LabelUserBindingsHint
             // 
@@ -1338,10 +1356,6 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // FolderPicker
-            // 
-            this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
-            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1358,6 +1372,10 @@
             this.saveOnCommitToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.saveOnCommitToolStripMenuItem.Text = "Save on commit";
             this.saveOnCommitToolStripMenuItem.Click += new System.EventHandler(this.saveOnCommitToolStripMenuItem_Click);
+            // 
+            // FolderPicker
+            // 
+            this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
             // MainForm
             // 
