@@ -433,6 +433,12 @@ namespace FormulaEdit
             var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
             var room = RoomListBox.SelectedItem as MudData.Room;
 
+            if ((conn.Direction != RoomConnectionDirection.Text) && (room.connections.ContainsKey(RoomConnectionDirection.Text)))
+            {
+                MessageBox.Show("A connection in that direction already exists on this room, cannot commit!", "FormulaEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             room.connections.Remove(conn.Direction);
 
             conn.Direction = RoomConnectionDirection.Text;
