@@ -230,6 +230,8 @@ namespace FormulaEdit
             RefreshCommandsTab();
             UnhighlightCommitButton(CommandApplyButton);
             AutoSave();
+
+            CommandListBox.SelectedItem = cmd;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -464,6 +466,15 @@ namespace FormulaEdit
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomConnectionApplyButton);
+
+            foreach (RoomConnection listedConnection in RoomConnectionsListBox.Items)
+            {
+                if (listedConnection.Direction == conn.Direction && listedConnection.Endpoint == conn.Endpoint)
+                {
+                    RoomConnectionsListBox.SelectedItem = listedConnection;
+                    break;
+                }
+            }
         }
 
         private void RoomAddButton_Click(object sender, EventArgs e)
@@ -512,6 +523,8 @@ namespace FormulaEdit
             RefreshRoomsTab();
             AutoSave();
             UnhighlightCommitButton(RoomApplyButton);
+
+            RoomListBox.SelectedItem = room;
         }
 
         private void RoomListAddButton_Click(object sender, EventArgs e)
@@ -563,6 +576,8 @@ namespace FormulaEdit
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomListApplyButton);
+
+            RoomListsListBox.SelectedItem = list;
         }
 
         private void RoomEventAddButton_Click(object sender, EventArgs e)
@@ -612,6 +627,8 @@ namespace FormulaEdit
             RoomListBox_SelectedIndexChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomEventApplyButton);
+
+            RoomEventListBox.SelectedItem = item;
         }
 
         private void RoomEventNewActionButton_Click(object sender, EventArgs e)
@@ -682,6 +699,8 @@ namespace FormulaEdit
             UserEventsListBox_SelectedIndexChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(UserEventsApplyButton);
+
+            UserEventsListBox.SelectedItem = item;
         }
 
         private void UserListsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -764,6 +783,8 @@ namespace FormulaEdit
             RefreshItemsTab();
             AutoSave();
             UnhighlightCommitButton(ItemApplyChangesButton);
+
+            ItemsListBox.SelectedItem = scriptable;
         }
 
         private void AddTextButton_Click(object sender, EventArgs e)
@@ -818,12 +839,14 @@ namespace FormulaEdit
             if (TextListBox.SelectedItem == null)
                 return;
 
+            string token = TextTokenTextBox.Text;
+
             foreach (var bag in CurrentLoadedData.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
                     bag.textlines.Remove(TextListBox.SelectedItem.ToString());
-                    bag.textlines.Add(TextTokenTextBox.Text, TextDataBox.Text);
+                    bag.textlines.Add(token, TextDataBox.Text);
                     RefreshTextTab();
                     break;
                 }
@@ -831,6 +854,15 @@ namespace FormulaEdit
 
             AutoSave();
             UnhighlightCommitButton(TextApplyButton);
+
+            foreach (string item in TextListBox.Items)
+            {
+                if (item == token)
+                {
+                    TextListBox.SelectedItem = item;
+                    break;
+                }
+            }
         }
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
@@ -941,12 +973,14 @@ namespace FormulaEdit
             if (UserPropertiesListBox.SelectedItem == null)
                 return;
 
+            string propertyName = UserPropertiesPropertyNameTextBox.Text;
+
             foreach (var archetype in CurrentLoadedData.Archetypes)
             {
                 if (archetype.name == "User")
                 {
                     archetype.properties.Remove(UserPropertiesListBox.SelectedItem.ToString());
-                    archetype.properties.Add(UserPropertiesPropertyNameTextBox.Text, UserPropertiesPropertyFormulaTextBox.Text);
+                    archetype.properties.Add(propertyName, UserPropertiesPropertyFormulaTextBox.Text);
                     RefreshUserPropertiesTab(archetype);
                     break;
                 }
@@ -954,6 +988,15 @@ namespace FormulaEdit
 
             AutoSave();
             UnhighlightCommitButton(UserPropertiesApplyButton);
+
+            foreach (string item in UserPropertiesListBox.Items)
+            {
+                if (item == propertyName)
+                {
+                    UserPropertiesListBox.SelectedItem = item;
+                    break;
+                }
+            }
         }
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)
@@ -1026,6 +1069,7 @@ namespace FormulaEdit
                     archetype.lists.Add(newList);
 
                     RefreshUserListsTab(archetype);
+                    UserListsListBox.SelectedItem = newList;
                     break;
                 }
             }
