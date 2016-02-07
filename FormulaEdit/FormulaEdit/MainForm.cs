@@ -222,6 +222,7 @@ namespace FormulaEdit
 
             RefreshCommandsTab();
             UnhighlightCommitButton(CommandApplyButton);
+            AutoSave();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -239,6 +240,21 @@ namespace FormulaEdit
         {
             Close();
         }
+
+        private void AutoSave()
+        {
+            if (Properties.Settings.Default.LastWorkingPath == null)
+                return;
+
+            if (Properties.Settings.Default.LastWorkingPath.Length == 0)
+                return;
+
+            if (!saveOnCommitToolStripMenuItem.Checked)
+                return;
+
+            CurrentLoadedData.SaveToFolder(Properties.Settings.Default.LastWorkingPath);
+        }
+  
 
         private void AddCommandButton_Click(object sender, EventArgs e)
         {
@@ -425,6 +441,7 @@ namespace FormulaEdit
             room.connections.Add(conn.Direction, conn.Endpoint);
 
             RoomListBox_SelectedIndexChanged(null, null);
+            AutoSave();
         }
 
         private void RoomAddButton_Click(object sender, EventArgs e)
@@ -458,6 +475,7 @@ namespace FormulaEdit
             room.description = RoomDescription.Text;
 
             RefreshRoomsTab();
+            AutoSave();
         }
 
         private void RoomListAddButton_Click(object sender, EventArgs e)
@@ -507,6 +525,7 @@ namespace FormulaEdit
             list.contents = new List<string>(RoomListContents.Text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 
             RoomListBox_SelectedIndexChanged(null, null);
+            AutoSave();
         }
 
         private void RoomEventAddButton_Click(object sender, EventArgs e)
@@ -554,6 +573,7 @@ namespace FormulaEdit
             item.actions = ScriptActionEditControl.PopulateMudData(RoomEventLayoutPanel.Controls);
 
             RoomListBox_SelectedIndexChanged(null, null);
+            AutoSave();
         }
 
         private void RoomEventNewActionButton_Click(object sender, EventArgs e)
@@ -619,6 +639,7 @@ namespace FormulaEdit
             item.actions = ScriptActionEditControl.PopulateMudData(UserEventActionsPanel.Controls);
 
             UserEventsListBox_SelectedIndexChanged(null, null);
+            AutoSave();
         }
 
         private void UserListsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -697,6 +718,7 @@ namespace FormulaEdit
             CurrentLoadedData.Scriptables.Add(scriptable);
 
             RefreshItemsTab();
+            AutoSave();
         }
 
         private void AddTextButton_Click(object sender, EventArgs e)
@@ -761,6 +783,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            AutoSave();
         }
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
@@ -879,6 +903,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            AutoSave();
         }
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)
@@ -954,6 +980,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            AutoSave();
         }
 
         private void UserBindingsApplyButton_Click(object sender, EventArgs e)
@@ -970,6 +998,8 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            AutoSave();
         }
 
 
@@ -1085,6 +1115,11 @@ namespace FormulaEdit
         private void CommandParamTokens_TextChanged(object sender, EventArgs e)
         {
             HighlightCommitButton(CommandApplyButton);
+        }
+
+        private void saveOnCommitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveOnCommitToolStripMenuItem.Checked = !saveOnCommitToolStripMenuItem.Checked;
         }
     }
 }

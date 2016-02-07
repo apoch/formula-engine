@@ -139,6 +139,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveOnCommitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -1291,7 +1293,8 @@
             // PrimaryMenuStrip
             // 
             this.PrimaryMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenuItem});
+            this.FileMenuItem,
+            this.optionsToolStripMenuItem});
             this.PrimaryMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.PrimaryMenuStrip.Name = "PrimaryMenuStrip";
             this.PrimaryMenuStrip.Size = new System.Drawing.Size(762, 24);
@@ -1338,6 +1341,23 @@
             // FolderPicker
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveOnCommitToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // saveOnCommitToolStripMenuItem
+            // 
+            this.saveOnCommitToolStripMenuItem.Checked = true;
+            this.saveOnCommitToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.saveOnCommitToolStripMenuItem.Name = "saveOnCommitToolStripMenuItem";
+            this.saveOnCommitToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.saveOnCommitToolStripMenuItem.Text = "Save on commit";
+            this.saveOnCommitToolStripMenuItem.Click += new System.EventHandler(this.saveOnCommitToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1497,6 +1517,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ItemPropertyFormulaColumn;
         private System.Windows.Forms.Label LabelCommandParamTokens;
         private System.Windows.Forms.TextBox CommandParamTokens;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveOnCommitToolStripMenuItem;
     }
 }
 
