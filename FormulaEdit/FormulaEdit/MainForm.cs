@@ -448,6 +448,19 @@ namespace FormulaEdit
         {
             var room = new MudData.Room();
             room.name = "Unnamed";
+            room.description = "This is an undescribed room.";
+
+            var onEnterEvent = new MudData.FormulaEvent();
+            onEnterEvent.name = "OnUserEnter";
+
+            var sendDescAction = new MudData.FormulaActionSetGoalState();
+            sendDescAction.action = "SetGoalState";
+            sendDescAction.binding = "User";
+            sendDescAction.property = "SendRoomDescription";
+            sendDescAction.value = "0";
+
+            onEnterEvent.actions.Add(sendDescAction);
+            room.events.Add(onEnterEvent);
 
             CurrentLoadedData.Rooms.Add(room);
 
