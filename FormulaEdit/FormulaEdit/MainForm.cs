@@ -274,6 +274,10 @@ namespace FormulaEdit
 
             CurrentLoadedData.Commands.Add(cmd);
             RefreshCommandsTab();
+
+            CommandListBox.SelectedItem = cmd;
+            CommandName.Focus();
+            CommandName.SelectAll();
         }
 
         private void RemoveCommandButton_Click(object sender, EventArgs e)
@@ -418,6 +422,17 @@ namespace FormulaEdit
             room.connections.Add("unnamed", "unspecified");
 
             RoomListBox_SelectedIndexChanged(null, null);
+
+            foreach (RoomConnection conn in RoomConnectionsListBox.Items)
+            {
+                if (conn.Direction == "unnamed" && conn.Endpoint == "unspecified")
+                {
+                    RoomConnectionsListBox.SelectedItem = conn;
+                    RoomConnectionDirection.Focus();
+                    RoomConnectionDirection.SelectAll();
+                    break;
+                }
+            }
         }
 
         private void RoomConnectionRemoveButton_Click(object sender, EventArgs e)
@@ -498,6 +513,10 @@ namespace FormulaEdit
             CurrentLoadedData.Rooms.Add(room);
 
             RefreshRoomsTab();
+
+            RoomListBox.SelectedItem = room;
+            RoomInternalName.Focus();
+            RoomInternalName.SelectAll();
         }
 
         private void RoomRemoveButton_Click(object sender, EventArgs e)
@@ -540,6 +559,10 @@ namespace FormulaEdit
             room.lists.Add(newlist);
 
             RoomListBox_SelectedIndexChanged(null, null);
+
+            RoomListsListBox.SelectedItem = newlist;
+            RoomListName.Focus();
+            RoomListName.SelectAll();
         }
 
         private void RoomListRemoveButton_Click(object sender, EventArgs e)
@@ -593,6 +616,10 @@ namespace FormulaEdit
             room.events.Add(item);
 
             RoomListBox_SelectedIndexChanged(null, null);
+
+            RoomEventListBox.SelectedItem = item;
+            RoomEventCode.Focus();
+            RoomEventCode.SelectAll();
         }
 
         private void RoomEventRemoveButton_Click(object sender, EventArgs e)
@@ -681,6 +708,11 @@ namespace FormulaEdit
                     archetype.properties.Add("unnamed", "0");
 
                     RefreshUserPropertiesTab(archetype);
+
+                    UserPropertiesListBox.SelectedItem = "unnamed";
+                    UserPropertiesPropertyNameTextBox.Focus();
+                    UserPropertiesPropertyNameTextBox.SelectAll();
+
                     break;
                 }
             }
@@ -731,6 +763,10 @@ namespace FormulaEdit
             CurrentLoadedData.Scriptables.Add(scriptable);
 
             RefreshItemsTab();
+
+            ItemsListBox.SelectedItem = scriptable;
+            ItemNameTextBox.Focus();
+            ItemNameTextBox.SelectAll();
         }
 
         private void RemoveItemButton_Click(object sender, EventArgs e)
@@ -804,6 +840,10 @@ namespace FormulaEdit
                     break;
                 }
             }
+
+            TextListBox.SelectedItem = "UNNAMED";
+            TextTokenTextBox.Focus();
+            TextTokenTextBox.SelectAll();
         }
 
         private void RemoveTextButton_Click(object sender, EventArgs e)
@@ -899,9 +939,6 @@ namespace FormulaEdit
             if (CurrentLoadedData.Archetypes == null)
                 return;
 
-            if (UserEventsListBox.SelectedItem == null)
-                return;
-
             foreach (var archetype in CurrentLoadedData.Archetypes)
             {
                 if (archetype.name == "User")
@@ -912,6 +949,10 @@ namespace FormulaEdit
                     archetype.events.Add(formulaEvent);
 
                     RefreshUserEventsTab(archetype);
+
+                    UserEventsListBox.SelectedItem = formulaEvent;
+                    UserEventsEventCodeTextBox.Focus();
+                    UserEventsEventCodeTextBox.SelectAll();
                     break;
                 }
             }
@@ -1017,6 +1058,12 @@ namespace FormulaEdit
                     archetype.lists.Add(list);
 
                     RefreshUserListsTab(archetype);
+
+
+                    UserListsListBox.SelectedItem = list;
+                    UserListsListNameTextBox.Focus();
+                    UserListsListNameTextBox.SelectAll();
+
                     break;
                 }
             }
