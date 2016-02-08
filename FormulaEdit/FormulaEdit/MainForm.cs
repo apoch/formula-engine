@@ -45,6 +45,8 @@ namespace FormulaEdit
 
 
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
+
+            RefreshControls();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -162,6 +164,8 @@ namespace FormulaEdit
             {
                 UserListsListBox.Items.Add(list);
             }
+
+            UserListsListBox_SelectedIndexChanged(null, null);
         }
 
         private void RefreshUserPropertiesTab(MudData.Archetype userArchetype)
@@ -175,6 +179,8 @@ namespace FormulaEdit
             {
                 UserPropertiesListBox.Items.Add(prop.Key);
             }
+
+            UserPropertiesListBox_SelectedIndexChanged(null, null);
         }
 
         private void RefreshUserEventsTab(MudData.Archetype userArchetype)
@@ -188,6 +194,8 @@ namespace FormulaEdit
             {
                 UserEventsListBox.Items.Add(e);
             }
+
+            UserEventsListBox_SelectedIndexChanged(null, null);
         }
 
         private void CommandListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -200,6 +208,7 @@ namespace FormulaEdit
                 CommandParamTokens.Text = "";
 
                 UnhighlightCommitButton(CommandApplyButton);
+                SetEnabledControlsCommandsTab(false);
                 return;
             }
 
@@ -214,6 +223,7 @@ namespace FormulaEdit
                 CommandParamTokens.Text = string.Join("\r\n", cmd.@params.ToArray());
 
             UnhighlightCommitButton(CommandApplyButton);
+            SetEnabledControlsCommandsTab(true);
         }
 
         private void CommandApplyButton_Click(object sender, EventArgs e)
@@ -301,6 +311,7 @@ namespace FormulaEdit
             {
                 RoomInternalName.Text = "";
                 RoomDescription.Text = "";
+                SetEnabledControlsRoomsTab(false);
             }
             else
             {
@@ -339,6 +350,8 @@ namespace FormulaEdit
                 }
 
                 RoomEventListBox_SelectedIndexChanged(null, null);
+
+                SetEnabledControlsRoomsTab(true);
             }
 
             UnhighlightCommitButton(RoomApplyButton);
@@ -351,6 +364,7 @@ namespace FormulaEdit
             if (RoomConnectionsListBox.SelectedItem == null)
             {
                 RoomConnectionDirection.Text = "";
+                SetEnabledControlsRoomConnectionsTab(false);
             }
             else
             {
@@ -370,6 +384,8 @@ namespace FormulaEdit
                     if (r.name == conn.Endpoint)
                         RoomConnectionEndpointListBox.SelectedItem = r;
                 }
+
+                SetEnabledControlsRoomConnectionsTab(true);
             }
 
             UnhighlightCommitButton(RoomConnectionApplyButton);
@@ -381,6 +397,8 @@ namespace FormulaEdit
             {
                 RoomListName.Text = "";
                 RoomListContents.Text = "";
+
+                SetEnabledControlsRoomListsTab(false);
             }
             else
             {
@@ -388,6 +406,8 @@ namespace FormulaEdit
 
                 RoomListName.Text = list.name;
                 RoomListContents.Text = (list.contents != null) ? string.Join("\r\n", list.contents) : "";
+
+                SetEnabledControlsRoomListsTab(true);
             }
 
             UnhighlightCommitButton(RoomListApplyButton);
@@ -400,6 +420,7 @@ namespace FormulaEdit
             if (RoomEventListBox.SelectedItem == null)
             {
                 RoomEventCode.Text = "";
+                SetEnabledControlsRoomEventsTab(false);
             }
             else
             {
@@ -408,6 +429,7 @@ namespace FormulaEdit
                 RoomEventCode.Text = theEvent.name;
 
                 ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel);
+                SetEnabledControlsRoomEventsTab(true);
             }
 
             UnhighlightCommitButton(RoomEventApplyButton);
@@ -683,6 +705,7 @@ namespace FormulaEdit
             {
                 UserEventsEventCodeTextBox.Text = "";
                 UnhighlightCommitButton(UserEventsApplyButton);
+                SetEnabledControlsUserEventsTab(false);
                 return;
             }
 
@@ -691,6 +714,7 @@ namespace FormulaEdit
             UserEventsEventCodeTextBox.Text = item.name;
             ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel);
             UnhighlightCommitButton(UserEventsApplyButton);
+            SetEnabledControlsUserEventsTab(true);
         }
 
         private void UserPropertiesAddPropertyButton_Click(object sender, EventArgs e)
@@ -738,7 +762,13 @@ namespace FormulaEdit
         private void UserListsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (UserListsListBox.SelectedItem == null)
+            {
+                UserListsListNameTextBox.Text = "";
+                UserListsListContentsTextBox.Text = "";
+                UnhighlightCommitButton(UserListsApplyChangesButton);
+                SetEnabledControlsUserListsTab(false);
                 return;
+            }
 
             var list = UserListsListBox.SelectedItem as MudData.FormulaList;
 
@@ -746,6 +776,7 @@ namespace FormulaEdit
             UserListsListContentsTextBox.Text = string.Join("\r\n", list.contents);
 
             UnhighlightCommitButton(UserListsApplyChangesButton);
+            SetEnabledControlsUserListsTab(true);
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
@@ -1176,6 +1207,7 @@ namespace FormulaEdit
                 TextTokenTextBox.Text = "";
                 TextDataBox.Text = "";
                 UnhighlightCommitButton(TextApplyButton);
+                SetEnabledControlsTextTab(false);
                 return;
             }
 
@@ -1197,6 +1229,7 @@ namespace FormulaEdit
             }
 
             UnhighlightCommitButton(TextApplyButton);
+            SetEnabledControlsTextTab(true);
         }
 
         private void ItemsListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1215,6 +1248,7 @@ namespace FormulaEdit
                 ItemTextTokenTextBox.Text = "";
 
                 UnhighlightCommitButton(ItemApplyChangesButton);
+                SetEnabledControlsItemsTab(false);
                 return;
             }
 
@@ -1231,6 +1265,7 @@ namespace FormulaEdit
             }
 
             UnhighlightCommitButton(ItemApplyChangesButton);
+            SetEnabledControlsItemsTab(true);
         }
 
 
@@ -1358,6 +1393,85 @@ namespace FormulaEdit
         private void UserBindingsTextBox_TextChanged(object sender, EventArgs e)
         {
             HighlightCommitButton(UserBindingsApplyButton);
+        }
+
+
+        private void SetEnabledControlsCommandsTab(bool enabled)
+        {
+            CommandName.Enabled = enabled;
+            CommandEventName.Enabled = enabled;
+            CommandApplyButton.Enabled = enabled;
+
+            CommandHelpTextBox.Enabled = enabled;
+            CommandParamTokens.Enabled = enabled;
+
+            RemoveCommandButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsRoomsTab(bool enabled)
+        {
+            RoomInternalName.Enabled = enabled;
+            RoomApplyButton.Enabled = enabled;
+            RoomDescription.Enabled = enabled;
+            RoomTabControls.Enabled = enabled;
+            RoomRemoveButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsRoomConnectionsTab(bool enabled)
+        {
+            RoomConnectionDirection.Enabled = enabled;
+            RoomConnectionEndpointListBox.Enabled = enabled;
+            RoomConnectionApplyButton.Enabled = enabled;
+            RoomConnectionRemoveButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsRoomListsTab(bool enabled)
+        {
+            RoomListName.Enabled = enabled;
+            RoomListContents.Enabled = enabled;
+            RoomListRemoveButton.Enabled = enabled;
+            RoomListApplyButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsRoomEventsTab(bool enabled)
+        {
+            RoomEventCode.Enabled = enabled;
+            RoomEventNewActionButton.Enabled = enabled;
+            RoomEventRemoveButton.Enabled = enabled;
+            RoomEventApplyButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsItemsTab(bool enabled)
+        {
+            ItemNameTextBox.Enabled = enabled;
+            ItemTextTokenTextBox.Enabled = enabled;
+            ItemPropertiesDataGrid.Enabled = enabled;
+            ItemApplyChangesButton.Enabled = enabled;
+            RemoveItemButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsTextTab(bool enabled)
+        {
+            TextTokenTextBox.Enabled = enabled;
+            TextApplyButton.Enabled = enabled;
+            TextDataBox.Enabled = enabled;
+            RemoveTextButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsUserEventsTab(bool enabled)
+        {
+            UserEventsEventCodeTextBox.Enabled = enabled;
+            UserEventsNewActionButton.Enabled = enabled;
+            UserEventsRemoveEventButton.Enabled = enabled;
+            UserEventsApplyButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsUserListsTab(bool enabled)
+        {
+            UserListsListNameTextBox.Enabled = enabled;
+            UserListsListContentsTextBox.Enabled = enabled;
+            UserListsRemoveListButton.Enabled = enabled;
+            UserListsApplyChangesButton.Enabled = enabled;
         }
     }
 }
