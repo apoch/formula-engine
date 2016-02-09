@@ -44,6 +44,61 @@ namespace FormulaEdit
             };
 
 
+            RoomTree.AfterSelect += RoomTree_SelectedNodeChanged;
+
+            RoomTree.ItemDrag += (ctl, args) =>
+            {
+                if ((args.Item as TreeNode).Tag == null)
+                    return;
+
+                RoomTree.DoDragDrop(args.Item, DragDropEffects.Move);
+            };
+
+            RoomTree.BeforeLabelEdit += (ctl, args) =>
+            {
+                if (args.Node.Tag != null)
+                    args.CancelEdit = true;
+
+                if (args.Node.Parent == null)
+                    args.CancelEdit = true;
+            };
+
+            RoomTree.AfterLabelEdit += (ctl, args) =>
+            {
+                if (CurrentLoadedData == null)
+                    return;
+
+                args.Node.Text = args.Label;
+
+                CurrentLoadedData.Folders = new List<string>();
+                StashFolderNames(RoomTree.Nodes[0].Nodes, "");
+            };
+
+            RoomTree.DragEnter += (ctl, args) =>
+            {
+                args.Effect = DragDropEffects.Move;
+            };
+
+            RoomTree.DragDrop += (ctl, args) =>
+            {
+                System.Drawing.Point pt = RoomTree.PointToClient(new System.Drawing.Point(args.X, args.Y));
+
+                var node = RoomTree.GetNodeAt(pt);
+                if (node == null)
+                    return;
+
+                while (node.Tag != null)
+                    node = node.Parent;
+
+                var draggedNode = args.Data.GetData(typeof(TreeNode)) as TreeNode;
+                draggedNode.Parent.Nodes.Remove(draggedNode);
+
+                node.Nodes.Add(draggedNode);
+
+                StashRoomFolders(RoomTree.Nodes[0].Nodes, "");
+            };
+
+
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
             saveOnCommitToolStripMenuItem.Checked = Properties.Settings.Default.SaveOnCommit;
 
@@ -91,7 +146,9 @@ namespace FormulaEdit
 
         private void RefreshRoomsTab()
         {
-            RoomListBox.Items.Clear();
+            RoomTree.Nodes.Clear();
+            var rootnode = RoomTree.Nodes.Add("Root");
+            rootnode.Tag = null;
 
             if (CurrentLoadedData == null)
                 return;
@@ -99,12 +156,59 @@ namespace FormulaEdit
             if (CurrentLoadedData.Rooms == null)
                 return;
 
-            foreach (MudData.Room room in CurrentLoadedData.Rooms)
+            if (CurrentLoadedData.Folders == null)
+                CurrentLoadedData.Folders = new List<string>();
+
+            foreach (string folderPath in CurrentLoadedData.Folders)
             {
-                RoomListBox.Items.Add(room);
+                string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                var parentNode = rootnode;
+                for (int i = 0; i < pathElements.Length; ++i)
+                {
+                    var matches = parentNode.Nodes.Find(pathElements[i], false);
+                    if (matches.Length == 0)
+                    {
+                        parentNode = parentNode.Nodes.Add(pathElements[i], pathElements[i]);
+                    }
+                    else
+                    {
+                        parentNode = matches[0];
+                    }
+                }
             }
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            foreach (MudData.Room room in CurrentLoadedData.Rooms)
+            {
+                if (room.editorPath == null || room.editorPath == "")
+                {
+                    rootnode.Nodes.Add(room.ToString(), room.ToString()).Tag = room;
+                }
+                else
+                {
+                    string[] pathElements = room.editorPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                    var targetParent = rootnode;
+
+                    for (int i = 0; i < pathElements.Length; ++i)
+                    {
+                        var matches = targetParent.Nodes.Find(pathElements[i], false);
+                        if (matches.Length == 0)
+                        {
+                            targetParent = targetParent.Nodes.Add(pathElements[i], pathElements[i]);
+                        }
+                        else
+                        {
+                            targetParent = matches[0];
+                        }
+                    }
+
+                    targetParent.Nodes.Add(room.ToString(), room.ToString()).Tag = room;
+                }
+            }
+
+            RoomTree.ExpandAll();
+            RoomTree_SelectedNodeChanged(null, null);
+
+            StashRoomFolders(RoomTree.Nodes[0].Nodes, "");
         }
 
         private void RefreshUserTab()
@@ -304,14 +408,14 @@ namespace FormulaEdit
             RefreshCommandsTab();
         }
 
-        private void RoomListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void RoomTree_SelectedNodeChanged(object sender, EventArgs e)
         {
             RoomConnectionsListBox.Items.Clear();
             RoomConnectionEndpointListBox.Items.Clear();
             RoomListsListBox.Items.Clear();
             RoomEventListBox.Items.Clear();
 
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
             {
                 RoomInternalName.Text = "";
                 RoomDescription.Text = "";
@@ -319,8 +423,8 @@ namespace FormulaEdit
             }
             else
             {
-                var room = RoomListBox.SelectedItem as MudData.Room;
-
+                var room = RoomTree.SelectedNode.Tag as MudData.Room;
+                
                 RoomInternalName.Text = room.name;
                 RoomDescription.Text = room.description;
 
@@ -376,9 +480,9 @@ namespace FormulaEdit
 
                 RoomConnectionDirection.Text = conn.Direction;
 
-                var room = RoomListBox.SelectedItem as MudData.Room;
+                var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
-                foreach (MudData.Room r in RoomListBox.Items)
+                foreach (MudData.Room r in CurrentLoadedData.Rooms)
                 {
                     if (r == room)
                         continue;
@@ -441,13 +545,13 @@ namespace FormulaEdit
 
         private void RoomConnectionAddButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             room.connections.Add("unnamed", "unspecified");
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
 
             foreach (RoomConnection conn in RoomConnectionsListBox.Items)
             {
@@ -463,23 +567,23 @@ namespace FormulaEdit
 
         private void RoomConnectionRemoveButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomConnectionsListBox.SelectedItem == null)
                 return;
 
             var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
             room.connections.Remove(conn.Direction);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
         }
 
         private void RoomConnectionApplyButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomConnectionsListBox.SelectedItem == null)
@@ -489,7 +593,7 @@ namespace FormulaEdit
                 return;
 
             var conn = RoomConnectionsListBox.SelectedItem as RoomConnection;
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
             if ((conn.Direction != RoomConnectionDirection.Text) && (room.connections.ContainsKey(RoomConnectionDirection.Text)))
             {
@@ -504,7 +608,7 @@ namespace FormulaEdit
 
             room.connections.Add(conn.Direction, conn.Endpoint);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomConnectionApplyButton);
 
@@ -523,6 +627,7 @@ namespace FormulaEdit
             var room = new MudData.Room();
             room.name = "Unnamed";
             room.description = "This is an undescribed room.";
+            room.editorPath = BuildFolderString(RoomTree.SelectedNode);
 
             var onEnterEvent = new MudData.FormulaEvent();
             onEnterEvent.name = "OnUserEnter";
@@ -540,17 +645,18 @@ namespace FormulaEdit
 
             RefreshRoomsTab();
 
-            RoomListBox.SelectedItem = room;
+            RoomTree.SelectedNode = RoomTree.Nodes.Find(room.name, true)[0];
+
             RoomInternalName.Focus();
             RoomInternalName.SelectAll();
         }
 
         private void RoomRemoveButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             CurrentLoadedData.Rooms.Remove(room);
 
             RefreshRoomsTab();
@@ -558,10 +664,10 @@ namespace FormulaEdit
 
         private void RoomApplyButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             room.name = RoomInternalName.Text;
             room.description = RoomDescription.Text;
 
@@ -569,22 +675,22 @@ namespace FormulaEdit
             AutoSave();
             UnhighlightCommitButton(RoomApplyButton);
 
-            RoomListBox.SelectedItem = room;
+            RoomTree.SelectedNode = RoomTree.Nodes.Find(room.name, true)[0];
         }
 
         private void RoomListAddButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
             var newlist = new MudData.FormulaList();
             newlist.name = "unnamed";
 
             room.lists.Add(newlist);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
 
             RoomListsListBox.SelectedItem = newlist;
             RoomListName.Focus();
@@ -593,36 +699,36 @@ namespace FormulaEdit
 
         private void RoomListRemoveButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomListsListBox.SelectedItem == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
 
             room.lists.Remove(list);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
         }
 
         private void RoomListApplyButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomListsListBox.SelectedItem == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             var list = RoomListsListBox.SelectedItem as MudData.FormulaList;
 
             list.name = RoomListName.Text;
 
             list.contents = new List<string>(RoomListContents.Text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomListApplyButton);
 
@@ -631,17 +737,17 @@ namespace FormulaEdit
 
         private void RoomEventAddButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
             var item = new MudData.FormulaEvent();
             item.name = "unnamed";
 
             room.events.Add(item);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
 
             RoomEventListBox.SelectedItem = item;
             RoomEventCode.Focus();
@@ -650,23 +756,23 @@ namespace FormulaEdit
 
         private void RoomEventRemoveButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomEventListBox.SelectedItem == null)
                 return;
 
-            var room = RoomListBox.SelectedItem as MudData.Room;
+            var room = RoomTree.SelectedNode.Tag as MudData.Room;
             var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
 
             room.events.Remove(item);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
         }
 
         private void RoomEventApplyButton_Click(object sender, EventArgs e)
         {
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomEventListBox.SelectedItem == null)
@@ -677,7 +783,7 @@ namespace FormulaEdit
             item.name = RoomEventCode.Text;
             item.actions = ScriptActionEditControl.PopulateMudData(RoomEventLayoutPanel.Controls);
 
-            RoomListBox_SelectedIndexChanged(null, null);
+            RoomTree_SelectedNodeChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(RoomEventApplyButton);
 
@@ -688,7 +794,7 @@ namespace FormulaEdit
         {
             RoomEventLayoutPanel.Controls.Clear();
 
-            if (RoomListBox.SelectedItem == null)
+            if (RoomTree.SelectedNode == null || RoomTree.SelectedNode.Tag == null)
                 return;
 
             if (RoomEventListBox.SelectedItem == null)
@@ -1514,6 +1620,64 @@ namespace FormulaEdit
             UserPropertiesPropertyFormulaTextBox.Enabled = enabled;
             UserPropertiesRemovePropertyButton.Enabled = enabled;
             UserPropertiesApplyButton.Enabled = enabled;
+        }
+
+        private void RoomNewFolderButton_Click(object sender, EventArgs e)
+        {
+            TreeNode parentNode = RoomTree.SelectedNode;
+            if (parentNode == null)
+                parentNode = RoomTree.Nodes[0];
+            else if (parentNode.Tag != null)
+                parentNode = parentNode.Parent;
+
+            parentNode.Nodes.Add("New Folder");
+            StashFolderNames(RoomTree.Nodes[0].Nodes, "");
+        }
+
+        private string BuildFolderString(TreeNode node)
+        {
+            string ret = "";
+
+            while (node.Parent != null)
+            {
+                if (node.Tag == null)
+                    ret = node.Text + "/" + ret;
+
+                node = node.Parent;
+            }
+
+            return ret;
+        }
+
+        private void StashFolderNames(TreeNodeCollection nodes, string prefix)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Tag != null)
+                    continue;
+
+                string foldername = prefix + node.Text;
+                CurrentLoadedData.Folders.Add(foldername);
+
+                StashFolderNames(node.Nodes, foldername + "/");
+            }
+        }
+
+        private void StashRoomFolders(TreeNodeCollection nodes, string prefix)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Tag != null)
+                {
+                    var room = node.Tag as MudData.Room;
+                    room.editorPath = prefix;
+                }
+                else
+                {
+                    string folderName = prefix + node.Text;
+                    StashRoomFolders(node.Nodes, folderName + "/");
+                }
+            }
         }
     }
 }

@@ -43,6 +43,7 @@
             this.AddCommandButton = new System.Windows.Forms.Button();
             this.CommandListBox = new System.Windows.Forms.ListBox();
             this.RoomsTab = new System.Windows.Forms.TabPage();
+            this.RoomTree = new System.Windows.Forms.TreeView();
             this.RoomApplyButton = new System.Windows.Forms.Button();
             this.RoomRemoveButton = new System.Windows.Forms.Button();
             this.RoomAddButton = new System.Windows.Forms.Button();
@@ -78,7 +79,6 @@
             this.LabelRoomDescription = new System.Windows.Forms.Label();
             this.RoomInternalName = new System.Windows.Forms.TextBox();
             this.LabelInternalRoomName = new System.Windows.Forms.Label();
-            this.RoomListBox = new System.Windows.Forms.ListBox();
             this.ItemsTab = new System.Windows.Forms.TabPage();
             this.ItemPropertiesDataGrid = new System.Windows.Forms.DataGridView();
             this.ItemPropertyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -141,6 +141,7 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveOnCommitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
+            this.RoomNewFolderButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -319,6 +320,8 @@
             // 
             // RoomsTab
             // 
+            this.RoomsTab.Controls.Add(this.RoomNewFolderButton);
+            this.RoomsTab.Controls.Add(this.RoomTree);
             this.RoomsTab.Controls.Add(this.RoomApplyButton);
             this.RoomsTab.Controls.Add(this.RoomRemoveButton);
             this.RoomsTab.Controls.Add(this.RoomAddButton);
@@ -327,7 +330,6 @@
             this.RoomsTab.Controls.Add(this.LabelRoomDescription);
             this.RoomsTab.Controls.Add(this.RoomInternalName);
             this.RoomsTab.Controls.Add(this.LabelInternalRoomName);
-            this.RoomsTab.Controls.Add(this.RoomListBox);
             this.RoomsTab.Location = new System.Drawing.Point(4, 22);
             this.RoomsTab.Name = "RoomsTab";
             this.RoomsTab.Padding = new System.Windows.Forms.Padding(3);
@@ -335,6 +337,19 @@
             this.RoomsTab.TabIndex = 1;
             this.RoomsTab.Text = "Rooms";
             this.RoomsTab.UseVisualStyleBackColor = true;
+            // 
+            // RoomTree
+            // 
+            this.RoomTree.AllowDrop = true;
+            this.RoomTree.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomTree.HideSelection = false;
+            this.RoomTree.LabelEdit = true;
+            this.RoomTree.Location = new System.Drawing.Point(0, 3);
+            this.RoomTree.Name = "RoomTree";
+            this.RoomTree.PathSeparator = "/";
+            this.RoomTree.Size = new System.Drawing.Size(191, 376);
+            this.RoomTree.TabIndex = 9;
             // 
             // RoomApplyButton
             // 
@@ -717,18 +732,6 @@
             this.LabelInternalRoomName.Size = new System.Drawing.Size(76, 13);
             this.LabelInternalRoomName.TabIndex = 1;
             this.LabelInternalRoomName.Text = "Internal Name:";
-            // 
-            // RoomListBox
-            // 
-            this.RoomListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.RoomListBox.FormattingEnabled = true;
-            this.RoomListBox.Location = new System.Drawing.Point(7, 7);
-            this.RoomListBox.Name = "RoomListBox";
-            this.RoomListBox.Size = new System.Drawing.Size(184, 394);
-            this.RoomListBox.Sorted = true;
-            this.RoomListBox.TabIndex = 0;
-            this.RoomListBox.SelectedIndexChanged += new System.EventHandler(this.RoomListBox_SelectedIndexChanged);
             // 
             // ItemsTab
             // 
@@ -1377,6 +1380,16 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
+            // RoomNewFolderButton
+            // 
+            this.RoomNewFolderButton.Location = new System.Drawing.Point(6, 385);
+            this.RoomNewFolderButton.Name = "RoomNewFolderButton";
+            this.RoomNewFolderButton.Size = new System.Drawing.Size(185, 26);
+            this.RoomNewFolderButton.TabIndex = 10;
+            this.RoomNewFolderButton.Text = "New Folder";
+            this.RoomNewFolderButton.UseVisualStyleBackColor = true;
+            this.RoomNewFolderButton.Click += new System.EventHandler(this.RoomNewFolderButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1447,7 +1460,6 @@
         private System.Windows.Forms.Label LabelCommandHelpText;
         private System.Windows.Forms.FolderBrowserDialog FolderPicker;
         private System.Windows.Forms.Button CommandApplyButton;
-        private System.Windows.Forms.ListBox RoomListBox;
         private System.Windows.Forms.Label LabelInternalRoomName;
         private System.Windows.Forms.TextBox RoomInternalName;
         private System.Windows.Forms.Label LabelRoomDescription;
@@ -1537,6 +1549,8 @@
         private System.Windows.Forms.TextBox CommandParamTokens;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveOnCommitToolStripMenuItem;
+        private System.Windows.Forms.TreeView RoomTree;
+        private System.Windows.Forms.Button RoomNewFolderButton;
     }
 }
 

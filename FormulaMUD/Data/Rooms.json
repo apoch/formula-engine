@@ -1,4 +1,8 @@
 {
+  "folders": [
+    "World Locations",
+    "Special Locations"
+  ],
   "rooms": [
     {
       "connections": {
@@ -6,6 +10,7 @@
         "east": "HiddenRoom"
       },
       "description": "You are in a starter room. There is an exit to the north.",
+      "editorPath": "World Locations\/",
       "events": [
         {
           "actions": [
@@ -27,6 +32,7 @@
         "south": "StartRoom"
       },
       "description": "You find yourself in a tiny room.",
+      "editorPath": "World Locations\/",
       "events": [
         {
           "actions": [
@@ -55,6 +61,7 @@
         "west": "StartRoom"
       },
       "description": "You have discovered a hidden room! Well done!",
+      "editorPath": "Special Locations\/",
       "events": [
         {
           "actions": [
