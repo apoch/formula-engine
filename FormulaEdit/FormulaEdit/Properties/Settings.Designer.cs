@@ -34,5 +34,17 @@ namespace FormulaEdit.Properties {
                 this["LastWorkingPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveOnCommit {
+            get {
+                return ((bool)(this["SaveOnCommit"]));
+            }
+            set {
+                this["SaveOnCommit"] = value;
+            }
+        }
     }
 }

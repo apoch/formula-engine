@@ -45,6 +45,7 @@ namespace FormulaEdit
 
 
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
+            saveOnCommitToolStripMenuItem.Checked = Properties.Settings.Default.SaveOnCommit;
 
             RefreshControls();
         }
@@ -1309,6 +1310,9 @@ namespace FormulaEdit
         private void saveOnCommitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveOnCommitToolStripMenuItem.Checked = !saveOnCommitToolStripMenuItem.Checked;
+
+            Properties.Settings.Default.SaveOnCommit = saveOnCommitToolStripMenuItem.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void RoomInternalName_TextChanged(object sender, EventArgs e)
