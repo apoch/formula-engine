@@ -173,7 +173,10 @@ namespace FormulaEdit
             UserPropertiesListBox.Items.Clear();
 
             if (userArchetype.properties == null)
+            {
+                SetEnabledControlsUserPropertiesTab(false);
                 return;
+            }
 
             foreach (var prop in userArchetype.properties)
             {
@@ -729,6 +732,9 @@ namespace FormulaEdit
             {
                 if (archetype.name == "User")
                 {
+                    if (archetype.properties == null)
+                        archetype.properties = new Dictionary<string, string>();
+
                     archetype.properties.Add("unnamed", "0");
 
                     RefreshUserPropertiesTab(archetype);
@@ -1367,7 +1373,31 @@ namespace FormulaEdit
 
         private void UserPropertiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // TODO - implement properties selection!
+            if (UserPropertiesListBox.SelectedItem == null)
+            {
+                UserPropertiesPropertyNameTextBox.Text = "";
+                UserPropertiesPropertyFormulaTextBox.Text = "";
+                UnhighlightCommitButton(UserPropertiesApplyButton);
+                SetEnabledControlsUserPropertiesTab(false);
+                return;
+            }
+
+            var prop = UserPropertiesListBox.SelectedItem.ToString();
+
+
+            foreach (var archetype in CurrentLoadedData.Archetypes)
+            {
+                if (archetype.name == "User")
+                {
+                    UserPropertiesPropertyNameTextBox.Text = prop;
+                    UserPropertiesPropertyFormulaTextBox.Text = archetype.properties[prop];
+
+                    break;
+                }
+            }
+
+            UnhighlightCommitButton(UserPropertiesApplyButton);
+            SetEnabledControlsUserPropertiesTab(true);
         }
 
         private void UserPropertiesPropertyNameTextBox_TextChanged(object sender, EventArgs e)
@@ -1472,6 +1502,14 @@ namespace FormulaEdit
             UserListsListContentsTextBox.Enabled = enabled;
             UserListsRemoveListButton.Enabled = enabled;
             UserListsApplyChangesButton.Enabled = enabled;
+        }
+
+        private void SetEnabledControlsUserPropertiesTab(bool enabled)
+        {
+            UserPropertiesPropertyNameTextBox.Enabled = enabled;
+            UserPropertiesPropertyFormulaTextBox.Enabled = enabled;
+            UserPropertiesRemovePropertyButton.Enabled = enabled;
+            UserPropertiesApplyButton.Enabled = enabled;
         }
     }
 }
