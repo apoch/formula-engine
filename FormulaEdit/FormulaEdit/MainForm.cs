@@ -87,13 +87,17 @@ namespace FormulaEdit
                 if (node == null)
                     return;
 
-                while (node.Tag != null)
-                    node = node.Parent;
-
                 var draggedNode = args.Data.GetData(typeof(TreeNode)) as TreeNode;
                 draggedNode.Parent.Nodes.Remove(draggedNode);
 
-                node.Nodes.Add(draggedNode);
+                if (node.Tag == null)
+                {
+                    node.Nodes.Add(draggedNode);
+                }
+                else
+                {
+                    node.Parent.Nodes.Insert(node.Index, draggedNode);
+                }
 
                 StashRoomFolders(RoomTree.Nodes[0].Nodes, "");
             };
