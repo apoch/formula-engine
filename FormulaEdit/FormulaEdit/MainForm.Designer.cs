@@ -456,6 +456,7 @@
             this.RoomConnectionEndpointListBox.Location = new System.Drawing.Point(151, 64);
             this.RoomConnectionEndpointListBox.Name = "RoomConnectionEndpointListBox";
             this.RoomConnectionEndpointListBox.Size = new System.Drawing.Size(339, 134);
+            this.RoomConnectionEndpointListBox.Sorted = true;
             this.RoomConnectionEndpointListBox.TabIndex = 4;
             this.RoomConnectionEndpointListBox.SelectedIndexChanged += new System.EventHandler(this.RoomConnectionEndpointListBox_SelectedIndexChanged);
             // 
