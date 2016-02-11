@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace FormulaEdit
@@ -28,6 +29,14 @@ namespace FormulaEdit
             {
                 c.Width = w;
             }
+        }
+
+        static internal void PopulateHints(ComboBox box, List<string> hints)
+        {
+            box.Sorted = true;
+            box.Items.Clear();
+            foreach (var hint in hints)
+                box.Items.Add(hint);
         }
     }
 }

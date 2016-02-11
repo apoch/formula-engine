@@ -4,13 +4,21 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
     public partial class ScriptActionControlSetGoalState : UserControl
     {
-        internal ScriptActionControlSetGoalState(MudData.FormulaActionSetGoalState action)
+        internal ScriptActionControlSetGoalState(MudData.FormulaActionSetGoalState action, string archetypeName)
         {
             InitializeComponent();
+
+            BindingComboBox.TextChanged += (ctl, args) =>
+            {
+                Utilities.PopulateHints(PropertyComboBox, MudData.GenerateHintsForGoalStates(BindingComboBox.Text));
+            };
+
 
             BindingComboBox.Text = action.binding;
             PropertyComboBox.Text = action.property;
             ValueTextBox.Text = action.value;
+
+            Utilities.PopulateHints(BindingComboBox, MudData.GenerateHintsForBindings(archetypeName));
         }
 
         internal MudData.FormulaActionSetGoalState GenerateMudDataAction()

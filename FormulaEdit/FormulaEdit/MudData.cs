@@ -9,6 +9,10 @@ namespace FormulaEdit
 {
     class MudData
     {
+
+        public static MudData Current = null;
+
+
         public static MudData LoadFromFolder(string folderName)
         {
             var ret = new MudData();
@@ -578,6 +582,42 @@ namespace FormulaEdit
             outfile.Flush();
             outfile.Close();
             outfile.Dispose();
+        }
+
+
+        public static List<string> GenerateHintsForBindings(string archetypeName)
+        {
+            var ret = new List<string>();
+
+            if (Current != null)
+            {
+                var archetype = Current.Archetypes.Find((a) => (a.name == archetypeName));
+                if (archetype != null && archetype.bindings != null)
+                {
+                    ret.AddRange(archetype.bindings);
+                }
+            }
+
+            return ret;
+        }
+
+        public static List<string> GenerateHintsForGoalStates(string bindingName)
+        {
+            var ret = new List<string>();
+
+            if (Current != null)
+            {
+                if (bindingName == "User")
+                {
+                    ret.Add("EnterConnectedRoom");
+                    ret.Add("EnterRoom");
+                    ret.Add("SendMessage");
+                    ret.Add("SendRoomDescription");
+                    ret.Add("PollInput");
+                }
+            }
+
+            return ret;
         }
     }
 }

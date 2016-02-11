@@ -4,9 +4,13 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
     public partial class ScriptActionControlForEach : UserControl
     {
-        internal ScriptActionControlForEach(MudData.FormulaActionForEach action)
+        private string EditingArchetypeName = "";
+
+        internal ScriptActionControlForEach(MudData.FormulaActionForEach action, string archetypeName)
         {
             InitializeComponent();
+
+            EditingArchetypeName = archetypeName;
 
             ListComboBox.Text = action.list;
             ScriptableComboBox.Text = action.scriptable;
@@ -15,7 +19,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
                 Utilities.ResizeControls(ActionsFlowPanel);
             };
 
-            ScriptActionEditControl.PopulatePanel(action.actions, ActionsFlowPanel);
+            ScriptActionEditControl.PopulatePanel(action.actions, ActionsFlowPanel, EditingArchetypeName);
         }
 
         internal MudData.FormulaActionForEach GenerateMudDataAction()
@@ -31,7 +35,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
         private void AddActionButton_Click(object sender, System.EventArgs e)
         {
-            ActionsFlowPanel.Controls.Add(new ScriptActionEditControl(new MudData.FormulaActionSetGoalState()));
+            ActionsFlowPanel.Controls.Add(new ScriptActionEditControl(new MudData.FormulaActionSetGoalState(), EditingArchetypeName));
             Utilities.ResizeControls(ActionsFlowPanel);
         }
     }

@@ -6,10 +6,6 @@ namespace FormulaEdit
 {
     public partial class MainForm : Form
     {
-        MudData CurrentLoadedData = null;
-
-
-
         private class RoomConnection
         {
             public string Direction = "";
@@ -65,12 +61,18 @@ namespace FormulaEdit
 
             RoomTree.AfterLabelEdit += (ctl, args) =>
             {
-                if (CurrentLoadedData == null)
+                if (MudData.Current == null)
                     return;
+
+                if (args.Label == null || args.Label.Length == 0)
+                {
+                    args.CancelEdit = true;
+                    return;
+                }
 
                 args.Node.Text = args.Label;
 
-                CurrentLoadedData.Folders = new List<string>();
+                MudData.Current.Folders = new List<string>();
                 StashFolderNames(RoomTree.Nodes[0].Nodes, "");
             };
 
@@ -116,7 +118,7 @@ namespace FormulaEdit
                 Properties.Settings.Default.LastWorkingPath = FolderPicker.SelectedPath;
                 Properties.Settings.Default.Save();
 
-                CurrentLoadedData = MudData.LoadFromFolder(FolderPicker.SelectedPath);
+                MudData.Current = MudData.LoadFromFolder(FolderPicker.SelectedPath);
                 RefreshControls();
             }
         }
@@ -134,13 +136,13 @@ namespace FormulaEdit
         {
             CommandListBox.Items.Clear();
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Commands == null)
+            if (MudData.Current.Commands == null)
                 return;
 
-            foreach (MudData.Command cmd in CurrentLoadedData.Commands)
+            foreach (MudData.Command cmd in MudData.Current.Commands)
             {
                 CommandListBox.Items.Add(cmd);
             }
@@ -154,16 +156,16 @@ namespace FormulaEdit
             var rootnode = RoomTree.Nodes.Add("Root");
             rootnode.Tag = null;
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Rooms == null)
+            if (MudData.Current.Rooms == null)
                 return;
 
-            if (CurrentLoadedData.Folders == null)
-                CurrentLoadedData.Folders = new List<string>();
+            if (MudData.Current.Folders == null)
+                MudData.Current.Folders = new List<string>();
 
-            foreach (string folderPath in CurrentLoadedData.Folders)
+            foreach (string folderPath in MudData.Current.Folders)
             {
                 string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
                 var parentNode = rootnode;
@@ -181,7 +183,7 @@ namespace FormulaEdit
                 }
             }
 
-            foreach (MudData.Room room in CurrentLoadedData.Rooms)
+            foreach (MudData.Room room in MudData.Current.Rooms)
             {
                 if (room.editorPath == null || room.editorPath == "")
                 {
@@ -217,13 +219,13 @@ namespace FormulaEdit
 
         private void RefreshUserTab()
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name != "User")
                     continue;
@@ -243,13 +245,13 @@ namespace FormulaEdit
             ItemNameTextBox.Text = "";
             ItemTextTokenTextBox.Text = "";
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Scriptables == null)
+            if (MudData.Current.Scriptables == null)
                 return;
 
-            foreach (var scriptable in CurrentLoadedData.Scriptables)
+            foreach (var scriptable in MudData.Current.Scriptables)
             {
                 if (scriptable.name.StartsWith("ITEM_"))
                 {
@@ -364,7 +366,7 @@ namespace FormulaEdit
             Properties.Settings.Default.LastWorkingPath = FolderPicker.SelectedPath;
             Properties.Settings.Default.Save();
 
-            CurrentLoadedData.SaveToFolder(FolderPicker.SelectedPath);
+            MudData.Current.SaveToFolder(FolderPicker.SelectedPath);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -383,7 +385,7 @@ namespace FormulaEdit
             if (!saveOnCommitToolStripMenuItem.Checked)
                 return;
 
-            CurrentLoadedData.SaveToFolder(Properties.Settings.Default.LastWorkingPath);
+            MudData.Current.SaveToFolder(Properties.Settings.Default.LastWorkingPath);
         }
   
 
@@ -394,7 +396,7 @@ namespace FormulaEdit
             cmd.@event = "CMD_unnamed";
             cmd.helpText = "Unspecified";
 
-            CurrentLoadedData.Commands.Add(cmd);
+            MudData.Current.Commands.Add(cmd);
             RefreshCommandsTab();
 
             CommandListBox.SelectedItem = cmd;
@@ -408,7 +410,7 @@ namespace FormulaEdit
                 return;
 
             var cmd = CommandListBox.SelectedItem as MudData.Command;
-            CurrentLoadedData.Commands.Remove(cmd);
+            MudData.Current.Commands.Remove(cmd);
             RefreshCommandsTab();
         }
 
@@ -486,7 +488,7 @@ namespace FormulaEdit
 
                 var room = RoomTree.SelectedNode.Tag as MudData.Room;
 
-                foreach (MudData.Room r in CurrentLoadedData.Rooms)
+                foreach (MudData.Room r in MudData.Current.Rooms)
                 {
                     if (r == room)
                         continue;
@@ -540,7 +542,7 @@ namespace FormulaEdit
 
                 RoomEventCode.Text = theEvent.name;
 
-                ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel);
+                ScriptActionEditControl.PopulatePanel(theEvent.actions, RoomEventLayoutPanel, "Room");
                 SetEnabledControlsRoomEventsTab(true);
             }
 
@@ -645,7 +647,7 @@ namespace FormulaEdit
             onEnterEvent.actions.Add(sendDescAction);
             room.events.Add(onEnterEvent);
 
-            CurrentLoadedData.Rooms.Add(room);
+            MudData.Current.Rooms.Add(room);
 
             RefreshRoomsTab();
 
@@ -661,7 +663,7 @@ namespace FormulaEdit
                 return;
 
             var room = RoomTree.SelectedNode.Tag as MudData.Room;
-            CurrentLoadedData.Rooms.Remove(room);
+            MudData.Current.Rooms.Remove(room);
 
             RefreshRoomsTab();
         }
@@ -807,7 +809,7 @@ namespace FormulaEdit
             var item = RoomEventListBox.SelectedItem as MudData.FormulaEvent;
             item.actions.Add(new MudData.FormulaActionSetGoalState());
 
-            ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel);
+            ScriptActionEditControl.PopulatePanel(item.actions, RoomEventLayoutPanel, "Room");
             HighlightCommitButton(RoomEventApplyButton);
         }
 
@@ -826,20 +828,20 @@ namespace FormulaEdit
             var item = UserEventsListBox.SelectedItem as MudData.FormulaEvent;
 
             UserEventsEventCodeTextBox.Text = item.name;
-            ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel);
+            ScriptActionEditControl.PopulatePanel(item.actions, UserEventActionsPanel, "User");
             UnhighlightCommitButton(UserEventsApplyButton);
             SetEnabledControlsUserEventsTab(true);
         }
 
         private void UserPropertiesAddPropertyButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -898,17 +900,17 @@ namespace FormulaEdit
 
         private void AddItemButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Scriptables == null)
+            if (MudData.Current.Scriptables == null)
                 return;
 
             var scriptable = new MudData.Scriptable();
             scriptable.name = "ITEM_unnamed";
             scriptable.properties["Title"] = "TEXT:UNNAMED";
 
-            CurrentLoadedData.Scriptables.Add(scriptable);
+            MudData.Current.Scriptables.Add(scriptable);
 
             RefreshItemsTab();
 
@@ -919,32 +921,32 @@ namespace FormulaEdit
 
         private void RemoveItemButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Scriptables == null)
+            if (MudData.Current.Scriptables == null)
                 return;
 
             if (ItemsListBox.SelectedItem == null)
                 return;
 
-            CurrentLoadedData.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
+            MudData.Current.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
 
             RefreshItemsTab();
         }
 
         private void ItemApplyChangesButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Scriptables == null)
+            if (MudData.Current.Scriptables == null)
                 return;
 
             if (ItemsListBox.SelectedItem == null)
                 return;
 
-            CurrentLoadedData.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
+            MudData.Current.Scriptables.Remove(ItemsListBox.SelectedItem as MudData.Scriptable);
 
             var scriptable = new MudData.Scriptable();
             scriptable.name = ItemNameTextBox.Text;
@@ -962,7 +964,7 @@ namespace FormulaEdit
             }
 
 
-            CurrentLoadedData.Scriptables.Add(scriptable);
+            MudData.Current.Scriptables.Add(scriptable);
 
             RefreshItemsTab();
             AutoSave();
@@ -973,13 +975,13 @@ namespace FormulaEdit
 
         private void AddTextButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.TextBags == null)
+            if (MudData.Current.TextBags == null)
                 return;
 
-            foreach (var bag in CurrentLoadedData.TextBags)
+            foreach (var bag in MudData.Current.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
@@ -996,16 +998,16 @@ namespace FormulaEdit
 
         private void RemoveTextButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.TextBags == null)
+            if (MudData.Current.TextBags == null)
                 return;
 
             if (TextListBox.SelectedItem == null)
                 return;
 
-            foreach (var bag in CurrentLoadedData.TextBags)
+            foreach (var bag in MudData.Current.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
@@ -1018,10 +1020,10 @@ namespace FormulaEdit
 
         private void TextApplyButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.TextBags == null)
+            if (MudData.Current.TextBags == null)
                 return;
 
             if (TextListBox.SelectedItem == null)
@@ -1029,7 +1031,7 @@ namespace FormulaEdit
 
             string token = TextTokenTextBox.Text;
 
-            foreach (var bag in CurrentLoadedData.TextBags)
+            foreach (var bag in MudData.Current.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
@@ -1055,16 +1057,16 @@ namespace FormulaEdit
 
         private void UserEventsNewActionButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserEventsListBox.SelectedItem == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1081,13 +1083,13 @@ namespace FormulaEdit
 
         private void UserEventsAddEventButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1108,16 +1110,16 @@ namespace FormulaEdit
 
         private void UserEventsRemoveEventButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserEventsListBox.SelectedItem == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1131,16 +1133,16 @@ namespace FormulaEdit
 
         private void UserPropertiesRemovePropertyButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserPropertiesListBox.SelectedItem == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1153,10 +1155,10 @@ namespace FormulaEdit
 
         private void UserPropertiesApplyButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserPropertiesListBox.SelectedItem == null)
@@ -1164,7 +1166,7 @@ namespace FormulaEdit
 
             string propertyName = UserPropertiesPropertyNameTextBox.Text;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1190,13 +1192,13 @@ namespace FormulaEdit
 
         private void UserListsAddListButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1219,16 +1221,16 @@ namespace FormulaEdit
 
         private void UserListsRemoveListButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserListsListBox.SelectedItem == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1242,16 +1244,16 @@ namespace FormulaEdit
 
         private void UserListsApplyChangesButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Archetypes == null)
+            if (MudData.Current.Archetypes == null)
                 return;
 
             if (UserListsListBox.SelectedItem == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1275,10 +1277,10 @@ namespace FormulaEdit
 
         private void UserBindingsApplyButton_Click(object sender, EventArgs e)
         {
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1299,13 +1301,13 @@ namespace FormulaEdit
             TextTokenTextBox.Text = "";
             TextDataBox.Text = "";
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.TextBags == null)
+            if (MudData.Current.TextBags == null)
                 return;
 
-            foreach (var bag in CurrentLoadedData.TextBags)
+            foreach (var bag in MudData.Current.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
@@ -1328,13 +1330,13 @@ namespace FormulaEdit
                 return;
             }
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.TextBags == null)
+            if (MudData.Current.TextBags == null)
                 return;
 
-            foreach (var bag in CurrentLoadedData.TextBags)
+            foreach (var bag in MudData.Current.TextBags)
             {
                 if (bag.name == "TEXT")
                 {
@@ -1353,10 +1355,10 @@ namespace FormulaEdit
         {
             ItemPropertiesDataGrid.Rows.Clear();
 
-            if (CurrentLoadedData == null)
+            if (MudData.Current == null)
                 return;
 
-            if (CurrentLoadedData.Scriptables == null)
+            if (MudData.Current.Scriptables == null)
                 return;
 
             if (ItemsListBox.SelectedItem == null)
@@ -1499,7 +1501,7 @@ namespace FormulaEdit
             var prop = UserPropertiesListBox.SelectedItem.ToString();
 
 
-            foreach (var archetype in CurrentLoadedData.Archetypes)
+            foreach (var archetype in MudData.Current.Archetypes)
             {
                 if (archetype.name == "User")
                 {
@@ -1661,7 +1663,7 @@ namespace FormulaEdit
                     continue;
 
                 string foldername = prefix + node.Text;
-                CurrentLoadedData.Folders.Add(foldername);
+                MudData.Current.Folders.Add(foldername);
 
                 StashFolderNames(node.Nodes, foldername + "/");
             }

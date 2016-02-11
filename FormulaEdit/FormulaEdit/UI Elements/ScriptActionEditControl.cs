@@ -10,6 +10,8 @@ namespace FormulaEdit
 {
     public partial class ScriptActionEditControl : UserControl
     {
+        private string EditingArchetypeName = "";
+
         public ScriptActionEditControl()
         {
             InitializeComponent();
@@ -17,12 +19,14 @@ namespace FormulaEdit
             Paint += ScriptActionEditControl_Paint;
         }
 
-        internal ScriptActionEditControl(MudData.FormulaAction containerAction)
+        internal ScriptActionEditControl(MudData.FormulaAction containerAction, string archetypeName)
         {
             InitializeComponent();
 
+            EditingArchetypeName = archetypeName;
+
             ActionComboBox.SelectedItem = containerAction.action;
-            CreateEditorControls(containerAction);
+            CreateEditorControls(containerAction, archetypeName);
 
             Paint += ScriptActionEditControl_Paint;
         }
@@ -95,11 +99,11 @@ namespace FormulaEdit
         }
 
 
-        internal static void PopulatePanel(List<MudData.FormulaAction> actions, FlowLayoutPanel panel)
+        internal static void PopulatePanel(List<MudData.FormulaAction> actions, FlowLayoutPanel panel, string archetypeName)
         {
             foreach (var action in actions)
             {
-                var editor = new ScriptActionEditControl(action);
+                var editor = new ScriptActionEditControl(action, archetypeName);
                 panel.Controls.Add(editor);
             }
 
@@ -123,10 +127,10 @@ namespace FormulaEdit
         private void ActionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             MudData.FormulaAction action = GetRawActionFromDropdownSelection();
-            CreateEditorControls(action);
+            CreateEditorControls(action, EditingArchetypeName);
         }
 
-        private void CreateEditorControls(MudData.FormulaAction containerAction)
+        private void CreateEditorControls(MudData.FormulaAction containerAction, string archetypeName)
         {
             ContainerPanel.Controls.Clear();
 
@@ -145,11 +149,11 @@ namespace FormulaEdit
             }
             else if (action.GetType() == typeof(MudData.FormulaActionForEach))
             {
-                ctl = new ScriptActionControlForEach(action as MudData.FormulaActionForEach);
+                ctl = new ScriptActionControlForEach(action as MudData.FormulaActionForEach, archetypeName);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionIf))
             {
-                ctl = new ScriptActionControlIf(action as MudData.FormulaActionIf);
+                ctl = new ScriptActionControlIf(action as MudData.FormulaActionIf, archetypeName);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionListTransfer))
             {
@@ -161,7 +165,7 @@ namespace FormulaEdit
             }
             else if (action.GetType() == typeof(MudData.FormulaActionSetGoalState))
             {
-                ctl = new ScriptActionControlSetGoalState(action as MudData.FormulaActionSetGoalState);
+                ctl = new ScriptActionControlSetGoalState(action as MudData.FormulaActionSetGoalState, archetypeName);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionSetProperty))
             {
