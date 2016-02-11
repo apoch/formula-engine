@@ -330,6 +330,9 @@ namespace FormulaEdit
             public string name = "";
 
             [DataMember]
+            public string editorPath = "";
+
+            [DataMember]
             public string description = "";
 
             [DataMember(EmitDefaultValue = false)]
@@ -358,6 +361,10 @@ namespace FormulaEdit
             [DataMember(EmitDefaultValue = false)]
             [OptionalField]
             public List<Room> rooms = null;
+
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
+            public List<string> folders = null;
         }
 
 
@@ -453,6 +460,7 @@ namespace FormulaEdit
 
         public List<Command> Commands = null;
         public List<Room> Rooms = null;
+        public List<string> Folders = null;
 
         public List<Archetype> Archetypes = null;
         public List<Scriptable> Scriptables = null;
@@ -501,6 +509,7 @@ namespace FormulaEdit
 
             var obj = serializer.ReadObject(infile) as RoomListJSONWrapper;
             Rooms = obj.rooms;
+            Folders = obj.folders;
 
             infile.Close();
             infile.Dispose();
@@ -518,6 +527,7 @@ namespace FormulaEdit
 
             var wrap = new RoomListJSONWrapper();
             wrap.rooms = Rooms;
+            wrap.folders = Folders;
 
             serializer.WriteObject(writer, wrap);
 

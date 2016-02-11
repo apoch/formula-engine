@@ -1,10 +1,16 @@
 {
+  "folders": [
+    "World Locations",
+    "Special Locations"
+  ],
   "rooms": [
     {
       "connections": {
-        "north": "ForkRoom"
+        "north": "NorthRoom",
+        "east": "HiddenRoom"
       },
-      "description": "You are in a pale forest. Like a normal forest, but everything is white. The grass is white, the leaves are white, even the tree bark is white. Mysteriously, it is also snowing, but aside from a slight chill, it's not that cold.\u000d\u000a\u000d\u000aAhead you see a well worn path, walked by many novice travelers such as yourself. Well worn though it may be, it is still rather narrow, running in between trees. ",
+      "description": "You are in a starter room. There is an exit to the north.",
+      "editorPath": "World Locations\/",
       "events": [
         {
           "actions": [
@@ -23,10 +29,10 @@
     },
     {
       "connections": {
-        "south": "StartRoom",
-        "east": "Forest(5,1)"
+        "south": "StartRoom"
       },
-      "description": "The path branches to the east and west here. \u000d\u000a\u000d\u000aTo the east, you can hear the distant sounds of civilization - quiet, but unmistakable, even against the wind and snow.\u000d\u000a\u000d\u000aTo the west, you hear...more wind and snow.",
+      "description": "You find yourself in a tiny room.",
+      "editorPath": "World Locations\/",
       "events": [
         {
           "actions": [
@@ -48,13 +54,14 @@
           "name": "Items"
         }
       ],
-      "name": "ForkRoom"
+      "name": "NorthRoom"
     },
     {
       "connections": {
         "west": "StartRoom"
       },
       "description": "You have discovered a hidden room! Well done!",
+      "editorPath": "Special Locations\/",
       "events": [
         {
           "actions": [
@@ -77,25 +84,6 @@
         }
       ],
       "name": "HiddenRoom"
-    },
-    {
-      "connections": { },
-      "description": "",
-      "events": [
-        {
-          "actions": [
-            {
-              "action": "SetGoalState",
-              "binding": "User",
-              "property": "SendRoomDescription",
-              "value": "0"
-            }
-          ],
-          "name": "OnUserEnter"
-        }
-      ],
-      "lists": [ ],
-      "name": "Forest(5,1)"
     }
   ]
 }
