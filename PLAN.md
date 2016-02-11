@@ -1,5 +1,13 @@
 ## formula-engine plans
 
+### Feb. 10, 2016
+FormulaEdit has undergone a substantial polish and usability pass. There's still plenty of stuff to do, including populating fields with hints when possible, but the basics are looking fairly solid.
+
+Documentation is going to be the next major chunk of effort for a while.
+
+<br>
+
+
 ### Jan. 31, 2016
 FormulaEngine is officially going to be presented at GDC 2016... which is both exciting and daunting as it means I have a lot of preparation to do! Fortunately I can safely say that the code that is in FormulaMUD is a good representation of what I want to show off, and I'm treating everything else as a luxury.
 
