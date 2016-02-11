@@ -1,7 +1,9 @@
 {
   "folders": [
     "World Locations",
-    "Special Locations"
+    "Special Locations",
+    "The Pale Forest",
+    "The Pale Forest\/DeleteThis"
   ],
   "rooms": [
     {
@@ -25,7 +27,7 @@
         }
       ],
       "lists": [ ],
-      "name": "StartRoom"
+      "name": "OldStartRoom"
     },
     {
       "connections": {
@@ -84,6 +86,374 @@
         }
       ],
       "name": "HiddenRoom"
+    },
+    {
+      "connections": {
+        "north": "ForkRoom"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou stand at the entrance of a mysterious forest. It's cold, but not as cold as you'd think, given the snow on the ground. And where you'd normally expect various shades of green amid other colors, everything here is white. \u000d\u000a\u000d\u000aA narrow, albeit well-worn path lies ahead of you, traversed by many adventurers before you. Will you follow in their footsteps forward?\u000d\u000a\u000d\u000aExits:\u000d\u000aNorth\u000d\u000a\u000d\u000a[ ]\u000d\u000a[#]\u000d\u000a[X]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "StartRoom"
+    },
+    {
+      "connections": {
+        "south": "StartRoom",
+        "west": "TowardsTown",
+        "east": "Forest(5,1)"
+      },
+      "description": "=== A Fork in the Road ===\u000d\u000a\u000d\u000aThe narrow path you follow abruptly splits before a massive tree. The forest ahead is exceptionally dense, leading you to realize why it is the path splits here. \u000d\u000a\u000d\u000aTo the west, you can make out the faint murmurs of civilization among the chittering of animals and howling of the wind.\u000d\u000a\u000d\u000aTo the east, you can make out...a lot of wind. And possibly, bigger critters.\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aSouth\u000d\u000aWest\u000d\u000a\u000d\u000a[ ][ ][ ][#][ ]\u000d\u000a         [ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "ForkRoom"
+    },
+    {
+      "connections": {
+        "west": "ForkRoom",
+        "north": "Forest(5,2)"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou push through the forest, but the path that you came from has all but disappeared. The trees and terrain are starting to blend together too.\u000d\u000a\u000d\u000aAnd you're not entirely sure, but the further you travel, you swear the wind bites a little sharper.\u000d\u000a\u000d\u000aExits:\u000d\u000aNorth\u000d\u000aWest\u000d\u000a         [ ]\u000d\u000a         [ ]\u000d\u000a[ ][ ][ ][#]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Forest(5,1)"
+    },
+    {
+      "connections": {
+        "south": "Forest(5,1)",
+        "north": "Forest(5,3)"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou push through the forest, but the path that you came from has all but disappeared. The trees and terrain are starting to blend together too.\u000d\u000a\u000d\u000aAnd you're not entirely sure, but the further you travel, you swear the wind bites a little sharper.\u000d\u000a\u000d\u000aExits:\u000d\u000aNorth\u000d\u000aSouth\u000d\u000a\u000d\u000a[ ]\u000d\u000a[#]\u000d\u000a[ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Forest(5,2)"
+    },
+    {
+      "connections": {
+        "south": "Forest(5,2)",
+        "west": "BeforeClearing"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou push through the forest, but the path that you came from has all but disappeared. The trees and terrain are starting to blend together too.\u000d\u000a\u000d\u000aAnd you're not entirely sure, but the further you travel, you swear the wind bites a little sharper.\u000d\u000a\u000d\u000aExits:\u000d\u000aSouth\u000d\u000aWest\u000d\u000a[ ][ ][#]\u000d\u000a      [ ]\u000d\u000a      [ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Forest(5,3)"
+    },
+    {
+      "connections": {
+        "east": "Forest(5,3)",
+        "west": "BeforeHidden",
+        "south": "Clearing"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou stumble upon some semblance of a path again! It seems to head directly south...you can't make out what lies that way. Unfortunately, everything's sort of whited out, by the trees and the snow and the...white.\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aSouth\u000d\u000aWest\u000d\u000a\u000d\u000a[ ][#][ ]\u000d\u000a   [ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "BeforeClearing"
+    },
+    {
+      "connections": {
+        "north": "BeforeClearing"
+      },
+      "description": "=== A Clearing in the Forest ===\u000d\u000a\u000d\u000aThe trees suddenly part ways alongside the path to reveal a small, crystal-clear lake. It's an odd, yet welcome, splash of color in this otherwise bland forest. The trees are unusually dense around this lake, it would be impossible to go anywhere but from whence you came.\u000d\u000a\u000d\u000aIt is, however, lovely and quiet here, a respite from the harshness found in the rest of the forest. Even the wind seems to calm.\u000d\u000a\u000d\u000aThe water seems like it would be fine to drink, as if some mysterious force keeps moss and other creatures from taking up residence in it.\u000d\u000a\u000d\u000aExits:\u000d\u000aNorth\u000d\u000a\u000d\u000a   [ ]\u000d\u000a   [#]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Clearing"
+    },
+    {
+      "connections": {
+        "east": "BeforeClearing",
+        "west": "Hidden",
+        "south": "Forest(3,2)"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou push through the forest, but the path that you came from has all but disappeared. The trees and terrain are starting to blend together too.\u000d\u000a\u000d\u000aAnd you're not entirely sure, but the further you travel, you swear the wind bites a little sharper.\u000d\u000a\u000d\u000aIf you look really closely, you can see what seems like a small hole into the undergrowth to the west of here. You might be able to squeeze through, but is it worth it in this cold?\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aSouth\u000d\u000a\u000d\u000a[#][ ][ ]\u000d\u000a[ ]\u000d\u000a[ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "BeforeHidden"
+    },
+    {
+      "connections": {
+        "east": "BeforeHidden"
+      },
+      "description": "=== The Pale Undergrowth ===\u000d\u000a\u000d\u000aGrunting, shuddering, and shivering, you pull yourself into the undergrowth here. As soon as you begin to regret your decision, standing up and brushing snow from your body with frozen fingers... You REALLY regret your decision.\u000d\u000a\u000d\u000aA large, pale troll slumbers here. He is much larger than you, and a club you suspect to be prime-human-crushing size lays in his hand.\u000d\u000a\u000d\u000aLuckily, all of your crawling about seems to have not woken him. Perhaps you should leave before you do.\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000a\u000d\u000a[#][ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Hidden"
+    },
+    {
+      "connections": {
+        "north": "BeforeHidden",
+        "south": "TowardsTown"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aYou push through the forest, but the path that you came from has all but disappeared. The trees and terrain are starting to blend together too.\u000d\u000a\u000d\u000aAnd you're not entirely sure, but the further you travel, you swear the wind bites a little sharper.\u000d\u000a\u000d\u000aExits:\u000d\u000aNorth\u000d\u000aSouth\u000d\u000a\u000d\u000a[ ]\u000d\u000a[#]\u000d\u000a[ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Forest(3,2)"
+    },
+    {
+      "connections": {
+        "east": "ForkRoom",
+        "north": "Forest(3,2)",
+        "west": "BeforeTown"
+      },
+      "description": "=== The Pale Forest ===\u000d\u000a\u000d\u000aAs you tread west, the sounds of civilization become more pronounced. The path here seems even more well-worn than at the entrance. Perhaps residents taking trips into and out of the forest?\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aNorth\u000d\u000aWest\u000d\u000a\u000d\u000a      [ ]\u000d\u000a      [ ]\u000d\u000a[ ][ ][#][ ][ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "TowardsTown"
+    },
+    {
+      "connections": {
+        "east": "TowardsTown",
+        "west": "TownCenter"
+      },
+      "description": "=== Towards Civilization ===\u000d\u000a\u000d\u000aAs you continue along the path, you notice the forest getting...nicer? The air is less cold and more still. You can hear the sounds of people - perhaps a small village? And underneath it all, though plainly noticeable to anyone that listens...a soft hymn. Quiet, but persistant and full of life.\u000d\u000a\u000d\u000aThe hymn calms you and beckons you forward.\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aWest\u000d\u000a\u000d\u000a[ ][#][ ][ ][ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "BeforeTown"
+    },
+    {
+      "connections": {
+        "east": "BeforeTown",
+        "west": "Calodeus",
+        "north": "Shopkeeper",
+        "south": "Inn"
+      },
+      "description": "=== Pruina, the Village of Peace ===\u000d\u000a\u000d\u000aYou step into a clearing and see pathways cleared of snow. Some villagers, as marked by their garb, are using roughshod shovels to clear the snow out of the way. You suspect it's a job never done. Other villagers stroll around the village, running from one errand to another. And still some sit in primitive tents, crafting tools for the village's use.\u000d\u000a\u000d\u000aSome of the villagers gaze at you when they think you're not looking, marveling at your odd choice of clothing and presence. Almost like children, they simply feel curious towards you - no apprehension or suspicion, like villagers normally might percieve outsiders. You suspect it's the effect of the hymn, which has grown stronger, but only underscores the sounds of life going on otherwise. You feel its effects as well - you know the villagers are, ultimately, harmless, simple people. \u000d\u000a\u000d\u000aTo the north, you can hear the hawking of various shopkeepers trying to sell their wares. Primitive though this village may be, they seem to still have bustling commerce.\u000d\u000a\u000d\u000aTo the south, you see what amounts to a large tent-building. There is a plume of smoke coming from the tent. You suspect you could rest there, for a fee, and perhaps there's some sort of fire you could warm your now-numb body with.\u000d\u000a\u000d\u000aTo the west, you see a large and ornate tent. No villagers seem to be coming or going from there. And yet, the hymn seems to be beckoning you in, as if its been waiting for you this whole time...\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000aNorth\u000d\u000aSouth\u000d\u000aWest\u000d\u000a\u000d\u000a   [ ]\u000d\u000a[ ][#][ ][ ][ ]\u000d\u000a   [ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "TownCenter"
+    },
+    {
+      "connections": {
+        "south": "TownCenter"
+      },
+      "description": "=== Pruina Commerce Plaza ===\u000d\u000a\u000d\u000aYou arrive in what appears to be a small primitive plaza. All around you, shopkeepers hawk their wares, while various villagers stroll by or stop to barter. The plaza is a stark contrast from the forest you came from - tents fill the area of every size, shape, and color. In fact, there are many gaudy color combinations, as if each one is trying to outdo its neighbors...\u000d\u000a\u000d\u000aExits:\u000d\u000aSouth\u000d\u000a\u000d\u000a[#]\u000d\u000a[ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Shopkeeper"
+    },
+    {
+      "connections": {
+        "north": "TownCenter"
+      },
+      "description": "=== Pruina Inn ===\u000d\u000a\u000d\u000aAs you step into the large tent, you feel a rush of...warmth! There's a fire in here! You hurry close to it, warming your numb body, and cherish the feeling of heat against your skin. \u000d\u000a\u000d\u000aInside, you notice some villagers taking the opportunity to get a better look at you. Apparently they marvel at every outsider that wanders in.\u000d\u000a\u000d\u000aExits: \u000d\u000aNorth\u000d\u000a\u000d\u000a[ ]\u000d\u000a[#]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Inn"
+    },
+    {
+      "connections": {
+        "east": "TownCenter"
+      },
+      "description": "=== The God of Warmth, Calodeus ===\u000d\u000a\u000d\u000aTimidly, you step into the large, ornate tent. As you try to take in your surroundings, you realize that this tent has been the source of the hymn this whole time. Just as you process this realization, the room is suddenly lit by a flame in the center of the room and the hymn comes to an end. A mighty figure gradually stands to her feet on the other end of the tent.\u000d\u000a\u000d\u000a\"Another one... You...\"\u000d\u000a\u000d\u000a\"I wonder, which path will you follow? The path of light, or...?\"\u000d\u000a\u000d\u000aThe figure, almost fox-like in her appearance, shakes her head, as if returning from memories past. Her fur gleams in the light of the flame she's created, almost seeming like fire itself.\u000d\u000a\u000d\u000a\"Young adventurer, welcome to the town of Pruina. All adventurers like yourself begin here, and ultimately, many return.\"\u000d\u000a\u000d\u000a\"You will learn a great many things throughout your adventure... Experience the likes of things you never thought possible.\"\u000d\u000a\u000d\u000aSuddenly, a great howl burst forth from the god. It echoes across the whole forest. The force of the cry nearly knocks you down, though sheer force of will keeps you upright. The flame in the center of the room erupts, seemingly engulfing the whole tent. The flames do not burn you, however, merely playfully lick at you, lightly singing your clothing.\u000d\u000a\u000d\u000aThe flames die back down as the howl fades, revealing a gleaming instrument in front of you. It's warm to the touch, as if newly forged. As you take it, the flame dies back down, submerging the god into darkness as she retakes her seat.\u000d\u000a\u000d\u000a\"Go forth. Let this instrument be your guide, until you find that which your soul hungers for. And know that, whether you are the most reviled or revered, you will always have a home in Pruina.\"\u000d\u000a\u000d\u000aYou hear the hymn begin once more. Calodeus has no more to say to you.\u000d\u000a\u000d\u000aExits:\u000d\u000aEast\u000d\u000a\u000d\u000a[#][ ]",
+      "editorPath": "The Pale Forest\/",
+      "events": [
+        {
+          "actions": [
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendRoomDescription",
+              "value": "0"
+            }
+          ],
+          "name": "OnUserEnter"
+        }
+      ],
+      "lists": [ ],
+      "name": "Calodeus"
     }
   ]
 }
