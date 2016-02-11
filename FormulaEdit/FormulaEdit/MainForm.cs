@@ -644,7 +644,11 @@ namespace FormulaEdit
             sendDescAction.property = "SendRoomDescription";
             sendDescAction.value = "0";
 
-            onEnterEvent.actions.Add(sendDescAction);
+            var wrapAction = new MudData.FormulaAction();
+            wrapAction.action = "SetGoalState";
+            wrapAction.InternalAction = sendDescAction;
+
+            onEnterEvent.actions.Add(wrapAction);
             room.events.Add(onEnterEvent);
 
             MudData.Current.Rooms.Add(room);
