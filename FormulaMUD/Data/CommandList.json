@@ -42,6 +42,16 @@
       "command": "carrying",
       "event": "CMD_carrying",
       "helpText": "Show a list of everything you are carrying."
+    },
+    {
+      "command": "exits",
+      "event": "CMD_exits",
+      "helpText": "Unspecified"
+    },
+    {
+      "command": "map",
+      "event": "CMD_map",
+      "helpText": "Unspecified"
     }
   ]
 }
