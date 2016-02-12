@@ -598,6 +598,11 @@ namespace FormulaEdit
                 }
             }
 
+            if (archetypeName == "Room")
+            {
+                ret.Add("User");
+            }
+
             return ret;
         }
 
