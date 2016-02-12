@@ -182,7 +182,17 @@
           "name": "Inventory"
         }
       ],
-      "name": "User"
+      "name": "User",
+      "properties": {
+        "BaseHP": "10",
+        "BaseBreath": "5",
+        "HP": "BaseHP+(Constitution * 0.5)",
+        "Breath": "BaseBreath + (Constitution * 0.5)",
+        "Strength": "3",
+        "Constitution": "4",
+        "Resonance": "3",
+        "Dissonance": "2"
+      }
     }
   ],
   "scriptables": [
