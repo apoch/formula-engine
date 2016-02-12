@@ -51,20 +51,8 @@ It is often convenient to define an entity in terms of some kind of template or 
 
 <br>
 
-## FAQ
+## Additional Resources
 
- 1. **How do I do (x) in this paradigm?**
-The best place to start is to examine the JSON data files for the FormulaMUD game engine, as well as the bindings that live in the C++ code (see [`FormulaMUD` directory](./FormulaMUD/)). Most forms of game logic are represented in the implementation, or are under construction and will be represented soon. For specifics, feel free to get in touch with the project maintainers; we'd be happy to add documentation for specific use cases as well as examples.
-
- 2. **How do I represent things that happen over time?**
-The non-answer is that _you don't_. A more accurate reflection of things would look something like this: events, and the actions that respond to them, are immediate and atemporal. They do not model the notion of time elapsing, and this is on purpose. One of the goals of this project is to build a simulation that _does_ handle complex time-based scripts (such as strategies or plans). The honest answer is that we don't know yet how that will play out.
-
- 3. **Is there more documentation?**
-Not yet. This is still a very nascent project and it'll get fleshed out more as time goes on.
-
- 4. **How do I embed this in my own game?**
-For now, the basics of what you need are in the `FormulaEngine` project in the Visual Studio solution. This is a static library that can be linked into any project and used as shown in the `Demos` project and the larger, more complete `FormulaMUD` project. We're in the process of cleaning up the implementation and simplifying the interfaces needed to embed FormulaEngine in a larger project, so watch this space.
-
-## Future Plans
+Be sure to check out the wiki (link at the top of this page) for fully fleshed-out documentation.
 
 There should be a PLAN.md file in the root directory with relatively up-to-date thoughts and notes on where this whole thing is heading.
