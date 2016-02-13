@@ -725,12 +725,15 @@
             // 
             // RoomDescription
             // 
+            this.RoomDescription.AcceptsReturn = true;
+            this.RoomDescription.AcceptsTab = true;
             this.RoomDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RoomDescription.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RoomDescription.Location = new System.Drawing.Point(208, 57);
             this.RoomDescription.Multiline = true;
             this.RoomDescription.Name = "RoomDescription";
+            this.RoomDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.RoomDescription.Size = new System.Drawing.Size(515, 107);
             this.RoomDescription.TabIndex = 4;
             this.RoomDescription.TextChanged += new System.EventHandler(this.RoomDescription_TextChanged);
