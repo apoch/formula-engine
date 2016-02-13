@@ -129,6 +129,31 @@
               "binding": "User",
               "property": "SendMessage",
               "value": "TEXT:USER_LOOK_ITEMS_FOOTER"
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_LOOK_NPC_HEADER"
+            },
+            {
+              "action": "foreach",
+              "actions": [
+                {
+                  "action": "SetGoalState",
+                  "binding": "User",
+                  "property": "SendMessage",
+                  "value": "other:Title"
+                }
+              ],
+              "list": "Monsters",
+              "scriptable": "CurrentRoom"
+            },
+            {
+              "action": "SetGoalState",
+              "binding": "User",
+              "property": "SendMessage",
+              "value": "TEXT:USER_LOOK_NPC_FOOTER"
             }
           ],
           "name": "CMD_look"
@@ -193,6 +218,15 @@
         "Resonance": "3",
         "Dissonance": "2"
       }
+    },
+    {
+      "bindings": [ ],
+      "events": [ ],
+      "lists": [ ],
+      "name": "MONSTER_Pale_Fox",
+      "properties": {
+        "Title": "TEXT:MONSTER_PALE_FOX"
+      }
     }
   ],
   "scriptables": [
@@ -234,7 +268,10 @@
         "USER_LOOK_ITEMS_HEADER": "Items in this location:",
         "USER_LOOK_ITEMS_FOOTER": " ",
         "ITEM_DOODAD": "A useless doodad",
-        "USER_PROMPT": "Enter a command: "
+        "USER_PROMPT": "Enter a command: ",
+        "MONSTER_PALE_FOX": "A small pale fox",
+        "USER_LOOK_NPC_HEADER": "Other beings in this location:",
+        "USER_LOOK_NPC_FOOTER": "\u000d\u000a"
       }
     }
   ]

@@ -174,9 +174,25 @@
             }
           ],
           "name": "OnUserEnter"
+        },
+        {
+          "actions": [
+            {
+              "action": "CreateListMember",
+              "archetype": "MONSTER_Pale_Fox",
+              "list": "Monsters",
+              "params": { }
+            }
+          ],
+          "name": "OnCreate"
         }
       ],
-      "lists": [ ],
+      "lists": [
+        {
+          "contents": [ ],
+          "name": "Monsters"
+        }
+      ],
       "name": "Forest(5,2)"
     },
     {

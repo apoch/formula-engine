@@ -106,6 +106,17 @@ namespace FormulaEdit
             };
 
 
+            ItemPropertiesDataGrid.CellEndEdit += (ctl, args) =>
+            {
+                HighlightCommitButton(ItemApplyChangesButton);
+            };
+
+            MonsterPropertyDataGrid.CellEndEdit += (ctl, args) =>
+            {
+                HighlightCommitButton(MonsterApplyButton);
+            };
+
+
             FolderPicker.SelectedPath = Properties.Settings.Default.LastWorkingPath;
             saveOnCommitToolStripMenuItem.Checked = Properties.Settings.Default.SaveOnCommit;
 
@@ -131,6 +142,7 @@ namespace FormulaEdit
             RefreshItemsTab();
             RefreshTextTab();
             RefreshUserTab();
+            RefreshMonstersTab();
         }
 
         private void RefreshCommandsTab()
@@ -259,6 +271,30 @@ namespace FormulaEdit
                     ItemsListBox.Items.Add(scriptable);
                 }
             }
+        }
+
+
+        private void RefreshMonstersTab()
+        {
+            MonstersListBox.Items.Clear();
+            MonsterNameTextBox.Text = "";
+            MonsterTextTokenCombo.Text = "";
+
+            if (MudData.Current == null)
+                return;
+
+            if (MudData.Current.Archetypes == null)
+                return;
+
+            foreach (var archetype in MudData.Current.Archetypes)
+            {
+                if (archetype.name.StartsWith("MONSTER_"))
+                {
+                    MonstersListBox.Items.Add(archetype);
+                }
+            }
+
+            MonstersListBox_SelectedIndexChanged(null, null);
         }
 
 
@@ -1647,6 +1683,15 @@ namespace FormulaEdit
             UserPropertiesApplyButton.Enabled = enabled;
         }
 
+        private void SetEnabledControlsMonstersTab(bool enabled)
+        {
+            MonsterNameTextBox.Enabled = enabled;
+            MonsterTextTokenCombo.Enabled = enabled;
+            MonsterApplyButton.Enabled = enabled;
+            MonsterPropertyDataGrid.Enabled = enabled;
+            MonsterRemoveButton.Enabled = enabled;
+        }
+
         private void RoomNewFolderButton_Click(object sender, EventArgs e)
         {
             TreeNode parentNode = RoomTree.SelectedNode;
@@ -1703,6 +1748,133 @@ namespace FormulaEdit
                     StashRoomFolders(node.Nodes, folderName + "/");
                 }
             }
+        }
+
+        private void MonstersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MonsterPropertyDataGrid.Rows.Clear();
+
+            if (MudData.Current == null)
+                return;
+
+            if (MudData.Current.Archetypes == null)
+                return;
+
+            if (MonstersListBox.SelectedItem == null)
+            {
+                MonsterNameTextBox.Text = "";
+                MonsterTextTokenCombo.Text = "";
+
+                UnhighlightCommitButton(MonsterApplyButton);
+                SetEnabledControlsMonstersTab(false);
+                return;
+            }
+
+            var archetype = MonstersListBox.SelectedItem as MudData.Archetype;
+            MonsterNameTextBox.Text = archetype.name;
+            MonsterTextTokenCombo.Text = archetype.properties["Title"];
+
+            foreach (var kvp in archetype.properties)
+            {
+                if (kvp.Key == "Title")
+                    continue;
+
+                MonsterPropertyDataGrid.Rows.Add(new object[] { kvp.Key, kvp.Value });
+            }
+
+            UnhighlightCommitButton(MonsterApplyButton);
+            SetEnabledControlsMonstersTab(true);
+        }
+
+        private void MonsterNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(MonsterApplyButton);
+        }
+
+        private void MonsterTextTokenCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            HighlightCommitButton(MonsterApplyButton);
+        }
+
+        private void MonsterRemoveButton_Click(object sender, EventArgs e)
+        {
+            if (MudData.Current == null)
+                return;
+
+            if (MudData.Current.Archetypes == null)
+                return;
+
+            if (MonstersListBox.SelectedItem == null)
+                return;
+
+            MudData.Current.Archetypes.Remove(MonstersListBox.SelectedItem as MudData.Archetype);
+
+            RefreshMonstersTab();
+        }
+
+        private void MonsterCreateButton_Click(object sender, EventArgs e)
+        {
+            if (MudData.Current == null)
+                return;
+
+            if (MudData.Current.Archetypes == null)
+                return;
+
+            var archetype = new MudData.Archetype();
+            archetype.name = "MONSTER_unnamed";
+            archetype.properties["Title"] = "TEXT:UNNAMED";
+
+            MudData.Current.Archetypes.Add(archetype);
+
+            RefreshMonstersTab();
+
+            MonstersListBox.SelectedItem = archetype;
+            MonsterNameTextBox.Focus();
+            MonsterNameTextBox.SelectAll();
+        }
+
+        private void MonsterApplyButton_Click(object sender, EventArgs e)
+        {
+            if (MudData.Current == null)
+                return;
+
+            if (MudData.Current.Archetypes == null)
+                return;
+
+            if (MonstersListBox.SelectedItem == null)
+                return;
+
+            MudData.Current.Archetypes.Remove(MonstersListBox.SelectedItem as MudData.Archetype);
+
+            var archetype = new MudData.Archetype();
+            archetype.name = MonsterNameTextBox.Text;
+            archetype.properties["Title"] = MonsterTextTokenCombo.Text;
+
+            foreach (DataGridViewRow row in MonsterPropertyDataGrid.Rows)
+            {
+                if (row.Cells.Count != 2)
+                    continue;
+
+                if (row.Cells[0].Value == null)
+                    continue;
+
+                if (row.Cells[1].Value == null)
+                    continue;
+
+                string key = row.Cells[0].Value.ToString();
+                string value = row.Cells[1].Value.ToString();
+
+                archetype.properties[key] = value;
+            }
+
+
+            MudData.Current.Archetypes.Add(archetype);
+
+            RefreshMonstersTab();
+            AutoSave();
+            UnhighlightCommitButton(MonsterApplyButton);
+
+            MonstersListBox.SelectedItem = archetype;
         }
     }
 }
