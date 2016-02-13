@@ -43,6 +43,7 @@
             this.AddCommandButton = new System.Windows.Forms.Button();
             this.CommandListBox = new System.Windows.Forms.ListBox();
             this.RoomsTab = new System.Windows.Forms.TabPage();
+            this.RoomNewFolderButton = new System.Windows.Forms.Button();
             this.RoomTree = new System.Windows.Forms.TreeView();
             this.RoomApplyButton = new System.Windows.Forms.Button();
             this.RoomRemoveButton = new System.Windows.Forms.Button();
@@ -141,7 +142,18 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveOnCommitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FolderPicker = new System.Windows.Forms.FolderBrowserDialog();
-            this.RoomNewFolderButton = new System.Windows.Forms.Button();
+            this.MonstersTab = new System.Windows.Forms.TabPage();
+            this.MonstersListBox = new System.Windows.Forms.ListBox();
+            this.MonsterCreateButton = new System.Windows.Forms.Button();
+            this.MonsterRemoveButton = new System.Windows.Forms.Button();
+            this.MonsterNameTextBox = new System.Windows.Forms.TextBox();
+            this.LabelInternalMonsterName = new System.Windows.Forms.Label();
+            this.MonsterTextTokenCombo = new System.Windows.Forms.ComboBox();
+            this.LabelMonsterTextToken = new System.Windows.Forms.Label();
+            this.MonsterPropertyDataGrid = new System.Windows.Forms.DataGridView();
+            this.PropertyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PropertyFormulaColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MonsterApplyButton = new System.Windows.Forms.Button();
             this.MainEditorTabs.SuspendLayout();
             this.CommandsTab.SuspendLayout();
             this.RoomsTab.SuspendLayout();
@@ -159,6 +171,8 @@
             this.UserListsTab.SuspendLayout();
             this.UserBindingsTab.SuspendLayout();
             this.PrimaryMenuStrip.SuspendLayout();
+            this.MonstersTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MonsterPropertyDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // MainEditorTabs
@@ -171,6 +185,7 @@
             this.MainEditorTabs.Controls.Add(this.ItemsTab);
             this.MainEditorTabs.Controls.Add(this.TextTab);
             this.MainEditorTabs.Controls.Add(this.UserTab);
+            this.MainEditorTabs.Controls.Add(this.MonstersTab);
             this.MainEditorTabs.Location = new System.Drawing.Point(13, 27);
             this.MainEditorTabs.Name = "MainEditorTabs";
             this.MainEditorTabs.SelectedIndex = 0;
@@ -337,6 +352,17 @@
             this.RoomsTab.TabIndex = 1;
             this.RoomsTab.Text = "Rooms";
             this.RoomsTab.UseVisualStyleBackColor = true;
+            // 
+            // RoomNewFolderButton
+            // 
+            this.RoomNewFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RoomNewFolderButton.Location = new System.Drawing.Point(6, 385);
+            this.RoomNewFolderButton.Name = "RoomNewFolderButton";
+            this.RoomNewFolderButton.Size = new System.Drawing.Size(185, 26);
+            this.RoomNewFolderButton.TabIndex = 10;
+            this.RoomNewFolderButton.Text = "New Folder";
+            this.RoomNewFolderButton.UseVisualStyleBackColor = true;
+            this.RoomNewFolderButton.Click += new System.EventHandler(this.RoomNewFolderButton_Click);
             // 
             // RoomTree
             // 
@@ -701,6 +727,7 @@
             // 
             this.RoomDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.RoomDescription.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RoomDescription.Location = new System.Drawing.Point(208, 57);
             this.RoomDescription.Multiline = true;
             this.RoomDescription.Name = "RoomDescription";
@@ -1381,15 +1408,120 @@
             // 
             this.FolderPicker.SelectedPath = global::FormulaEdit.Properties.Settings.Default.LastWorkingPath;
             // 
-            // RoomNewFolderButton
+            // MonstersTab
             // 
-            this.RoomNewFolderButton.Location = new System.Drawing.Point(6, 385);
-            this.RoomNewFolderButton.Name = "RoomNewFolderButton";
-            this.RoomNewFolderButton.Size = new System.Drawing.Size(185, 26);
-            this.RoomNewFolderButton.TabIndex = 10;
-            this.RoomNewFolderButton.Text = "New Folder";
-            this.RoomNewFolderButton.UseVisualStyleBackColor = true;
-            this.RoomNewFolderButton.Click += new System.EventHandler(this.RoomNewFolderButton_Click);
+            this.MonstersTab.Controls.Add(this.MonsterApplyButton);
+            this.MonstersTab.Controls.Add(this.MonsterPropertyDataGrid);
+            this.MonstersTab.Controls.Add(this.LabelMonsterTextToken);
+            this.MonstersTab.Controls.Add(this.MonsterTextTokenCombo);
+            this.MonstersTab.Controls.Add(this.LabelInternalMonsterName);
+            this.MonstersTab.Controls.Add(this.MonsterNameTextBox);
+            this.MonstersTab.Controls.Add(this.MonsterRemoveButton);
+            this.MonstersTab.Controls.Add(this.MonsterCreateButton);
+            this.MonstersTab.Controls.Add(this.MonstersListBox);
+            this.MonstersTab.Location = new System.Drawing.Point(4, 22);
+            this.MonstersTab.Name = "MonstersTab";
+            this.MonstersTab.Size = new System.Drawing.Size(729, 450);
+            this.MonstersTab.TabIndex = 5;
+            this.MonstersTab.Text = "Monsters";
+            this.MonstersTab.UseVisualStyleBackColor = true;
+            // 
+            // MonstersListBox
+            // 
+            this.MonstersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.MonstersListBox.FormattingEnabled = true;
+            this.MonstersListBox.Location = new System.Drawing.Point(3, 3);
+            this.MonstersListBox.Name = "MonstersListBox";
+            this.MonstersListBox.Size = new System.Drawing.Size(192, 407);
+            this.MonstersListBox.Sorted = true;
+            this.MonstersListBox.TabIndex = 0;
+            // 
+            // MonsterCreateButton
+            // 
+            this.MonsterCreateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.MonsterCreateButton.Location = new System.Drawing.Point(3, 416);
+            this.MonsterCreateButton.Name = "MonsterCreateButton";
+            this.MonsterCreateButton.Size = new System.Drawing.Size(93, 31);
+            this.MonsterCreateButton.TabIndex = 1;
+            this.MonsterCreateButton.Text = "Create Monster";
+            this.MonsterCreateButton.UseVisualStyleBackColor = true;
+            // 
+            // MonsterRemoveButton
+            // 
+            this.MonsterRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.MonsterRemoveButton.Location = new System.Drawing.Point(102, 416);
+            this.MonsterRemoveButton.Name = "MonsterRemoveButton";
+            this.MonsterRemoveButton.Size = new System.Drawing.Size(93, 31);
+            this.MonsterRemoveButton.TabIndex = 2;
+            this.MonsterRemoveButton.Text = "Delete Monster";
+            this.MonsterRemoveButton.UseVisualStyleBackColor = true;
+            // 
+            // MonsterNameTextBox
+            // 
+            this.MonsterNameTextBox.Location = new System.Drawing.Point(293, 3);
+            this.MonsterNameTextBox.Name = "MonsterNameTextBox";
+            this.MonsterNameTextBox.Size = new System.Drawing.Size(287, 20);
+            this.MonsterNameTextBox.TabIndex = 3;
+            // 
+            // LabelInternalMonsterName
+            // 
+            this.LabelInternalMonsterName.AutoSize = true;
+            this.LabelInternalMonsterName.Location = new System.Drawing.Point(213, 6);
+            this.LabelInternalMonsterName.Name = "LabelInternalMonsterName";
+            this.LabelInternalMonsterName.Size = new System.Drawing.Size(74, 13);
+            this.LabelInternalMonsterName.TabIndex = 4;
+            this.LabelInternalMonsterName.Text = "Internal name:";
+            // 
+            // MonsterTextTokenCombo
+            // 
+            this.MonsterTextTokenCombo.FormattingEnabled = true;
+            this.MonsterTextTokenCombo.Location = new System.Drawing.Point(293, 29);
+            this.MonsterTextTokenCombo.Name = "MonsterTextTokenCombo";
+            this.MonsterTextTokenCombo.Size = new System.Drawing.Size(287, 21);
+            this.MonsterTextTokenCombo.TabIndex = 5;
+            // 
+            // LabelMonsterTextToken
+            // 
+            this.LabelMonsterTextToken.AutoSize = true;
+            this.LabelMonsterTextToken.Location = new System.Drawing.Point(226, 32);
+            this.LabelMonsterTextToken.Name = "LabelMonsterTextToken";
+            this.LabelMonsterTextToken.Size = new System.Drawing.Size(61, 13);
+            this.LabelMonsterTextToken.TabIndex = 6;
+            this.LabelMonsterTextToken.Text = "Text token:";
+            // 
+            // MonsterPropertyDataGrid
+            // 
+            this.MonsterPropertyDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonsterPropertyDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.MonsterPropertyDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.PropertyNameColumn,
+            this.PropertyFormulaColumn});
+            this.MonsterPropertyDataGrid.Location = new System.Drawing.Point(201, 56);
+            this.MonsterPropertyDataGrid.Name = "MonsterPropertyDataGrid";
+            this.MonsterPropertyDataGrid.Size = new System.Drawing.Size(525, 391);
+            this.MonsterPropertyDataGrid.TabIndex = 7;
+            // 
+            // PropertyNameColumn
+            // 
+            this.PropertyNameColumn.HeaderText = "Property";
+            this.PropertyNameColumn.Name = "PropertyNameColumn";
+            // 
+            // PropertyFormulaColumn
+            // 
+            this.PropertyFormulaColumn.HeaderText = "Formula";
+            this.PropertyFormulaColumn.Name = "PropertyFormulaColumn";
+            // 
+            // MonsterApplyButton
+            // 
+            this.MonsterApplyButton.Location = new System.Drawing.Point(586, 3);
+            this.MonsterApplyButton.Name = "MonsterApplyButton";
+            this.MonsterApplyButton.Size = new System.Drawing.Size(140, 47);
+            this.MonsterApplyButton.TabIndex = 8;
+            this.MonsterApplyButton.Text = "Commit Monster";
+            this.MonsterApplyButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -1431,6 +1563,9 @@
             this.UserBindingsTab.PerformLayout();
             this.PrimaryMenuStrip.ResumeLayout(false);
             this.PrimaryMenuStrip.PerformLayout();
+            this.MonstersTab.ResumeLayout(false);
+            this.MonstersTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MonsterPropertyDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1552,6 +1687,18 @@
         private System.Windows.Forms.ToolStripMenuItem saveOnCommitToolStripMenuItem;
         private System.Windows.Forms.TreeView RoomTree;
         private System.Windows.Forms.Button RoomNewFolderButton;
+        private System.Windows.Forms.TabPage MonstersTab;
+        private System.Windows.Forms.ListBox MonstersListBox;
+        private System.Windows.Forms.Button MonsterCreateButton;
+        private System.Windows.Forms.Button MonsterRemoveButton;
+        private System.Windows.Forms.Label LabelInternalMonsterName;
+        private System.Windows.Forms.TextBox MonsterNameTextBox;
+        private System.Windows.Forms.Label LabelMonsterTextToken;
+        private System.Windows.Forms.ComboBox MonsterTextTokenCombo;
+        private System.Windows.Forms.Button MonsterApplyButton;
+        private System.Windows.Forms.DataGridView MonsterPropertyDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PropertyNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PropertyFormulaColumn;
     }
 }
 
