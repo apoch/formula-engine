@@ -83,13 +83,14 @@ namespace FormulaEdit
 
             RoomTree.DragDrop += (ctl, args) =>
             {
+                var draggedNode = args.Data.GetData(typeof(TreeNode)) as TreeNode;
+
                 System.Drawing.Point pt = RoomTree.PointToClient(new System.Drawing.Point(args.X, args.Y));
 
                 var node = RoomTree.GetNodeAt(pt);
-                if (node == null)
+                if (node == null || node == draggedNode)
                     return;
 
-                var draggedNode = args.Data.GetData(typeof(TreeNode)) as TreeNode;
                 draggedNode.Parent.Nodes.Remove(draggedNode);
 
                 if (node.Tag == null)
