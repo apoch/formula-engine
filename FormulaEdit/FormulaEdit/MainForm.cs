@@ -679,6 +679,20 @@ namespace FormulaEdit
                 return;
 
             var room = RoomTree.SelectedNode.Tag as MudData.Room;
+
+            var dupes = RoomTree.Nodes.Find(RoomInternalName.Text, true);
+            if (dupes != null && dupes.Length > 0)
+            {
+                foreach (var dupe in dupes)
+                {
+                    if (dupe.Tag as MudData.Room != room)
+                    {
+                        MessageBox.Show("A room with that name already exists, cannot commit!", "FormulaEdit", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+
             room.name = RoomInternalName.Text;
             room.description = RoomDescription.Text;
 
