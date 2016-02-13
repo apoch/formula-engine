@@ -53,7 +53,7 @@ void User::EnterRoom (unsigned roomIdToken) {
 void User::SendRoomDescription (double) {
 	assert(m_room != nullptr);
 
-	std::cout << m_room->GetDescription() << std::endl;
+	std::cout << m_room->GetDescription() << "\n" << std::endl;
 }
 
 
