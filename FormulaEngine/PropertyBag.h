@@ -6,15 +6,15 @@ class Scriptable;
 class ScopedPropertyBag;
 
 
-struct IPropertyBag : public IFormulaContext {
+struct IFormulaPropertyBag : public IFormulaContext {
 	virtual void Set(unsigned token, const Result & value) = 0;
 
 	virtual void PopulateNamedBindings (ScopedPropertyBag *) const { }
 };
 
 
-class SimplePropertyBag : public IPropertyBag {
-public:			// IPropertyBag interface
+class SimplePropertyBag : public IFormulaPropertyBag {
+public:			// IFormulaPropertyBag interface
 	void Set(unsigned token, const Result & value) override;
 
 public:			// IFormulaContext interface
@@ -31,14 +31,14 @@ private:		// Internal state
 
 
 
-class FormulaPropertyBag : public IPropertyBag {
+class FormulaPropertyBag : public IFormulaPropertyBag {
 public:			// Configuration interface
 	void Clear();
 
 	void Set(unsigned token, const Formula & formula);
 	void Set(unsigned token, Formula && formula);
 
-public:			// IPropertyBag interface
+public:			// IFormulaPropertyBag interface
 	void Set(unsigned token, const Result & value) override;
 
 public:			// IFormulaContext interface
@@ -89,7 +89,7 @@ private:		// Internal state
 };
 
 
-class ScopedPropertyBag : public IPropertyBag, public IActionPerformer {
+class ScopedPropertyBag : public IFormulaPropertyBag, public IActionPerformer {
 public:			// Construction and destruction
 	ScopedPropertyBag();
 	ScopedPropertyBag(ScopedPropertyBag && other);
@@ -203,8 +203,8 @@ private:		// Internal state
 };
 
 
-class TokenPropertyBag : public IPropertyBag {
-public:			// IPropertyBag interface
+class TokenPropertyBag : public IFormulaPropertyBag {
+public:			// IFormulaPropertyBag interface
 	void Set (unsigned token, const Result & value) override;
 
 public:			// IFormulaContext interface

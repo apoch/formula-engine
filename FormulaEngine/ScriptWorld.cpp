@@ -46,7 +46,7 @@ void ScriptWorld::AddMagicBag(unsigned token) {
 }
 
 
-void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag) {
+void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IFormulaPropertyBag * paramBag) {
 	target->GetEvents()->TriggerHandlers(this, eventToken, target, paramBag);
 }
 
@@ -59,7 +59,7 @@ bool ScriptWorld::DispatchEvents() {
 	while(!m_eventQueue.empty()) {
 		dispatched = true;
 		std::vector<Event> tempqueue = std::move(m_eventQueue);
-		for(Event e : tempqueue) {
+		for(Event & e : tempqueue) {
 			if(e.targetToken) {
 				Scriptable * scriptable = GetScriptable(e.targetToken);
 				if(scriptable)
@@ -120,7 +120,7 @@ TextPropertyBag * ScriptWorld::GetMagicBag(unsigned token) {
 }
 
 
-Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IPropertyBag * paramBag) {
+Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IFormulaPropertyBag * paramBag) {
 	Scriptable * archetype = GetArchetype(token);
 	if(!archetype)
 		return nullptr;
@@ -135,7 +135,7 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IPropertyBag * pa
 	return instance;
 }
 
-Scriptable * ScriptWorld::InstantiateArchetype(unsigned nameOfInstance, unsigned token, IPropertyBag * paramBag) {
+Scriptable * ScriptWorld::InstantiateArchetype(unsigned nameOfInstance, unsigned token, IFormulaPropertyBag * paramBag) {
 	Scriptable * archetype = GetArchetype(token);
 	if(!archetype)
 		return nullptr;
@@ -168,24 +168,33 @@ void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName
 	m_eventQueue.push_back(e);
 }
 
-void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IPropertyBag * bag) {
+void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IFormulaPropertyBag * bag) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = 0;
 	e.directTarget = target;
 	e.parameterBag = bag;
 
-	// TODO - remove hack
-	e.timestamp = std::chrono::system_clock::now();
-	e.timestamp += std::chrono::milliseconds(long long(5.75 * 1000.0));
-	m_eventQueueTimed.push_back(e);
+	m_eventQueue.push_back(e);
 }
 
-void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IPropertyBag * paramBag, double delaySeconds) {
+void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = targetToken;
 	e.directTarget = nullptr;
+	e.parameterBag = paramBag;
+	e.timestamp = std::chrono::system_clock::now();
+	e.timestamp += std::chrono::milliseconds(long long(delaySeconds * 1000.0));
+
+	m_eventQueueTimed.push_back(e);
+}
+
+void ScriptWorld::QueueDelayedEvent (Scriptable * target, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds) {
+	Event e;
+	e.nameToken = eventToken;
+	e.targetToken = 0;
+	e.directTarget = target;
 	e.parameterBag = paramBag;
 	e.timestamp = std::chrono::system_clock::now();
 	e.timestamp += std::chrono::milliseconds(long long(delaySeconds * 1000.0));
@@ -204,4 +213,19 @@ void ScriptWorld::TransferTimedEvents () {
 	m_eventQueueTimed.erase(iter, m_eventQueueTimed.end());
 }
 
+
+unsigned ScriptWorld::PeekTimeUntilNextEvent () const {
+	long long timeUntilEvent = 0xffffffff;
+
+	auto now(std::chrono::system_clock::now());
+	for (const auto & timedEvent : m_eventQueueTimed) {
+		auto delta = timedEvent.timestamp - now;
+		auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(delta);
+
+		if (ms.count() < timeUntilEvent)
+			timeUntilEvent = ms.count();
+	}
+
+	return unsigned(timeUntilEvent);
+}
 

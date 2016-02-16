@@ -13,7 +13,7 @@ public:			// Configuration interface
 	void AddHandler (unsigned eventToken, ActionSet && actions);
 
 public:			// Dispatch interface
-	void TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IPropertyBag * paramBag) const;
+	void TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IFormulaPropertyBag * paramBag) const;
 
 private:		// Internal state
 	std::multimap<unsigned, ActionSet> m_eventHandlers;

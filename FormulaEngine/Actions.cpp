@@ -50,7 +50,7 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 	return RESULT_CODE_OK;
 }
 
-ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const {
+ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IFormulaPropertyBag * optionalContext) const {
 	m_scopeCache->Clear();
 	m_scopeCache->SetProperties(&target->GetScopes().GetProperties());
 	BindingPropertyBag bag(target);
@@ -150,7 +150,7 @@ IAction * ActionEventTrigger::Clone() const {
 	return new ActionEventTrigger(m_eventToken, m_targetToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr, std::move(delayCopy));
 }
 
-ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable *, const ScopedPropertyBag & scopes) const {
+ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable * scriptable, const ScopedPropertyBag & scopes) const {
 	SimplePropertyBag * bagptr = nullptr;
 	if(m_paramBag) {
 		bagptr = new SimplePropertyBag;
@@ -162,10 +162,18 @@ ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable *, const 
 	if (delayResult.code == RESULT_CODE_OK)
 		delaySeconds = delayResult.value;
 
-	if (delaySeconds > 0.0)
-		world->QueueDelayedEvent(m_targetToken, m_eventToken, bagptr, delaySeconds);
-	else
-		world->QueueEvent(world->GetScriptable(m_targetToken), m_eventToken, bagptr);
+	if (m_targetToken) {
+		if (delaySeconds > 0.0)
+			world->QueueDelayedEvent(m_targetToken, m_eventToken, bagptr, delaySeconds);
+		else
+			world->QueueEvent(world->GetScriptable(m_targetToken), m_eventToken, bagptr);
+	}
+	else {
+		if (delaySeconds > 0.0)
+			world->QueueDelayedEvent(scriptable, m_eventToken, bagptr, delaySeconds);
+		else
+			world->QueueEvent(scriptable, m_eventToken, bagptr);
+	}
 
 	return RESULT_CODE_OK;
 }

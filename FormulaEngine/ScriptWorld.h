@@ -19,24 +19,27 @@ public:			// Setup interface
 
 	TokenPool & GetTokenPool()			{ return *m_tokens; }
 
-	Scriptable * InstantiateArchetype(unsigned token, IPropertyBag * paramBag);
-	Scriptable * InstantiateArchetype(unsigned nameOfInstance, unsigned token, IPropertyBag * paramBag);
+	Scriptable * InstantiateArchetype(unsigned token, IFormulaPropertyBag * paramBag);
+	Scriptable * InstantiateArchetype(unsigned nameOfInstance, unsigned token, IFormulaPropertyBag * paramBag);
 
 public:			// Event pump interface
 	void QueueEvent(unsigned targetToken, const std::string & eventName);
-	void QueueEvent(Scriptable * scriptable, unsigned eventToken, IPropertyBag * paramBag);
+	void QueueEvent(Scriptable * scriptable, unsigned eventToken, IFormulaPropertyBag * paramBag);
 
 	void QueueBroadcastEvent(const std::string & eventName);
 
-	void QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IPropertyBag * paramBag, double delaySeconds);
+	void QueueDelayedEvent (Scriptable * target, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds);
+	void QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds);
 
 	bool DispatchEvents();
+
+	unsigned PeekTimeUntilNextEvent () const;
 
 public:			// Debugging interface
 	void DumpOverview() const;
 
 private:		// Internal helpers
-	void DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag);
+	void DispatchEvent(Scriptable * target, unsigned eventToken, const IFormulaPropertyBag * paramBag);
 	void TransferTimedEvents ();
 
 private:		// Internal structures
@@ -46,7 +49,7 @@ private:		// Internal structures
 
 		unsigned targetToken;
 
-		IPropertyBag * parameterBag = nullptr;
+		IFormulaPropertyBag * parameterBag = nullptr;
 		std::chrono::time_point<std::chrono::system_clock> timestamp;
 	};
 

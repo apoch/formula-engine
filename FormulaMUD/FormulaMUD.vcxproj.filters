@@ -35,6 +35,9 @@
     <ClCompile Include="Bindings.cpp">
       <Filter>FormulaMUD Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>FormulaMUD Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pch.h">
@@ -60,6 +63,9 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Utilities.h">
       <Filter>Shared Support Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>FormulaMUD Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

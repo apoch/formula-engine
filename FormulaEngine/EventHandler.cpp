@@ -14,7 +14,7 @@ void EventHandlerSet::AddHandler (unsigned eventToken, ActionSet && actions) {
 	m_eventHandlers.emplace(std::make_pair(eventToken, std::move(actions)));
 }
 
-void EventHandlerSet::TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IPropertyBag * paramBag) const {
+void EventHandlerSet::TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IFormulaPropertyBag * paramBag) const {
 	unsigned magic = world->GetTokenPool().AddToken("event");		// TODO - improve
 	auto range = m_eventHandlers.equal_range(eventToken);
 	for(auto iter = range.first; iter != range.second; ++iter) {

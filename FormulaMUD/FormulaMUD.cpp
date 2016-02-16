@@ -7,6 +7,7 @@
 #include "CommandTable.h"
 #include "WorldState.h"
 #include "Bindings.h"
+#include "Console.h"
 
 
 int main() {
@@ -26,15 +27,20 @@ int main() {
 	Game::RoomNetwork roomNetwork("Data\\Rooms.json", &tokens, &world, &state);
 	state.roomNetwork = &roomNetwork;
 
+
+
+	Console::Init();
+
 	world.QueueBroadcastEvent("OnUserConnect");
 	while (world.DispatchEvents());
 
 
 	while (state.alive) {
-		world.QueueBroadcastEvent("Poll");
 		while (world.DispatchEvents());
+
+		unsigned sleep = world.PeekTimeUntilNextEvent();
+		std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 	}
-		
 
     return 0;
 }

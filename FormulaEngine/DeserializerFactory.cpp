@@ -145,12 +145,14 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			if(eventiter == action.end() || !eventiter->second.is<std::string>())
 				continue;
 
+			unsigned targetToken = 0;
 			auto targetiter = action.find("target");
-			if(targetiter == action.end() || !targetiter->second.is<std::string>())
-				continue;
+			if (targetiter != action.end() && targetiter->second.is<std::string>())
+			{
+				auto & target = targetiter->second.get<std::string>();
+				targetToken = world->GetTokenPool().AddToken(target);
+			}
 
-			auto & target = targetiter->second.get<std::string>();
-			unsigned targetToken = world->GetTokenPool().AddToken(target);
 			unsigned eventToken = world->GetTokenPool().AddToken(eventiter->second.get<std::string>());
 
 			FormulaPropertyBag * parambagptr = nullptr;

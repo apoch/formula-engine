@@ -1,6 +1,6 @@
 #pragma once
 
-struct IPropertyBag;
+struct IFormulaPropertyBag;
 struct IFormulaContext;
 class ActionSet;
 class ScopedPropertyBag;
@@ -44,7 +44,7 @@ public:			// Setup interface
 	void AddAction(IAction * action);
 
 public:			// Execution interface
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IPropertyBag * optionalContext) const;
+	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IFormulaPropertyBag * optionalContext) const;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
 
 private:		// Internal state

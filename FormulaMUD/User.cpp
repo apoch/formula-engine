@@ -1,10 +1,10 @@
 #include "Pch.h"
 
-
 #include "User.h"
 #include "WorldState.h"
 #include "CommandTable.h"
 #include "Room.h"
+#include "Console.h"
 
 
 namespace Game {
@@ -63,9 +63,10 @@ void User::SendMessage (unsigned tokenId) {
 
 	
 void User::PollInput (double) {
+	
 	std::string buffer;
-
-	std::getline(std::cin, buffer);
+	if (!Console::ReadLine(&buffer))
+		return;
 
 	std::stringstream parser;
 	parser << buffer;

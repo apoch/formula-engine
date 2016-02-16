@@ -27,6 +27,11 @@
               "binding": "User",
               "property": "EnterRoom",
               "value": "TEXT:StartRoom"
+            },
+            {
+              "action": "TriggerEvent",
+              "event": "Poll",
+              "delay": "0.15"
             }
           ],
           "name": "OnCreate"
@@ -51,13 +56,28 @@
               "value": "TEXT:USER_PROMPT"
             },
             {
+              "action": "TriggerEvent",
+              "event": "PollWorker",
+              "delay": "0"
+            }
+          ],
+          "name": "Poll"
+        },
+        {
+          "actions": [
+            {
               "action": "SetGoalState",
               "binding": "User",
               "property": "PollInput",
               "value": "0"
+            },
+            {
+              "action": "TriggerEvent",
+              "event": "PollWorker",
+              "delay": "0.2"
             }
           ],
-          "name": "Poll"
+          "name": "PollWorker"
         },
         {
           "actions": [

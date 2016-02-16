@@ -156,6 +156,7 @@
     <ClInclude Include="..\Shared\Utilities.h" />
     <ClInclude Include="Bindings.h" />
     <ClInclude Include="CommandTable.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Pch.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="User.h" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Bindings.cpp" />
     <ClCompile Include="CommandTable.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="FormulaMUD.cpp" />
     <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
