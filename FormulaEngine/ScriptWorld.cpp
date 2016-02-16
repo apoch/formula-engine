@@ -54,6 +54,8 @@ void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const 
 bool ScriptWorld::DispatchEvents() {
 	bool dispatched = false;
 
+	TransferTimedEvents();
+
 	while(!m_eventQueue.empty()) {
 		dispatched = true;
 		std::vector<Event> tempqueue = std::move(m_eventQueue);
@@ -173,7 +175,33 @@ void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IProperty
 	e.directTarget = target;
 	e.parameterBag = bag;
 
-	m_eventQueue.push_back(e);
+	// TODO - remove hack
+	e.timestamp = std::chrono::system_clock::now();
+	e.timestamp += std::chrono::milliseconds(long long(5.75 * 1000.0));
+	m_eventQueueTimed.push_back(e);
+}
+
+void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IPropertyBag * paramBag, double delaySeconds) {
+	Event e;
+	e.nameToken = eventToken;
+	e.targetToken = targetToken;
+	e.directTarget = nullptr;
+	e.parameterBag = paramBag;
+	e.timestamp = std::chrono::system_clock::now();
+	e.timestamp += std::chrono::milliseconds(long long(delaySeconds * 1000.0));
+
+	m_eventQueueTimed.push_back(e);
+}
+
+
+void ScriptWorld::TransferTimedEvents () {
+	auto iter = std::remove_if(m_eventQueueTimed.begin(), m_eventQueueTimed.end(), [](const Event & e){
+		return (e.timestamp <= std::chrono::system_clock::now());
+	});
+
+	m_eventQueue.insert(m_eventQueue.end(), iter, m_eventQueueTimed.end());
+
+	m_eventQueueTimed.erase(iter, m_eventQueueTimed.end());
 }
 
 

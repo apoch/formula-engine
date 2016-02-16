@@ -24,6 +24,7 @@
 #include <random>
 #include <atomic>
 #include <thread>
+#include <chrono>
 
 // Third party library includes
 #include "Shared/PicoJSON.h"
