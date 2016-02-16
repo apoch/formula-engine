@@ -164,7 +164,17 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 				}
 			}
 
-			actions->AddAction(new ActionEventTrigger(eventToken, targetToken, parambagptr));
+			Formula delayFormula;
+			auto delayiter = action.find("delay");
+			if (delayiter != action.end() && delayiter->second.is<std::string>()) {
+				auto delay = delayiter->second.get<std::string>();
+				delayFormula = parser->Parse(delay, &world->GetTokenPool());
+			}
+			else {
+				delayFormula.Push(0.0);
+			}
+
+			actions->AddAction(new ActionEventTrigger(eventToken, targetToken, parambagptr, std::move(delayFormula)));
 		}
 		else if(actionkey == "RepeatEvent") {
 			auto eventiter = action.find("event");

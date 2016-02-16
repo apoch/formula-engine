@@ -56,7 +56,7 @@ private:		// Internal state
 
 class ActionEventTrigger : public IAction {
 public:
-	ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr);
+	ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr, Formula && delayFormula);
 	~ActionEventTrigger();
 
 	IAction * Clone() const override;
@@ -66,6 +66,7 @@ private:
 	unsigned m_eventToken;
 	unsigned m_targetToken;
 	FormulaPropertyBag * m_paramBag;
+	Formula m_delay;
 };
 
 class ActionEventRepeat : public IAction {

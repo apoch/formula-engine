@@ -28,6 +28,8 @@ public:			// Event pump interface
 
 	void QueueBroadcastEvent(const std::string & eventName);
 
+	void QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IPropertyBag * paramBag, double delaySeconds);
+
 	bool DispatchEvents();
 
 public:			// Debugging interface
@@ -35,6 +37,7 @@ public:			// Debugging interface
 
 private:		// Internal helpers
 	void DispatchEvent(Scriptable * target, unsigned eventToken, const IPropertyBag * paramBag);
+	void TransferTimedEvents ();
 
 private:		// Internal structures
 	struct Event {
@@ -44,6 +47,7 @@ private:		// Internal structures
 		unsigned targetToken;
 
 		IPropertyBag * parameterBag = nullptr;
+		std::chrono::time_point<std::chrono::system_clock> timestamp;
 	};
 
 private:		// Internal state
@@ -53,6 +57,7 @@ private:		// Internal state
 	std::map<unsigned, TextPropertyBag> m_magicBags;
 
 	std::vector<Event> m_eventQueue;
+	std::vector<Event> m_eventQueueTimed;
 	std::vector<Scriptable *> m_instances;
 
 	IEngineBinder * m_binder;

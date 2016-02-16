@@ -133,10 +133,11 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 
 
 
-ActionEventTrigger::ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr)
+ActionEventTrigger::ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr, Formula && delayFormula)
 	: m_eventToken(eventToken),
  	  m_targetToken(targetToken),
- 	  m_paramBag(parambagptr)
+ 	  m_paramBag(parambagptr),
+	  m_delay(std::move(delayFormula))
 {
 }
 
@@ -145,7 +146,8 @@ ActionEventTrigger::~ActionEventTrigger() {
 }
 
 IAction * ActionEventTrigger::Clone() const {
-	return new ActionEventTrigger(m_eventToken, m_targetToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
+	Formula delayCopy(m_delay);
+	return new ActionEventTrigger(m_eventToken, m_targetToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr, std::move(delayCopy));
 }
 
 ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable *, const ScopedPropertyBag & scopes) const {
@@ -155,7 +157,16 @@ ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable *, const 
 		m_paramBag->Flatten(bagptr, &scopes);
 	}
 
-	world->QueueEvent(world->GetScriptable(m_targetToken), m_eventToken, bagptr);
+	double delaySeconds = 0.0;
+	Result delayResult = m_delay.Evaluate(&scopes);
+	if (delayResult.code == RESULT_CODE_OK)
+		delaySeconds = delayResult.value;
+
+	if (delaySeconds > 0.0)
+		world->QueueDelayedEvent(m_targetToken, m_eventToken, bagptr, delaySeconds);
+	else
+		world->QueueEvent(world->GetScriptable(m_targetToken), m_eventToken, bagptr);
+
 	return RESULT_CODE_OK;
 }
 
