@@ -211,7 +211,7 @@
       "properties": {
         "BaseHP": "10",
         "BaseBreath": "5",
-        "HP": "BaseHP+(Constitution * 0.5)",
+        "HP": "(10*BaseHP)+(Constitution * 5)",
         "Breath": "BaseBreath + (Constitution * 0.5)",
         "Strength": "3",
         "Constitution": "4",
@@ -225,7 +225,49 @@
       "lists": [ ],
       "name": "MONSTER_Pale_Fox",
       "properties": {
-        "Title": "TEXT:MONSTER_PALE_FOX"
+        "Title": "TEXT:MONSTER_PALE_FOX",
+        "HP": "(10*BaseHP)+(5 *CON)",
+        "BRH": "BaseBRH+(.5*CON)",
+        "BaseHP": "5",
+        "BaseBRH": "0",
+        "STR": "3",
+        "CON": "2",
+        "RES": "0",
+        "DIS": "2"
+      }
+    },
+    {
+      "bindings": [ ],
+      "events": [ ],
+      "lists": [ ],
+      "name": "MONSTER_Pale_Rabbit",
+      "properties": {
+        "Title": "TEXT:MONSTER_PALE_RABBIT",
+        "HP": "(10*BaseHP)+(5*CON)",
+        "BRH": "BaseBRH+(.5*CON)",
+        "BaseHP": "3",
+        "BaseBRH": "1",
+        "STR": "2",
+        "CON": "2",
+        "RES": "2",
+        "DIS": "2"
+      }
+    },
+    {
+      "bindings": [ ],
+      "events": [ ],
+      "lists": [ ],
+      "name": "MONSTER_Pale_Bear",
+      "properties": {
+        "Title": "TEXT:MONSTER_PALE_BEAR",
+        "HP": "(10*BaseHP)+(5*CON)",
+        "BRH": "BaseBRH+(.5*CON)",
+        "BaseHP": "10",
+        "BaseBRH": "2",
+        "STR": "5",
+        "CON": "5",
+        "RES": "2",
+        "DIS": "1"
       }
     }
   ],
@@ -269,9 +311,11 @@
         "USER_LOOK_ITEMS_FOOTER": " ",
         "ITEM_DOODAD": "A useless doodad",
         "USER_PROMPT": "Enter a command: ",
-        "MONSTER_PALE_FOX": "A small pale fox",
+        "MONSTER_PALE_FOX": "pale fox",
         "USER_LOOK_NPC_HEADER": "Other beings in this location:",
-        "USER_LOOK_NPC_FOOTER": "\u000d\u000a"
+        "USER_LOOK_NPC_FOOTER": "\u000d\u000a",
+        "MONSTER_PALE_RABBIT": "pale rabbit",
+        "MONSTER_PALE_BEAR": "pale bear"
       }
     }
   ]
