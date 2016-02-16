@@ -300,8 +300,13 @@ namespace FormulaEdit
             [DataMember]
             public string @event = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public string target = "";
+
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
+            public string delay = "";
 
             [DataMember(EmitDefaultValue = false)]
             [OptionalField]

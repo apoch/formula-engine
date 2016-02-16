@@ -10,10 +10,14 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
             TargetComboBox.Text = action.target;
             EventComboBox.Text = action.@event;
+            DelayTextBox.Text = action.delay;
 
-            foreach (var kvp in action.@params)
+            if (action.@params != null)
             {
-                ParamDataGridView.Rows.Add(new object[] { kvp.Key, kvp.Value });
+                foreach (var kvp in action.@params)
+                {
+                    ParamDataGridView.Rows.Add(new object[] { kvp.Key, kvp.Value });
+                }
             }
         }
 
@@ -23,6 +27,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             ret.action = "TriggerEvent";
             ret.@event = EventComboBox.Text;
             ret.target = TargetComboBox.Text;
+            ret.delay = DelayTextBox.Text;
 
             foreach (DataGridViewRow row in ParamDataGridView.Rows)
             {

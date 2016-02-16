@@ -35,6 +35,8 @@
             this.LabelTarget = new System.Windows.Forms.Label();
             this.EventComboBox = new System.Windows.Forms.ComboBox();
             this.LabelEvent = new System.Windows.Forms.Label();
+            this.LabelDelay = new System.Windows.Forms.Label();
+            this.DelayTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.ParamDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,9 +51,9 @@
             this.ParamDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ParamNameColumn,
             this.ParamValueColumn});
-            this.ParamDataGridView.Location = new System.Drawing.Point(79, 58);
+            this.ParamDataGridView.Location = new System.Drawing.Point(79, 91);
             this.ParamDataGridView.Name = "ParamDataGridView";
-            this.ParamDataGridView.Size = new System.Drawing.Size(231, 94);
+            this.ParamDataGridView.Size = new System.Drawing.Size(231, 146);
             this.ParamDataGridView.TabIndex = 5;
             // 
             // ParamNameColumn
@@ -104,17 +106,35 @@
             this.LabelEvent.TabIndex = 9;
             this.LabelEvent.Text = "Event:";
             // 
+            // LabelDelay
+            // 
+            this.LabelDelay.AutoSize = true;
+            this.LabelDelay.Location = new System.Drawing.Point(36, 61);
+            this.LabelDelay.Name = "LabelDelay";
+            this.LabelDelay.Size = new System.Drawing.Size(37, 13);
+            this.LabelDelay.TabIndex = 10;
+            this.LabelDelay.Text = "Delay:";
+            // 
+            // DelayTextBox
+            // 
+            this.DelayTextBox.Location = new System.Drawing.Point(79, 58);
+            this.DelayTextBox.Name = "DelayTextBox";
+            this.DelayTextBox.Size = new System.Drawing.Size(126, 20);
+            this.DelayTextBox.TabIndex = 11;
+            // 
             // ScriptActionControlTriggerEvent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DelayTextBox);
+            this.Controls.Add(this.LabelDelay);
             this.Controls.Add(this.LabelEvent);
             this.Controls.Add(this.EventComboBox);
             this.Controls.Add(this.LabelTarget);
             this.Controls.Add(this.TargetComboBox);
             this.Controls.Add(this.ParamDataGridView);
             this.Name = "ScriptActionControlTriggerEvent";
-            this.Size = new System.Drawing.Size(313, 155);
+            this.Size = new System.Drawing.Size(313, 240);
             ((System.ComponentModel.ISupportInitialize)(this.ParamDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -130,5 +150,7 @@
         private System.Windows.Forms.Label LabelTarget;
         private System.Windows.Forms.ComboBox EventComboBox;
         private System.Windows.Forms.Label LabelEvent;
+        private System.Windows.Forms.Label LabelDelay;
+        private System.Windows.Forms.TextBox DelayTextBox;
     }
 }
