@@ -89,7 +89,7 @@ ResultCode ActionListSpawnEntry::Execute(ScriptWorld * world, Scriptable * targe
 
 	Scriptable * instance = world->InstantiateArchetype(m_archetypeToken, bagptr);
 	if(instance) {
-		target->GetScopes().ListAddEntry(m_listToken, *instance);
+		target->GetScopes().ListAddEntry(m_listToken, instance);
 	}
 
 	return RESULT_CODE_OK;
@@ -240,20 +240,26 @@ ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, 
 }
 
 
-ActionListAddEntry::ActionListAddEntry(unsigned listToken, unsigned targetToken)
+ActionListAddEntry::ActionListAddEntry (Formula && objectToken, unsigned listToken, unsigned targetToken)
 	: m_listToken(listToken),
-	  m_targetToken(targetToken)
+	  m_targetToken(targetToken),
+	  m_objectToken(objectToken)
 {
 }
 
 IAction * ActionListAddEntry::Clone() const {
-	return new ActionListAddEntry(m_listToken, m_targetToken);
+	Formula objcopy(m_objectToken);
+	return new ActionListAddEntry(std::move(objcopy), m_listToken, m_targetToken);
 }
 
 ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	ref(scopes);
 
-	target->GetScopes().ListAddEntry(m_listToken, *world->GetScriptable(m_targetToken));
+	// TODO - respect m_objectToken
+	Scriptable * newMember = world->GetScriptable(m_targetToken);
+	if (!newMember)
+		newMember = scopes.GetNamedBinding(m_targetToken);
+
+	target->GetScopes().ListAddEntry(m_listToken, newMember);
 
 	return RESULT_CODE_OK;
 }
@@ -312,15 +318,16 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 
 	const ActionSet * myActions = &m_loopActions;
 
-	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](const Scriptable * member){
+	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](Scriptable * member){
+		unsigned otherscope = world->GetTokenPool().AddToken("other");
+
 		ScopedPropertyBag newScopes;
 		newScopes.InstantiateFrom(scopes);
+		newScopes.GetScopes().AddScope(otherscope, member->GetScopes());
 		newScopes.SetProperties(&target->GetScopes().GetProperties());
-
+		newScopes.SetNamedBinding(otherscope, member);
 		if(target->GetScopes().GetBindings())
 			newScopes.SetBindings(*target->GetScopes().GetBindings());
-
-		newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), member->GetScopes());
 
 		myActions->Execute(world, target, newScopes);
 	});
@@ -366,10 +373,16 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	const Formula * condition = &m_condition;
 	unsigned targetListToken = m_targetListToken;
 
-	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](const Scriptable * member) {
+	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](Scriptable * member) {
+		unsigned otherscope = world->GetTokenPool().AddToken("other");
+
 		ScopedPropertyBag newScopes;
 		newScopes.InstantiateFrom(scopes);
-		newScopes.GetScopes().AddScope(world->GetTokenPool().AddToken("other"), member->GetScopes());
+		newScopes.GetScopes().AddScope(otherscope, member->GetScopes());
+		newScopes.SetProperties(&targetScriptable->GetScopes().GetProperties());
+		newScopes.SetNamedBinding(otherscope, member);
+		if(targetScriptable->GetScopes().GetBindings())
+			newScopes.SetBindings(*targetScriptable->GetScopes().GetBindings());
 
 		WorldPropertyBag bag(world, newScopes);
 
@@ -380,7 +393,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 		if (cond.value == 0.0)
 			return false;
 
-		targetScriptable->GetScopes().ListAddEntry(targetListToken, *member);
+		targetScriptable->GetScopes().ListAddEntry(targetListToken, member);
 		return true;
 	});
 }

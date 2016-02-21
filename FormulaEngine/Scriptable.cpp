@@ -98,6 +98,8 @@ void Scriptable::OnListMembershipRemoved(unsigned listToken, IActionPerformer * 
 
 
 Result Scriptable::ResolveBinding(const IFormulaContext & context, unsigned scope, unsigned token) const {
+	ref(context);
+
 	const IEngineBinding * binding = nullptr;
 
 	if(scope) {
@@ -112,10 +114,13 @@ Result Scriptable::ResolveBinding(const IFormulaContext & context, unsigned scop
 		}
 	}
 
-	if(!binding)
-		return context.ResolveNumber(context, scope, token);
-
 	Result ret;
+
+	if (!binding) {
+		ret.code = RESULT_CODE_MISSING_DEFINITION;
+		return ret;
+	}
+
 	ret.code = RESULT_CODE_OK;
 
 	unsigned arity = binding->GetPropertyBinding(token, &ret.token);

@@ -35,9 +35,9 @@ namespace FormulaEdit
         {
             MudData.FormulaAction action = null;
 
-            if (ActionComboBox.Text == "AddSelfToList")
+            if (ActionComboBox.Text == "AddToList")
             {
-                var ctl = ContainerPanel.Controls[0] as ScriptActionControlAddSelfToList;
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlAddToList;
                 action = ctl.GenerateMudDataAction();
             }
             else if (ActionComboBox.Text == "CreateListMember")
@@ -139,9 +139,9 @@ namespace FormulaEdit
             if (action == null)
                 action = containerAction;
 
-            if (action.GetType() == typeof(MudData.FormulaActionAddSelfToList))
+            if (action.GetType() == typeof(MudData.FormulaActionAddToList))
             {
-                ctl = new ScriptActionControlAddSelfToList(action as MudData.FormulaActionAddSelfToList);
+                ctl = new ScriptActionControlAddToList(action as MudData.FormulaActionAddToList);
             }
             else if (action.GetType() == typeof(MudData.FormulaActionCreateListMember))
             {
@@ -192,9 +192,9 @@ namespace FormulaEdit
         {
             MudData.FormulaAction action = null;
 
-            if (ActionComboBox.Text == "AddSelfToList")
+            if (ActionComboBox.Text == "AddToList")
             {
-                action = new MudData.FormulaActionAddSelfToList();
+                action = new MudData.FormulaActionAddToList();
             }
             else if (ActionComboBox.Text == "CreateListMember")
             {

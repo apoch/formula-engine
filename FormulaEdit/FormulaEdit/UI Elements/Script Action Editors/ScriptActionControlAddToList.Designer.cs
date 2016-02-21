@@ -1,6 +1,6 @@
 ﻿namespace FormulaEdit.UI_Elements.Script_Action_Editors
 {
-    partial class ScriptActionControlAddSelfToList
+    partial class ScriptActionControlAddToList
     {
         /// <summary> 
         /// Required designer variable.
@@ -32,6 +32,8 @@
             this.LabelList = new System.Windows.Forms.Label();
             this.TargetComboBox = new System.Windows.Forms.ComboBox();
             this.ListComboBox = new System.Windows.Forms.ComboBox();
+            this.HostComboBox = new System.Windows.Forms.ComboBox();
+            this.LabelHost = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LabelTarget
@@ -72,16 +74,35 @@
             this.ListComboBox.Size = new System.Drawing.Size(167, 21);
             this.ListComboBox.TabIndex = 3;
             // 
-            // ScriptActionControlAddSelfToList
+            // HostComboBox
+            // 
+            this.HostComboBox.FormattingEnabled = true;
+            this.HostComboBox.Location = new System.Drawing.Point(50, 64);
+            this.HostComboBox.Name = "HostComboBox";
+            this.HostComboBox.Size = new System.Drawing.Size(167, 21);
+            this.HostComboBox.TabIndex = 4;
+            // 
+            // LabelHost
+            // 
+            this.LabelHost.AutoSize = true;
+            this.LabelHost.Location = new System.Drawing.Point(12, 67);
+            this.LabelHost.Name = "LabelHost";
+            this.LabelHost.Size = new System.Drawing.Size(32, 13);
+            this.LabelHost.TabIndex = 5;
+            this.LabelHost.Text = "Host:";
+            // 
+            // ScriptActionControlAddToList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LabelHost);
+            this.Controls.Add(this.HostComboBox);
             this.Controls.Add(this.ListComboBox);
             this.Controls.Add(this.TargetComboBox);
             this.Controls.Add(this.LabelList);
             this.Controls.Add(this.LabelTarget);
-            this.Name = "ScriptActionControlAddSelfToList";
-            this.Size = new System.Drawing.Size(220, 69);
+            this.Name = "ScriptActionControlAddToList";
+            this.Size = new System.Drawing.Size(220, 95);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,5 +114,7 @@
         private System.Windows.Forms.Label LabelList;
         private System.Windows.Forms.ComboBox TargetComboBox;
         private System.Windows.Forms.ComboBox ListComboBox;
+        private System.Windows.Forms.ComboBox HostComboBox;
+        private System.Windows.Forms.Label LabelHost;
     }
 }

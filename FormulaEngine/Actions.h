@@ -14,7 +14,7 @@ struct IActionPerformer {
 	virtual void SetProperty(unsigned targetToken, const Result & value) = 0;
 	virtual void SetFormula(unsigned targetToken, const Formula & formula) = 0;
 
-	virtual void ListAddEntry(unsigned listToken, const Scriptable & entry) = 0;
+	virtual void ListAddEntry(unsigned listToken, Scriptable * entry) = 0;
 	virtual void ListRemoveEntry(unsigned listToken, const Scriptable & entry) = 0;
 
 	virtual const IFormulaContext & GetProperties() const = 0;
@@ -98,12 +98,13 @@ private:
 
 class ActionListAddEntry : public IAction {
 public:
-	ActionListAddEntry(unsigned listToken, unsigned targetToken);
+	ActionListAddEntry(Formula && objectToken, unsigned listToken, unsigned targetToken);
 
 	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
+	Formula  m_objectToken;
 	unsigned m_listToken;
 	unsigned m_targetToken;
 };

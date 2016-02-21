@@ -57,11 +57,11 @@
     <Compile Include="MudData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.cs">
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddToList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.Designer.cs">
-      <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
+    <Compile Include="UI Elements\Script Action Editors\ScriptActionControlAddToList.Designer.cs">
+      <DependentUpon>ScriptActionControlAddToList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI Elements\Script Action Editors\ScriptActionControlCreateListMember.cs">
       <SubType>UserControl</SubType>
@@ -130,8 +130,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlAddSelfToList.resx">
-      <DependentUpon>ScriptActionControlAddSelfToList.cs</DependentUpon>
+    <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlAddToList.resx">
+      <DependentUpon>ScriptActionControlAddToList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI Elements\Script Action Editors\ScriptActionControlCreateListMember.resx">
       <DependentUpon>ScriptActionControlCreateListMember.cs</DependentUpon>

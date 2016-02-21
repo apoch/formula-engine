@@ -950,7 +950,10 @@ namespace FormulaEdit
             var list = UserListsListBox.SelectedItem as MudData.FormulaList;
 
             UserListsListNameTextBox.Text = list.name;
-            UserListsListContentsTextBox.Text = string.Join("\r\n", list.contents);
+            if (list.contents != null)
+                UserListsListContentsTextBox.Text = string.Join("\r\n", list.contents);
+            else
+                UserListsListContentsTextBox.Text = "";
 
             UnhighlightCommitButton(UserListsApplyChangesButton);
             SetEnabledControlsUserListsTab(true);

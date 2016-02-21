@@ -208,9 +208,9 @@ void ScopedPropertyBag::InstantiateFrom(const ScopedPropertyBag & other) {
 }
 
 
-void ScopedPropertyBag::ListAddEntry(unsigned listToken, const Scriptable & entry) {
-	m_lists[listToken].push_back(&entry);
-	entry.OnListMembershipAdded(listToken, this);
+void ScopedPropertyBag::ListAddEntry(unsigned listToken, Scriptable * entry) {
+	m_lists[listToken].push_back(entry);
+	entry->OnListMembershipAdded(listToken, this);
 }
 
 void ScopedPropertyBag::ListRemoveEntry(unsigned listToken, const Scriptable & entry) {

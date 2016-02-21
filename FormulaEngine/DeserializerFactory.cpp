@@ -55,7 +55,7 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			continue;
 
 		const std::string & actionkey = actionkeyiter->second.get<std::string>();
-		if (actionkey == "AddSelfToList") {
+		if (actionkey == "AddToList") {
 			auto targetiter = action.find("target");
 			if (targetiter == action.end() || !targetiter->second.is<std::string>())
 				continue;
@@ -64,10 +64,15 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			if (listiter == action.end() || !listiter->second.is<std::string>())
 				continue;
 
+			Formula objtoken;
+			auto objiter = action.find("object");
+			if (objiter != action.end() && objiter->second.is<std::string>())
+				objtoken = parser->Parse(objiter->second.get<std::string>(), &world->GetTokenPool());
+
 			unsigned targetToken = world->GetTokenPool().AddToken(targetiter->second.get<std::string>());
 			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
 
-			actions->AddAction(new ActionListAddEntry(listToken, targetToken));
+			actions->AddAction(new ActionListAddEntry(std::move(objtoken), listToken, targetToken));
 		}
 		else if(actionkey == "CreateListMember") {
 			auto listiter = action.find("list");
@@ -300,7 +305,7 @@ void DeserializerFactory::LoadArrayOfLists (const picojson::array & listarray, S
 			if(!otherInstance)
 				continue;
 
-			instance->GetScopes().ListAddEntry(token, *otherInstance);
+			instance->GetScopes().ListAddEntry(token, otherInstance);
 		}
 	}
 }

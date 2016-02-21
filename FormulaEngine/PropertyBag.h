@@ -120,7 +120,7 @@ public:			// IActionPerformer interface
 	void SetProperty(unsigned token, const Result & value) override;
 	void SetFormula(unsigned token, const Formula & formula) override;
 
-	void ListAddEntry(unsigned listToken, const Scriptable & entry) override;
+	void ListAddEntry(unsigned listToken, Scriptable * entry) override;
 	void ListRemoveEntry(unsigned listToken, const Scriptable & entry) override;
 
 	const IFormulaContext & GetProperties() const override		{ return *m_thisBag; }
@@ -164,7 +164,7 @@ public:			// IFormulaContext interface
 	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
 	
 private:		// Internal state
-	std::map<unsigned, std::vector<const Scriptable *>> m_lists;
+	std::map<unsigned, std::vector<Scriptable *>> m_lists;
 	FormulaPropertyBag * m_thisBag;
 	BindingPropertyBag * m_bindingBag;
 	FormulaPropertyBag m_builtInBag;

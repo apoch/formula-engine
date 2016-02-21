@@ -130,9 +130,9 @@ namespace FormulaEdit
                 serializer.WriteObject(stream, this);
                 stream.Position = 0;
 
-                if (action == "AddSelfToList")
+                if (action == "AddToList")
                 {
-                    RoundtripSelfIntoType<FormulaActionAddSelfToList>(stream, settings);
+                    RoundtripSelfIntoType<FormulaActionAddToList>(stream, settings);
                 }
                 else if (action == "CreateListMember")
                 {
@@ -183,13 +183,16 @@ namespace FormulaEdit
 
 
         [DataContract]
-        public class FormulaActionAddSelfToList : FormulaAction
+        public class FormulaActionAddToList : FormulaAction
         {
             [DataMember]
             public string list = "";
 
             [DataMember]
             public string target = "";
+
+            [DataMember]
+            public string @object = "";
         }
 
         [DataContract]

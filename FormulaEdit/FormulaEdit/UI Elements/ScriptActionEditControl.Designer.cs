@@ -50,7 +50,7 @@
             this.ActionComboBox.Items.AddRange(new object[] {
             "if",
             "foreach",
-            "AddSelfToList",
+            "AddToList",
             "CreateListMember",
             "ListTransfer",
             "RepeatEvent",

@@ -183,14 +183,14 @@ void TestListsAndFunctions () {
 
 	Scriptable tenbag;
 	tenbag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
-	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), tenbag);
+	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), &tenbag);
 
 
 	hr.value = 30.0;
 
 	Scriptable thirtybag;
 	thirtybag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
-	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), thirtybag);
+	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), &thirtybag);
 
 	test.GetScopes().GetProperties().Set(pool.AddToken("computed"), parser.Parse("SumOf(testlist:value)", &pool));
 
@@ -199,7 +199,7 @@ void TestListsAndFunctions () {
 
 		Scriptable twobag;
 		twobag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
-		test.GetScopes().ListAddEntry(pool.AddToken("testlist"), twobag);
+		test.GetScopes().ListAddEntry(pool.AddToken("testlist"), &twobag);
 
 		double val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 		test_assert(val1 == 42.0);

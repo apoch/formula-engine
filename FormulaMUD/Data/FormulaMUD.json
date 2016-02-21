@@ -241,12 +241,16 @@
                   "action": "if",
                   "actions": [
                     {
+                      "action": "AddToList",
+                      "list": "InCombat",
+                      "object": { },
+                      "target": "other"
+                    },
+                    {
                       "action": "TriggerEvent",
                       "delay": "Random(2.0) + 1.5",
                       "event": "CombatTimer",
-                      "params": {
-                        "monster": "other"
-                      },
+                      "params": { },
                       "target": { }
                     }
                   ],
@@ -263,32 +267,43 @@
         {
           "actions": [
             {
-              "action": "SetProperty",
-              "property": "CurrentHP",
-              "value": "CurrentHP - 5"
-            },
-            {
-              "action": "if",
+              "action": "foreach",
               "actions": [
                 {
-                  "action": "SetGoalState",
-                  "binding": "User",
-                  "property": "SendMessage",
-                  "value": "TEXT:COMBAT_PLAYER_DEAD"
+                  "action": "if",
+                  "actions": [
+                    {
+                      "action": "SetGoalState",
+                      "binding": "User",
+                      "property": "SendMessage",
+                      "value": "TEXT:USER_COMBAT_DEAD"
+                    }
+                  ],
+                  "condition": "Less(CurrentHP, 0)",
+                  "else": [
+                    {
+                      "action": "SetGoalState",
+                      "binding": "User",
+                      "property": "SendMessage",
+                      "value": "TEXT:USER_COMBAT_TEMP"
+                    },
+                    {
+                      "action": "SetProperty",
+                      "property": "CurrentHP",
+                      "value": "CurrentHP - 3"
+                    },
+                    {
+                      "action": "TriggerEvent",
+                      "delay": "Random(2.0) + 1.5",
+                      "event": "CombatTimer",
+                      "params": { },
+                      "target": { }
+                    }
+                  ]
                 }
               ],
-              "condition": "Less(CurrentHP, 0.1)",
-              "else": [
-                {
-                  "action": "TriggerEvent",
-                  "delay": "Random(2.0) + 1.5",
-                  "event": "CombatTimer",
-                  "params": {
-                    "monster": "event:monster"
-                  },
-                  "target": { }
-                }
-              ]
+              "list": "InCombat",
+              "scriptable": { }
             }
           ],
           "name": "CombatTimer"
@@ -410,7 +425,9 @@
         "USER_LOOK_NPC_HEADER": "Other beings in this location:",
         "USER_LOOK_NPC_FOOTER": "\u000d\u000a",
         "MONSTER_PALE_RABBIT": "pale rabbit",
-        "MONSTER_PALE_BEAR": "pale bear"
+        "MONSTER_PALE_BEAR": "pale bear",
+        "USER_COMBAT_DEAD": "You have been SLAIN!",
+        "USER_COMBAT_TEMP": "Combat ensues!"
       }
     }
   ]
