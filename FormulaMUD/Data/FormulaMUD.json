@@ -31,7 +31,19 @@
             {
               "action": "TriggerEvent",
               "delay": "0.15",
-              "event": "Poll"
+              "event": "Poll",
+              "params": { },
+              "target": { }
+            },
+            {
+              "action": "SetProperty",
+              "property": "CurrentHP",
+              "value": "MaxHP"
+            },
+            {
+              "action": "SetProperty",
+              "property": "CurrentBreath",
+              "value": "MaxBreath"
             }
           ],
           "name": "OnCreate"
@@ -219,6 +231,67 @@
             }
           ],
           "name": "CMD_carrying"
+        },
+        {
+          "actions": [
+            {
+              "action": "foreach",
+              "actions": [
+                {
+                  "action": "if",
+                  "actions": [
+                    {
+                      "action": "TriggerEvent",
+                      "delay": "Random(2.0) + 1.5",
+                      "event": "CombatTimer",
+                      "params": {
+                        "monster": "other"
+                      },
+                      "target": { }
+                    }
+                  ],
+                  "condition": "FuzzyMatch(other:Title, event:monsterTitle)",
+                  "else": [ ]
+                }
+              ],
+              "list": "Monsters",
+              "scriptable": "CurrentRoom"
+            }
+          ],
+          "name": "CMD_kill"
+        },
+        {
+          "actions": [
+            {
+              "action": "SetProperty",
+              "property": "CurrentHP",
+              "value": "CurrentHP - 5"
+            },
+            {
+              "action": "if",
+              "actions": [
+                {
+                  "action": "SetGoalState",
+                  "binding": "User",
+                  "property": "SendMessage",
+                  "value": "TEXT:COMBAT_PLAYER_DEAD"
+                }
+              ],
+              "condition": "Less(CurrentHP, 0.1)",
+              "else": [
+                {
+                  "action": "TriggerEvent",
+                  "delay": "Random(2.0) + 1.5",
+                  "event": "CombatTimer",
+                  "params": {
+                    "monster": "event:monster"
+                  },
+                  "target": { }
+                }
+              ]
+            }
+          ],
+          "name": "CombatTimer"
         }
       ],
       "lists": [
@@ -231,12 +304,14 @@
       "properties": {
         "BaseHP": "10",
         "BaseBreath": "5",
-        "HP": "(10*BaseHP)+(Constitution * 5)",
-        "Breath": "BaseBreath + (Constitution * 0.5)",
+        "MaxHP": "(10*BaseHP)+(Constitution * 5)",
+        "MaxBreath": "BaseBreath + (Constitution * 0.5)",
         "Strength": "3",
         "Constitution": "4",
         "Resonance": "3",
-        "Dissonance": "2"
+        "Dissonance": "2",
+        "CurrentHP": "1",
+        "CurrentBreath": "1"
       }
     },
     {

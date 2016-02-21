@@ -69,7 +69,7 @@ void FormulaPropertyBag::Flatten(SimplePropertyBag * bag, const ScopedPropertyBa
 	for(auto & pair : m_bag) {
 		Result result = pair.second.Evaluate(scopes);
 		if(result.code != RESULT_CODE_OK)
-			std::cout << "FAIL\n";
+			assert(false);
 
 		bag->Set(pair.first, result);
 	}

@@ -148,6 +148,40 @@ public:			// ITerminalEvaluator interface
 } s_functionFuzzyMatch;
 
 
+static class FunctionLess : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+		ret.type = RESULT_TYPE_SCALAR;
+		ret.code = RESULT_CODE_OK;
+		ret.value = 0.0f;
+
+		--(*pindex);
+		Result v2 = termSource.EvaluateSubexpression(context, pindex);
+		if (v2.code != RESULT_CODE_OK)
+			return v2;
+
+		--(*pindex);
+		Result v1 = termSource.EvaluateSubexpression(context, pindex);
+		if (v1.code != RESULT_CODE_OK)
+			return v1;
+
+		if (v1.type == v2.type) {
+			switch (v1.type) {
+			case RESULT_TYPE_SCALAR:
+				if (v1.value < v2.value)
+					ret.value = 1.0f;
+				break;
+
+			default:
+				assert(false);
+			}
+		}
+
+		return ret;
+	}
+} s_functionLess;
+
 
 static class FunctionLimit : public ITerminalEvaluator {
 public:			// ITerminalEvaluator interface
@@ -232,6 +266,8 @@ public:			// ITerminalEvaluator interface
 		std::uniform_real_distribution<double> distribution(-1.0, 1.0);
 		ret.value = distribution(m_generator);
 		ret.code = RESULT_CODE_OK;
+
+		// TODO - whut. This doesn't respect param?!
 
 		return ret;
 	}
@@ -320,6 +356,9 @@ const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 
 	if (!std::strcmp(str, "FuzzyMatch"))
 		return &s_functionFuzzyMatch;
+
+	if (!std::strcmp(str, "Less"))
+		return &s_functionLess;
 
 	if(!std::strcmp(str, "Limit"))
 		return &s_functionLimit;

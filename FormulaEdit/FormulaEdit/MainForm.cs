@@ -926,6 +926,9 @@ namespace FormulaEdit
             item.name = UserEventsEventCodeTextBox.Text;
             item.actions = ScriptActionEditControl.PopulateMudData(UserEventActionsPanel.Controls);
 
+            UserEventsListBox.Items.Remove(item);
+            UserEventsListBox.Items.Add(item);
+
             UserEventsListBox_SelectedIndexChanged(null, null);
             AutoSave();
             UnhighlightCommitButton(UserEventsApplyButton);

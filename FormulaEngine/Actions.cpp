@@ -314,6 +314,7 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 
 	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](const Scriptable * member){
 		ScopedPropertyBag newScopes;
+		newScopes.InstantiateFrom(scopes);
 		newScopes.SetProperties(&target->GetScopes().GetProperties());
 
 		if(target->GetScopes().GetBindings())

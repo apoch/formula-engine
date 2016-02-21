@@ -52,6 +52,14 @@
       "command": "map",
       "event": "CMD_map",
       "helpText": "Unspecified"
+    },
+    {
+      "command": "kill",
+      "event": "CMD_kill",
+      "helpText": "Engage in combat with a specified creature and attempt to kill it.",
+      "params": [
+        "monsterTitle"
+      ]
     }
   ]
 }
