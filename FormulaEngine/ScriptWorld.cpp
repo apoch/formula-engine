@@ -51,25 +51,25 @@ void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const 
 }
 
 
-bool ScriptWorld::DispatchEvents() {
+bool ScriptWorld::DispatchEvents () {
 	bool dispatched = false;
 
 	TransferTimedEvents();
 
-	while(!m_eventQueue.empty()) {
+	while (!m_eventQueue.empty()) {
 		dispatched = true;
 		std::vector<Event> tempqueue = std::move(m_eventQueue);
-		for(Event & e : tempqueue) {
-			if(e.targetToken) {
+		for (Event & e : tempqueue) {
+			if (e.targetToken) {
 				Scriptable * scriptable = GetScriptable(e.targetToken);
-				if(scriptable)
+				if (scriptable)
 					DispatchEvent(scriptable, e.nameToken, e.parameterBag);
 			}
-			else if(e.directTarget) {
+			else if (e.directTarget) {
 				DispatchEvent(e.directTarget, e.nameToken, e.parameterBag);
 			}
 			else {
-				for(auto & pair : m_scriptables) {
+				for (auto & pair : m_scriptables) {
 					DispatchEvent(&pair.second, e.nameToken, e.parameterBag);
 				}
 
@@ -204,12 +204,12 @@ void ScriptWorld::QueueDelayedEvent (Scriptable * target, unsigned eventToken, I
 
 
 void ScriptWorld::TransferTimedEvents () {
-	auto iter = std::remove_if(m_eventQueueTimed.begin(), m_eventQueueTimed.end(), [](const Event & e){
-		return (e.timestamp <= std::chrono::system_clock::now());
+	auto iter = std::stable_partition(m_eventQueueTimed.begin(), m_eventQueueTimed.end(), [](const Event & e){
+		return (e.timestamp > std::chrono::system_clock::now());
 	});
 
 	m_eventQueue.insert(m_eventQueue.end(), iter, m_eventQueueTimed.end());
-	std::sort(m_eventQueue.begin(), m_eventQueue.end(), [](const Event & a, const Event & b) {
+	std::stable_sort(m_eventQueue.begin(), m_eventQueue.end(), [](const Event & a, const Event & b) {
 		return a.timestamp < b.timestamp;
 	});
 
