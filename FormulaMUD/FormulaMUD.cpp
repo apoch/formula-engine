@@ -39,6 +39,9 @@ int main() {
 		while (world.DispatchEvents());
 
 		unsigned sleep = world.PeekTimeUntilNextEvent();
+		if (sleep > 250)
+			sleep = 250;
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 	}
 

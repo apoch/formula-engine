@@ -44,7 +44,8 @@ void ActionSet::AddAction(IAction * action) {
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	for(auto & action : m_actions) {
-		action->Execute(world, target, scopes);
+		ResultCode res = action->Execute(world, target, scopes);
+		assert(res == RESULT_CODE_OK);
 	}
 
 	return RESULT_CODE_OK;

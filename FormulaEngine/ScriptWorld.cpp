@@ -209,6 +209,9 @@ void ScriptWorld::TransferTimedEvents () {
 	});
 
 	m_eventQueue.insert(m_eventQueue.end(), iter, m_eventQueueTimed.end());
+	std::sort(m_eventQueue.begin(), m_eventQueue.end(), [](const Event & a, const Event & b) {
+		return a.timestamp < b.timestamp;
+	});
 
 	m_eventQueueTimed.erase(iter, m_eventQueueTimed.end());
 }

@@ -290,7 +290,7 @@
                     {
                       "action": "SetProperty",
                       "property": "CurrentHP",
-                      "value": "CurrentHP - 3"
+                      "value": "CurrentHP - 7"
                     },
                     {
                       "action": "TriggerEvent",
