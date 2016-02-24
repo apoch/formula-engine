@@ -263,7 +263,7 @@ public:			// ITerminalEvaluator interface
 		if(param.code != RESULT_CODE_OK)
 			return param;
 
-		std::uniform_real_distribution<double> distribution(-1.0, 1.0);
+		std::uniform_real_distribution<double> distribution(0.0, 1.0);
 		ret.value = distribution(m_generator);
 		ret.code = RESULT_CODE_OK;
 

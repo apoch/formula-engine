@@ -86,13 +86,14 @@ private:
 
 class ActionSetProperty : public IAction {
 public:
-	ActionSetProperty(unsigned targetToken, Formula && payload);
+	ActionSetProperty (unsigned targetToken, Formula && payload, unsigned scopeToken);
 
 	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
 	unsigned m_targetToken;
+	unsigned m_scopeToken;
 	Formula m_payload;
 };
 

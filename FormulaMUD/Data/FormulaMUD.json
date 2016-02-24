@@ -38,11 +38,13 @@
             {
               "action": "SetProperty",
               "property": "CurrentHP",
+              "target": null,
               "value": "MaxHP"
             },
             {
               "action": "SetProperty",
               "property": "CurrentBreath",
+              "target": null,
               "value": "MaxBreath"
             }
           ],
@@ -276,28 +278,56 @@
                       "action": "SetGoalState",
                       "binding": "User",
                       "property": "SendMessage",
-                      "value": "TEXT:USER_COMBAT_DEAD"
+                      "value": "TEXT:USER_COMBAT_VICTORY"
                     }
                   ],
-                  "condition": "Less(CurrentHP, 0)",
+                  "condition": "Less(other:CurrentHP, 0.1)",
                   "else": [
                     {
-                      "action": "SetGoalState",
-                      "binding": "User",
-                      "property": "SendMessage",
-                      "value": "TEXT:USER_COMBAT_TEMP"
-                    },
-                    {
-                      "action": "SetProperty",
-                      "property": "CurrentHP",
-                      "value": "CurrentHP - 7"
-                    },
-                    {
-                      "action": "TriggerEvent",
-                      "delay": "Random(2.0) + 1.5",
-                      "event": "CombatTimer",
-                      "params": { },
-                      "target": { }
+                      "action": "if",
+                      "actions": [
+                        {
+                          "action": "SetGoalState",
+                          "binding": "User",
+                          "property": "SendMessage",
+                          "value": "TEXT:USER_COMBAT_DEAD"
+                        },
+                        {
+                          "action": "TriggerEvent",
+                          "delay": "0",
+                          "event": "OnDeath",
+                          "params": { },
+                          "target": { }
+                        }
+                      ],
+                      "condition": "Less(CurrentHP, 0.1)",
+                      "else": [
+                        {
+                          "action": "SetGoalState",
+                          "binding": "User",
+                          "property": "SendMessage",
+                          "value": "TEXT:USER_COMBAT_TEMP"
+                        },
+                        {
+                          "action": "SetProperty",
+                          "property": "CurrentHP",
+                          "target": null,
+                          "value": "CurrentHP - (other:STR + Random(3) + 1)"
+                        },
+                        {
+                          "action": "SetProperty",
+                          "property": "CurrentHP",
+                          "target": "other",
+                          "value": "other:CurrentHP - (Strength + Random(3) + 1)"
+                        },
+                        {
+                          "action": "TriggerEvent",
+                          "delay": "Random(2.0) + 1.5",
+                          "event": "CombatTimer",
+                          "params": { },
+                          "target": { }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -333,23 +363,6 @@
       "bindings": [ ],
       "events": [ ],
       "lists": [ ],
-      "name": "MONSTER_Pale_Fox",
-      "properties": {
-        "Title": "TEXT:MONSTER_PALE_FOX",
-        "HP": "(10*BaseHP)+(5 *CON)",
-        "BRH": "BaseBRH+(.5*CON)",
-        "BaseHP": "5",
-        "BaseBRH": "0",
-        "STR": "3",
-        "CON": "2",
-        "RES": "0",
-        "DIS": "2"
-      }
-    },
-    {
-      "bindings": [ ],
-      "events": [ ],
-      "lists": [ ],
       "name": "MONSTER_Pale_Rabbit",
       "properties": {
         "Title": "TEXT:MONSTER_PALE_RABBIT",
@@ -378,6 +391,24 @@
         "CON": "5",
         "RES": "2",
         "DIS": "1"
+      }
+    },
+    {
+      "bindings": [ ],
+      "events": [ ],
+      "lists": [ ],
+      "name": "MONSTER_Pale_Fox",
+      "properties": {
+        "Title": "TEXT:MONSTER_PALE_FOX",
+        "MaxHP": "(10*BaseHP)+(5 *CON)",
+        "MaxBRH": "BaseBRH+(.5*CON)",
+        "BaseHP": "5",
+        "BaseBRH": "0",
+        "STR": "3",
+        "CON": "2",
+        "RES": "0",
+        "DIS": "2",
+        "CurrentHP": "60"
       }
     }
   ],
@@ -427,7 +458,8 @@
         "MONSTER_PALE_RABBIT": "pale rabbit",
         "MONSTER_PALE_BEAR": "pale bear",
         "USER_COMBAT_DEAD": "You have been SLAIN!",
-        "USER_COMBAT_TEMP": "Combat ensues!"
+        "USER_COMBAT_TEMP": "Combat ensues!",
+        "USER_COMBAT_VICTORY": "You have brutally eviscerated your foe!"
       }
     }
   ]

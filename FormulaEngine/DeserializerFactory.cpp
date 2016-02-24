@@ -143,7 +143,13 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 			unsigned targetToken = world->GetTokenPool().AddToken(propiter->second.get<std::string>());
 			auto & payload = valiter->second.get<std::string>();
 
-			actions->AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool())));
+			unsigned scopeToken = 0;
+
+			auto scopeiter = action.find("target");
+			if (scopeiter != action.end() && scopeiter->second.is<std::string>())
+				scopeToken = world->GetTokenPool().AddToken(scopeiter->second.get<std::string>());
+
+			actions->AddAction(new ActionSetProperty(targetToken, parser->Parse(payload, &world->GetTokenPool()), scopeToken));
 		}
 		else if(actionkey == "TriggerEvent") {
 			auto eventiter = action.find("event");

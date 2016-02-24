@@ -44,8 +44,7 @@ void ActionSet::AddAction(IAction * action) {
 
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	for(auto & action : m_actions) {
-		ResultCode res = action->Execute(world, target, scopes);
-		assert(res == RESULT_CODE_OK);
+		action->Execute(world, target, scopes);
 	}
 
 	return RESULT_CODE_OK;
@@ -219,23 +218,30 @@ ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, 
 }
 
 
-ActionSetProperty::ActionSetProperty(unsigned targetToken, Formula && payload)
+ActionSetProperty::ActionSetProperty (unsigned targetToken, Formula && payload, unsigned scopeToken)
 	: m_targetToken(targetToken),
+      m_scopeToken(scopeToken),
 	  m_payload(payload)
 {
 }
 
 IAction * ActionSetProperty::Clone() const {
 	Formula copy(m_payload);
-	return new ActionSetProperty(m_targetToken, std::move(copy));
+	return new ActionSetProperty(m_targetToken, std::move(copy), m_scopeToken);
 }
 
 ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	WorldPropertyBag bag(world, scopes);
 
 	Result result = m_payload.Evaluate(&bag);
-	if(result.code == RESULT_CODE_OK)
-		target->GetScopes().SetProperty(m_targetToken, result);
+	if(result.code == RESULT_CODE_OK) {
+		if (m_scopeToken) {
+			scopes.GetNamedBinding(m_scopeToken)->GetScopes().SetProperty(m_targetToken, result);
+		}
+		else {
+			target->GetScopes().SetProperty(m_targetToken, result);
+		}
+	}
 
 	return result.code;
 }

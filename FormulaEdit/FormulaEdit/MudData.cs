@@ -295,6 +295,9 @@ namespace FormulaEdit
 
             [DataMember]
             public string value = "";
+
+            [DataMember]
+            public string target = "";
         }
 
         [DataContract]

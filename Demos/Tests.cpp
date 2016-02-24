@@ -144,7 +144,7 @@ void TestActionSets () {
 	FormulaParser parser;
 
 	ActionSet actions;
-	actions.AddAction(new ActionSetProperty(pool.AddToken("health"), parser.Parse("health - event:damageAmount", &pool)));
+	actions.AddAction(new ActionSetProperty(pool.AddToken("health"), parser.Parse("health - event:damageAmount", &pool), 0));
 
 	FormulaPropertyBag eventbag;
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
