@@ -10,6 +10,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
 
             PropertyComboBox.Text = action.property;
             FormulaTextBox.Text = action.value;
+            ObjectComboBox.Text = action.target;
         }
 
         internal MudData.FormulaActionSetProperty GenerateMudDataAction()
@@ -18,6 +19,7 @@ namespace FormulaEdit.UI_Elements.Script_Action_Editors
             ret.action = "SetProperty";
             ret.property = PropertyComboBox.Text;
             ret.value = FormulaTextBox.Text;
+            ret.target = ObjectComboBox.Text;
 
             return ret;
         }

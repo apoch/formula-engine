@@ -52,6 +52,7 @@
             "foreach",
             "AddToList",
             "CreateListMember",
+            "ListRemove",
             "ListTransfer",
             "RepeatEvent",
             "SetGoalState",

@@ -166,6 +166,10 @@ namespace FormulaEdit
                 {
                     RoundtripSelfIntoType<FormulaActionTriggerEvent>(stream, settings);
                 }
+                else if (action == "ListRemove")
+                {
+                    RoundtripSelfIntoType<FormulaActionListRemove>(stream, settings);
+                }
                 else
                 {
                     throw new NotImplementedException();
@@ -261,6 +265,20 @@ namespace FormulaEdit
         }
 
         [DataContract]
+        public class FormulaActionListRemove : FormulaAction
+        {
+            [DataMember]
+            public string list = "";
+
+            [DataMember]
+            public string condition = "";
+
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
+            public string scriptable = "";
+        }
+
+        [DataContract]
         public class FormulaActionRepeatEvent : FormulaAction
         {
             [DataMember]
@@ -296,7 +314,8 @@ namespace FormulaEdit
             [DataMember]
             public string value = "";
 
-            [DataMember]
+            [DataMember(EmitDefaultValue = false)]
+            [OptionalField]
             public string target = "";
         }
 

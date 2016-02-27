@@ -405,3 +405,50 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 
 
 
+ActionListRemove::ActionListRemove (Formula && condition, Formula && originToken, unsigned originListToken)
+	: m_condition(std::move(condition)),
+	  m_originToken(originToken),
+	  m_originListToken(originListToken)
+{
+}
+
+IAction * ActionListRemove::Clone () const {
+	Formula conditionCopy(m_condition);
+	Formula originTokenCopy(m_originToken);
+
+	return new ActionListRemove(std::move(conditionCopy), std::move(originTokenCopy), m_originListToken);
+}
+
+ResultCode ActionListRemove::Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
+	unsigned token = 0;
+	Result originRes = m_originToken.Evaluate(&scopes);
+	if (originRes.code == RESULT_CODE_OK)
+		token = originRes.token;
+
+	Scriptable * originScriptable = world->GetScriptable(token);
+	if (!originScriptable)
+		originScriptable = target;
+
+	const Formula * condition = &m_condition;
+
+	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes](Scriptable * member) {
+		unsigned otherscope = world->GetTokenPool().AddToken("other");
+
+		ScopedPropertyBag newScopes(world);
+		newScopes.InstantiateFrom(scopes);
+		newScopes.GetScopes().AddScope(otherscope, member->GetScopes());
+		newScopes.SetNamedBinding(otherscope, member);
+
+		Result cond = condition->Evaluate(&newScopes);
+		if (cond.code != RESULT_CODE_OK)
+			return false;
+
+		if (cond.value == 0.0)
+			return false;
+
+		return true;
+	});
+}
+
+
+

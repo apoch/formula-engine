@@ -262,6 +262,27 @@ static void LoadArrayOfActions(const char name[], const picojson::object & obj, 
 
 			actions->AddAction(new ActionListTransfer(std::move(condition), std::move(originToken), listToken, std::move(targetToken), targetListToken));
 		}
+		else if (actionkey == "ListRemove") {
+			auto listiter = action.find("list");
+			if (listiter == action.end() || !listiter->second.is<std::string>())
+				continue;
+
+			auto conditer = action.find("condition");
+			if (conditer == action.end() || !conditer->second.is<std::string>())
+				continue;
+
+			Formula originToken;
+
+			auto originiter = action.find("scriptable");
+			if (originiter != action.end() && originiter->second.is<std::string>())
+				originToken = parser->Parse(originiter->second.get<std::string>(), &world->GetTokenPool());
+
+			unsigned listToken = world->GetTokenPool().AddToken(listiter->second.get<std::string>());
+
+			Formula condition = parser->Parse(conditer->second.get<std::string>(), &world->GetTokenPool());
+
+			actions->AddAction(new ActionListRemove(std::move(condition), std::move(originToken), listToken));
+		}
 		else {
 			assert(false);
 		}

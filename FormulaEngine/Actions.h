@@ -177,7 +177,22 @@ private:
 	Formula m_condition;
 	Formula m_originToken;
 	Formula m_targetToken;
-  unsigned m_originListToken;
-  unsigned m_targetListToken;
+	unsigned m_originListToken;
+	unsigned m_targetListToken;
 };
+
+
+class ActionListRemove : public IAction {
+public:
+	ActionListRemove (Formula && condition, Formula && originToken, unsigned originListToken);
+
+	IAction * Clone () const override;
+	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
+
+private:
+	Formula m_condition;
+	Formula m_originToken;
+	unsigned m_originListToken;
+};
+
 

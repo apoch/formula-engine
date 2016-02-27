@@ -32,6 +32,8 @@
             this.LabelProperty = new System.Windows.Forms.Label();
             this.FormulaTextBox = new System.Windows.Forms.TextBox();
             this.LabelFormula = new System.Windows.Forms.Label();
+            this.ObjectComboBox = new System.Windows.Forms.ComboBox();
+            this.LabelObject = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // PropertyComboBox
@@ -71,16 +73,37 @@
             this.LabelFormula.TabIndex = 3;
             this.LabelFormula.Text = "Value:";
             // 
+            // ObjectComboBox
+            // 
+            this.ObjectComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ObjectComboBox.FormattingEnabled = true;
+            this.ObjectComboBox.Location = new System.Drawing.Point(74, 56);
+            this.ObjectComboBox.Name = "ObjectComboBox";
+            this.ObjectComboBox.Size = new System.Drawing.Size(196, 21);
+            this.ObjectComboBox.TabIndex = 4;
+            // 
+            // LabelObject
+            // 
+            this.LabelObject.AutoSize = true;
+            this.LabelObject.Location = new System.Drawing.Point(27, 59);
+            this.LabelObject.Name = "LabelObject";
+            this.LabelObject.Size = new System.Drawing.Size(41, 13);
+            this.LabelObject.TabIndex = 5;
+            this.LabelObject.Text = "Object:";
+            // 
             // ScriptActionControlSetProperty
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LabelObject);
+            this.Controls.Add(this.ObjectComboBox);
             this.Controls.Add(this.LabelFormula);
             this.Controls.Add(this.FormulaTextBox);
             this.Controls.Add(this.LabelProperty);
             this.Controls.Add(this.PropertyComboBox);
             this.Name = "ScriptActionControlSetProperty";
-            this.Size = new System.Drawing.Size(273, 57);
+            this.Size = new System.Drawing.Size(273, 81);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,5 +115,7 @@
         private System.Windows.Forms.Label LabelProperty;
         private System.Windows.Forms.TextBox FormulaTextBox;
         private System.Windows.Forms.Label LabelFormula;
+        private System.Windows.Forms.ComboBox ObjectComboBox;
+        private System.Windows.Forms.Label LabelObject;
     }
 }

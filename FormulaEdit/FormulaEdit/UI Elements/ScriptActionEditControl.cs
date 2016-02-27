@@ -60,6 +60,11 @@ namespace FormulaEdit
                 var ctl = ContainerPanel.Controls[0] as ScriptActionControlListTransfer;
                 action = ctl.GenerateMudDataAction();
             }
+            else if (ActionComboBox.Text == "ListRemove")
+            {
+                var ctl = ContainerPanel.Controls[0] as ScriptActionControlListRemove;
+                action = ctl.GenerateMudDataAction();
+            }
             else if (ActionComboBox.Text == "RepeatEvent")
             {
                 var ctl = ContainerPanel.Controls[0] as ScriptActionControlRepeatEvent;
@@ -159,6 +164,10 @@ namespace FormulaEdit
             {
                 ctl = new ScriptActionControlListTransfer(action as MudData.FormulaActionListTransfer);
             }
+            else if (action.GetType() == typeof(MudData.FormulaActionListRemove))
+            {
+                ctl = new ScriptActionControlListRemove(action as MudData.FormulaActionListRemove);
+            }
             else if (action.GetType() == typeof(MudData.FormulaActionRepeatEvent))
             {
                 ctl = new ScriptActionControlRepeatEvent(action as MudData.FormulaActionRepeatEvent);
@@ -211,6 +220,10 @@ namespace FormulaEdit
             else if (ActionComboBox.Text == "ListTransfer")
             {
                 action = new MudData.FormulaActionListTransfer();
+            }
+            else if (ActionComboBox.Text == "ListRemove")
+            {
+                action = new MudData.FormulaActionListRemove();
             }
             else if (ActionComboBox.Text == "RepeatEvent")
             {

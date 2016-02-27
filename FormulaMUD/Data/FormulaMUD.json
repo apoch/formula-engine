@@ -344,6 +344,18 @@
               ],
               "list": "InCombat",
               "scriptable": { }
+            },
+            {
+              "action": "ListRemove",
+              "condition": "Less(other:CurrentHP, 0.1)",
+              "list": "InCombat",
+              "scriptable": { }
+            },
+            {
+              "action": "ListRemove",
+              "condition": "Less(other:CurrentHP, 0.1)",
+              "list": "Monsters",
+              "scriptable": "CurrentRoom"
             }
           ],
           "name": "CombatTimer"
