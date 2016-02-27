@@ -272,16 +272,35 @@
               "action": "foreach",
               "actions": [
                 {
+                  "action": "SetProperty",
+                  "property": "CurrentHP",
+                  "target": null,
+                  "value": "CurrentHP - (other:STR + Round(Random(3)) + 1)"
+                },
+                {
+                  "action": "SetProperty",
+                  "property": "CurrentHP",
+                  "target": "other",
+                  "value": "other:CurrentHP - (Strength + Round(Random(3)) + 1)"
+                },
+                {
                   "action": "if",
                   "actions": [
                     {
                       "action": "SetGoalState",
                       "binding": "User",
                       "property": "SendMessage",
-                      "value": "TEXT:USER_COMBAT_VICTORY"
+                      "value": "TEXT:USER_COMBAT_DEAD"
+                    },
+                    {
+                      "action": "TriggerEvent",
+                      "delay": "0",
+                      "event": "OnDeath",
+                      "params": { },
+                      "target": { }
                     }
                   ],
-                  "condition": "Less(other:CurrentHP, 0.1)",
+                  "condition": "Less(CurrentHP, 0.1)",
                   "else": [
                     {
                       "action": "if",
@@ -290,35 +309,26 @@
                           "action": "SetGoalState",
                           "binding": "User",
                           "property": "SendMessage",
-                          "value": "TEXT:USER_COMBAT_DEAD"
-                        },
-                        {
-                          "action": "TriggerEvent",
-                          "delay": "0",
-                          "event": "OnDeath",
-                          "params": { },
-                          "target": { }
+                          "value": "TEXT:USER_COMBAT_VICTORY"
                         }
                       ],
-                      "condition": "Less(CurrentHP, 0.1)",
+                      "condition": "Less(other:CurrentHP, 0.1)",
                       "else": [
+                        {
+                          "action": "SetProperty",
+                          "property": "CombatEnemyHP",
+                          "value": "other:CurrentHP"
+                        },
+                        {
+                          "action": "SetProperty",
+                          "property": "CombatEnemyMaxHP",
+                          "value": "other:MaxHP"
+                        },
                         {
                           "action": "SetGoalState",
                           "binding": "User",
                           "property": "SendMessage",
-                          "value": "TEXT:USER_COMBAT_TEMP"
-                        },
-                        {
-                          "action": "SetProperty",
-                          "property": "CurrentHP",
-                          "target": null,
-                          "value": "CurrentHP - (other:STR + Random(3) + 1)"
-                        },
-                        {
-                          "action": "SetProperty",
-                          "property": "CurrentHP",
-                          "target": "other",
-                          "value": "other:CurrentHP - (Strength + Random(3) + 1)"
+                          "value": "TEXT:USER_COMBAT_STATUS"
                         },
                         {
                           "action": "TriggerEvent",
@@ -458,7 +468,7 @@
         "MONSTER_PALE_RABBIT": "pale rabbit",
         "MONSTER_PALE_BEAR": "pale bear",
         "USER_COMBAT_DEAD": "You have been SLAIN!",
-        "USER_COMBAT_TEMP": "Combat ensues!",
+        "USER_COMBAT_STATUS": "You [%CurrentHP \/ %MaxHP] - Enemy [%CombatEnemyHP \/ %CombatEnemyMaxHP]",
         "USER_COMBAT_VICTORY": "You have brutally eviscerated your foe!"
       }
     }

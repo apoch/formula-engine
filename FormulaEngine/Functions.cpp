@@ -277,6 +277,26 @@ private:
 } s_functionRandom;
 
 
+
+static class FunctionRound : public ITerminalEvaluator {
+public:			// ITerminalEvaluator interface
+	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+		Result ret;
+
+		--(*pindex);
+
+		Result param = termSource.EvaluateSubexpression(context, pindex);
+		if(param.code != RESULT_CODE_OK)
+			return param;
+
+		ret.code = RESULT_CODE_OK;
+		ret.value = std::round(param.value);
+
+		return ret;
+	}
+} s_functionRound;
+
+
 static class FunctionSumOfList : public ITerminalEvaluator {
 public:			// ITerminalEvaluator interface
 	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
@@ -368,6 +388,9 @@ const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 
 	if(!std::strcmp(str, "Random"))
 		return &s_functionRandom;
+
+	if (!std::strcmp(str, "Round"))
+		return &s_functionRound;
 
 	if(!std::strcmp(str, "SumOf"))
 		return &s_functionSumOfList;

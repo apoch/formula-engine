@@ -161,9 +161,10 @@ void ScopeResolver::Clear() {
 
 
 
-ScopedPropertyBag::ScopedPropertyBag() {
+ScopedPropertyBag::ScopedPropertyBag (ScriptWorld * world) {
 	m_thisBag = &m_builtInBag;
 	m_bindingBag = nullptr;
+	m_world = world;
 }
 
 ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
@@ -173,6 +174,7 @@ ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
 	std::swap(m_builtInBag, other.m_builtInBag);
 	std::swap(m_resolver, other.m_resolver);
 	std::swap(m_bindingBag, other.m_bindingBag);
+	std::swap(m_world, other.m_world);
 	
 	m_thisBag = &m_builtInBag;
 	if(other.m_thisBag != &other.m_builtInBag)
@@ -225,7 +227,34 @@ void ScopedPropertyBag::ListRemoveEntry(unsigned listToken, const Scriptable & e
 	iter->second.erase(memberiter);
 }
 
+const IFormulaContext * ScopedPropertyBag::ResolveContext (unsigned scope) const {
+	if (scope == 0)
+		return this;
+
+	if (m_world) {
+		TextPropertyBag * magic = m_world->GetMagicBag(scope);
+		if (magic)
+			return magic;
+
+		Scriptable * target = m_world->GetScriptable(scope);
+		if (target)
+			return &target->GetScopes();
+	}
+
+	return m_resolver.GetScope(scope);
+}
+
 Result ScopedPropertyBag::ResolveNumber(const IFormulaContext & originalContext, unsigned scope, unsigned token) const {
+	if (m_world && scope) {
+		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
+		if (magic)
+			return magic->ResolveNumber(originalContext, scope, token);
+
+		Scriptable * target = m_world->GetScriptable(scope);
+		if (target)
+			return target->GetScopes().ResolveNumber(originalContext, 0, token);
+	}
+
 	auto resolved = scope ? m_resolver.GetScope(scope) : m_thisBag;
 	if(resolved == nullptr) {
 		Result ret;
@@ -313,47 +342,18 @@ void ScopedPropertyBag::Set(unsigned token, const Result & value) {
 }
 
 bool ScopedPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
-	if (!m_resolver.GetScope(scope))
-		return false;
-
-	return m_resolver.GetScope(scope)->ResolveToken(0, token, out);
-}
-
-
-
-WorldPropertyBag::WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes)
-	: m_world(world),
-	  m_scopes(&scopes)
-{ }
-
-Result WorldPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	if(m_world != nullptr && scope != 0) {
+	if (m_world && scope) {
 		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
-		if(magic != nullptr)
-			return magic->ResolveNumber(context, scope, token);
-
-		Scriptable * target = m_world->GetScriptable(scope);
-		if(target != nullptr)
-			return target->GetScopes().ResolveNumber(context, 0, token);
-	}
-
-	return m_scopes->ResolveNumber(context, scope, token);
-}
-
-ListResult WorldPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
-	return m_scopes->ResolveList(context, scope, token);
-}
-
-bool WorldPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {
-	if (m_world != nullptr && scope != 0) {
-		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
-		if(magic != nullptr) {
+		if (magic) {
 			*out = magic->GetLine(token);
 			return true;
 		}
 	}
 
-	return m_scopes->ResolveToken(scope, token, out);
+	if (!m_resolver.GetScope(scope))
+		return false;
+
+	return m_resolver.GetScope(scope)->ResolveToken(0, token, out);
 }
 
 
@@ -378,6 +378,11 @@ ListResult BindingPropertyBag::ResolveList(const IFormulaContext & context, unsi
 
 
 
+TextPropertyBag::TextPropertyBag (unsigned scope) :
+	m_scope(scope)
+{
+}
+
 
 void TextPropertyBag::AddLine(unsigned token, const char * str) {
 	m_bag[token] = str;
@@ -395,12 +400,13 @@ const char * TextPropertyBag::GetLine(unsigned token) const {
 
 Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	ref(context);
+	ref(scope);
 
 	Result ret;
 	ret.type = RESULT_TYPE_TOKEN;
 	ret.code = RESULT_CODE_OK;
 	ret.token = token;
-	ret.scope = scope;
+	ret.scope = m_scope;
 
 	return ret;
 }

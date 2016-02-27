@@ -113,7 +113,7 @@ void TestScopedBag () {
 	FormulaPropertyBag eventbag;
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
 
-	ScopedPropertyBag scopes;
+	ScopedPropertyBag scopes(nullptr);
 	scopes.GetScopes().AddScope(pool.AddToken("event"), eventbag);
 
 	Result hr;

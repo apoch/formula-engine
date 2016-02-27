@@ -60,6 +60,8 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned
 		optionalContext->PopulateNamedBindings(m_scopeCache);
 	}
 
+	m_scopeCache->SetWorld(world);
+
 	return Execute(world, target, *m_scopeCache);
 }
 
@@ -109,9 +111,9 @@ IAction * ActionSetGoalState::Clone() const {
 }
 
 ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	WorldPropertyBag bag(world, scopes);
+	ref(world);
 
-	Result result = m_formula.Evaluate(&bag);
+	Result result = m_formula.Evaluate(&scopes);
 	if (result.code == RESULT_CODE_OK) {
 		IEngineBinding * binding = target->GetBinding(m_scopeToken);
 		if (!binding)
@@ -198,8 +200,7 @@ IAction * ActionEventRepeat::Clone() const {
 }
 
 ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	WorldPropertyBag bag(world, scopes);
-	Result result = m_repeatFormula.Evaluate(&bag);
+	Result result = m_repeatFormula.Evaluate(&scopes);
 	if(result.code != RESULT_CODE_OK)
 		return result.code;
 
@@ -231,9 +232,9 @@ IAction * ActionSetProperty::Clone() const {
 }
 
 ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	WorldPropertyBag bag(world, scopes);
+	ref(world);
 
-	Result result = m_payload.Evaluate(&bag);
+	Result result = m_payload.Evaluate(&scopes);
 	if(result.code == RESULT_CODE_OK) {
 		if (m_scopeToken) {
 			scopes.GetNamedBinding(m_scopeToken)->GetScopes().SetProperty(m_targetToken, result);
@@ -288,8 +289,7 @@ IAction * ActionConditionalBlock::Clone() const {
 }
 
 ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
-	WorldPropertyBag bag(world, scopes);
-	Result cond = m_condition.Evaluate(&bag);
+	Result cond = m_condition.Evaluate(&scopes);
 	if(cond.code != RESULT_CODE_OK)
 		return cond.code;
 
@@ -328,7 +328,7 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](Scriptable * member){
 		unsigned otherscope = world->GetTokenPool().AddToken("other");
 
-		ScopedPropertyBag newScopes;
+		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);
 		newScopes.GetScopes().AddScope(otherscope, member->GetScopes());
 		newScopes.SetProperties(&target->GetScopes().GetProperties());
@@ -383,7 +383,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](Scriptable * member) {
 		unsigned otherscope = world->GetTokenPool().AddToken("other");
 
-		ScopedPropertyBag newScopes;
+		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);
 		newScopes.GetScopes().AddScope(otherscope, member->GetScopes());
 		newScopes.SetProperties(&targetScriptable->GetScopes().GetProperties());
@@ -391,9 +391,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 		if(targetScriptable->GetScopes().GetBindings())
 			newScopes.SetBindings(*targetScriptable->GetScopes().GetBindings());
 
-		WorldPropertyBag bag(world, newScopes);
-
-		Result cond = condition->Evaluate(&bag);
+		Result cond = condition->Evaluate(&newScopes);
 		if (cond.code != RESULT_CODE_OK)
 			return false;
 

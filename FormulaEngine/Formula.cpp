@@ -123,7 +123,11 @@ Result Formula::EvaluateTerminal(const IFormulaContext * context, unsigned index
 	Result ret;
 
 	if(m_terms[index].type == Term::TERM_TYPE_TOKEN) {
-		ret = context->ResolveNumber(*context, m_terms[index].payload.scopedToken.scope, m_terms[index].payload.scopedToken.token);
+		auto newContext = context->ResolveContext(m_terms[index].payload.scopedToken.scope);
+		if (!newContext)
+			newContext = context;
+
+		ret = newContext->ResolveNumber(*newContext, 0, m_terms[index].payload.scopedToken.token);
 		return ret;
 	}
 

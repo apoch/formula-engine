@@ -58,7 +58,45 @@ void User::SendRoomDescription (double) {
 
 
 void User::SendMessage (unsigned tokenId) {
-	std::cout << m_textBag->GetLine(tokenId) << std::endl;
+	const char * line = m_textBag->GetLine(tokenId);
+	if (!line)
+		return;
+
+	if (std::strchr(line, '%') == nullptr) {
+		std::cout << line << std::endl;
+	}
+	else {
+		std::string formatter(line);
+		size_t phindex = formatter.find('%', 0);
+		size_t outindex = 0;
+		
+		while (phindex != std::string::npos) {
+			if (phindex > 0)
+				std::cout << formatter.substr(outindex, phindex - outindex);
+
+			outindex = phindex;
+
+			size_t phendindex = phindex + 1;
+			while (phendindex < formatter.length() && std::isalnum(formatter[phendindex]))
+				++phendindex;
+
+			unsigned placeholderToken = m_world->GetTokenPool().AddToken(formatter.substr(phindex + 1, phendindex - phindex - 1));
+			Result res = m_scriptable->GetScopes().GetProperties().ResolveNumber(m_scriptable->GetScopes(), 0, placeholderToken);
+			if (res.code != RESULT_CODE_OK)
+				res.value = 0.0;
+
+			std::cout << res.value;
+
+			outindex = phendindex;
+
+			phindex = formatter.find('%', phindex + 1);
+		}
+
+		if (outindex < formatter.length())
+			std::cout << formatter.substr(outindex);
+		
+		std::cout << std::endl;
+	}
 }
 
 	

@@ -42,11 +42,14 @@ void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptab
 
 
 void ScriptWorld::AddMagicBag(unsigned token) {
-	m_magicBags[token] = TextPropertyBag();
+	m_magicBags[token] = TextPropertyBag(token);
 }
 
 
 void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IFormulaPropertyBag * paramBag) {
+	// TODO - this is a giant HACK
+	target->GetScopes().SetWorld(this);
+
 	target->GetEvents()->TriggerHandlers(this, eventToken, target, paramBag);
 }
 

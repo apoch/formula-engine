@@ -42,6 +42,11 @@ struct IFormulaContext {
 		ref(out);
 		return false;
 	}
+
+	virtual const IFormulaContext * ResolveContext (unsigned scope) const {
+		ref(scope);
+		return const_cast<IFormulaContext *>(this);
+	}
 };
 
 

@@ -91,9 +91,9 @@ private:		// Internal state
 
 class ScopedPropertyBag : public IFormulaPropertyBag, public IActionPerformer {
 public:			// Construction and destruction
-	ScopedPropertyBag();
-	ScopedPropertyBag(ScopedPropertyBag && other);
-	~ScopedPropertyBag();
+	explicit ScopedPropertyBag (ScriptWorld * world = nullptr);
+	ScopedPropertyBag (ScopedPropertyBag && other);
+	~ScopedPropertyBag ();
 
 private:		// Non-copyable
 	ScopedPropertyBag(const ScopedPropertyBag & other) = delete;
@@ -103,8 +103,11 @@ public:			// Configuration interface
 	void Clear();
 
 	ScopeResolver & GetScopes()						{ return m_resolver; }
+	const ScopeResolver & GetScopes () const		{ return m_resolver; }
 	FormulaPropertyBag & GetProperties()			{ return *m_thisBag; }
 	BindingPropertyBag * GetBindings() const		{ return m_bindingBag; }
+
+	void SetWorld (ScriptWorld * world)				{ m_world = world; }
 
 	void SetProperties(FormulaPropertyBag * refbag);
 	void SetBindings(const BindingPropertyBag & refBag);
@@ -159,6 +162,7 @@ public:			// ForEach loop support
 	}
 
 public:			// IFormulaContext interface
+	const IFormulaContext * ResolveContext (unsigned scope) const override;
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
@@ -171,25 +175,14 @@ private:		// Internal state
 	ScopeResolver m_resolver;
 
 	std::map<unsigned, Scriptable *> m_namedBindings;
-};
 
-
-class WorldPropertyBag : public IFormulaContext {
-public:			// Construction
-	WorldPropertyBag(ScriptWorld * world, const ScopedPropertyBag & scopes);
-
-public:			// IFormulaContext interface
-	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
-	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
-	bool ResolveToken (unsigned scope, unsigned token, std::string * out) const override;
-
-private:		// Internal state
 	ScriptWorld * m_world;
-	const ScopedPropertyBag * m_scopes;
 };
-
 
 class TextPropertyBag : public IFormulaContext {
+public:
+	explicit TextPropertyBag (unsigned scope = 0);
+
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
 	ListResult ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -200,6 +193,7 @@ public:			// Text configuration and retrieval
 
 private:		// Internal state
 	std::map<unsigned, std::string> m_bag;
+	unsigned m_scope;
 };
 
 
