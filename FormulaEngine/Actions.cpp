@@ -1,5 +1,6 @@
 #include "Pch.h"
 
+#include "Interfaces.h"
 #include "Formula.h"
 #include "TokenPool.h"
 #include "Actions.h"
@@ -21,14 +22,6 @@ ActionSet::ActionSet(ActionSet && other) {
 
 	m_scopeCache = other.m_scopeCache;
 	other.m_scopeCache = nullptr;
-}
-
-ActionSet::ActionSet(const ActionSet & other) {
-	for(auto & action : other.m_actions) {
-		m_actions.push_back(action->Clone());
-	}
-
-	m_scopeCache = new ScopedPropertyBag;
 }
 
 ActionSet::~ActionSet() {
@@ -78,10 +71,6 @@ ActionListSpawnEntry::~ActionListSpawnEntry() {
 	delete m_paramBag;
 }
 
-IAction * ActionListSpawnEntry::Clone() const {
-	return new ActionListSpawnEntry(m_listToken, m_archetypeToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
-}
-
 ResultCode ActionListSpawnEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	SimplePropertyBag * bagptr = nullptr;
 	if(m_paramBag) {
@@ -103,11 +92,6 @@ ActionSetGoalState::ActionSetGoalState(unsigned scopeToken, unsigned targetToken
 	  m_targetToken(targetToken),
 	  m_formula(formula)
 {
-}
-
-IAction * ActionSetGoalState::Clone() const {
-	Formula copy(m_formula);
-	return new ActionSetGoalState(m_scopeToken, m_targetToken, std::move(copy));
 }
 
 ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
@@ -145,11 +129,6 @@ ActionEventTrigger::ActionEventTrigger(unsigned eventToken, unsigned targetToken
 
 ActionEventTrigger::~ActionEventTrigger() {
 	delete m_paramBag;
-}
-
-IAction * ActionEventTrigger::Clone() const {
-	Formula delayCopy(m_delay);
-	return new ActionEventTrigger(m_eventToken, m_targetToken, m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr, std::move(delayCopy));
 }
 
 ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable * scriptable, const ScopedPropertyBag & scopes) const {
@@ -194,11 +173,6 @@ ActionEventRepeat::~ActionEventRepeat() {
 	delete m_paramBag;
 }
 
-IAction * ActionEventRepeat::Clone() const {
-	Formula formulacopy(m_repeatFormula);
-	return new ActionEventRepeat(m_eventToken, std::move(formulacopy), m_paramBag ? new FormulaPropertyBag(*m_paramBag) : nullptr);
-}
-
 ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	Result result = m_repeatFormula.Evaluate(&scopes);
 	if(result.code != RESULT_CODE_OK)
@@ -226,21 +200,16 @@ ActionSetProperty::ActionSetProperty (unsigned targetToken, Formula && payload, 
 {
 }
 
-IAction * ActionSetProperty::Clone() const {
-	Formula copy(m_payload);
-	return new ActionSetProperty(m_targetToken, std::move(copy), m_scopeToken);
-}
-
 ResultCode ActionSetProperty::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
 	ref(world);
 
 	Result result = m_payload.Evaluate(&scopes);
 	if(result.code == RESULT_CODE_OK) {
 		if (m_scopeToken) {
-			scopes.GetNamedBinding(m_scopeToken)->GetScopes().SetProperty(m_targetToken, result);
+			scopes.GetNamedBinding(m_scopeToken)->GetScopes().Set(m_targetToken, result);
 		}
 		else {
-			target->GetScopes().SetProperty(m_targetToken, result);
+			target->GetScopes().Set(m_targetToken, result);
 		}
 	}
 
@@ -253,11 +222,6 @@ ActionListAddEntry::ActionListAddEntry (Formula && objectToken, unsigned listTok
 	  m_targetToken(targetToken),
 	  m_objectToken(objectToken)
 {
-}
-
-IAction * ActionListAddEntry::Clone() const {
-	Formula objcopy(m_objectToken);
-	return new ActionListAddEntry(std::move(objcopy), m_listToken, m_targetToken);
 }
 
 ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
@@ -275,17 +239,10 @@ ResultCode ActionListAddEntry::Execute(ScriptWorld * world, Scriptable * target,
 
 
 ActionConditionalBlock::ActionConditionalBlock(Formula && condition, ActionSet && actions, ActionSet && elseActions)
-	: m_actions(actions),
-	  m_else(elseActions)
+	: m_actions(std::move(actions)),
+	  m_else(std::move(elseActions))
 {
 	std::swap(m_condition, condition);
-}
-
-IAction * ActionConditionalBlock::Clone() const {
-	Formula conditionCopy(m_condition);
-	ActionSet actionCopy(m_actions);
-	ActionSet elseCopy(m_else);
-	return new ActionConditionalBlock(std::move(conditionCopy), std::move(actionCopy), std::move(elseCopy));
 }
 
 ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
@@ -303,14 +260,8 @@ ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * tar
 ActionListForEach::ActionListForEach(Formula && scriptableToken, unsigned listToken, ActionSet && loopActions)
 	: m_scriptableToken(scriptableToken),
 	  m_listToken(listToken),
-	  m_loopActions(loopActions)
+	  m_loopActions(std::move(loopActions))
 {
-}
-
-IAction * ActionListForEach::Clone() const {
-	Formula stCopy(m_scriptableToken);
-	ActionSet actionCopy(m_loopActions);
-	return new ActionListForEach(std::move(stCopy), m_listToken, std::move(actionCopy));
 }
 
 ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
@@ -348,14 +299,6 @@ ActionListTransfer::ActionListTransfer (Formula && condition, Formula && originT
 	  m_targetToken(std::move(targetToken)),
 	  m_targetListToken(targetListToken)
 {
-}
-
-IAction * ActionListTransfer::Clone () const {
-	Formula conditionCopy(m_condition);
-	Formula originTokenCopy(m_originToken);
-  Formula targetTokenCopy(m_targetToken);
-
-	return new ActionListTransfer(std::move(conditionCopy), std::move(originTokenCopy), m_originListToken, std::move(targetTokenCopy), m_targetListToken);
 }
 
 ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {
@@ -410,13 +353,6 @@ ActionListRemove::ActionListRemove (Formula && condition, Formula && originToken
 	  m_originToken(originToken),
 	  m_originListToken(originListToken)
 {
-}
-
-IAction * ActionListRemove::Clone () const {
-	Formula conditionCopy(m_condition);
-	Formula originTokenCopy(m_originToken);
-
-	return new ActionListRemove(std::move(conditionCopy), std::move(originTokenCopy), m_originListToken);
 }
 
 ResultCode ActionListRemove::Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const {

@@ -35,6 +35,7 @@
 
 
 // FormulaEngine dependencies
+#include "FormulaEngine/Interfaces.h"
 #include "FormulaEngine/Formula.h"
 #include "FormulaEngine/Actions.h"
 #include "FormulaEngine/Parser.h"

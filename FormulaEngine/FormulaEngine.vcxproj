@@ -164,6 +164,7 @@
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Formula.h" />
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="Interfaces.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Pch.h" />
     <ClInclude Include="PropertyBag.h" />

@@ -55,6 +55,9 @@
     <ClInclude Include="..\Shared\Utilities.h">
       <Filter>Shared Support Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Interfaces.h">
+      <Filter>Formula Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actions.cpp">

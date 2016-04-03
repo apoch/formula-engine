@@ -1,5 +1,6 @@
 #include "Pch.h"
 
+#include "Interfaces.h"
 #include "Formula.h"
 #include "Actions.h"
 #include "TokenPool.h"
@@ -305,10 +306,6 @@ void ScopedPropertyBag::SetFormula(unsigned token, const Formula & formula) {
 	m_thisBag->Set(token, formula);
 }
 
-void ScopedPropertyBag::SetProperty(unsigned token, const Result & value) {
-	m_thisBag->Set(token, value);
-}
-
 void ScopedPropertyBag::SetProperties(FormulaPropertyBag * refbag) {
 	m_thisBag = refbag;
 }
@@ -334,11 +331,8 @@ void ScopedPropertyBag::PopulateNamedBindings (ScopedPropertyBag * other) const 
 	other->m_namedBindings = m_namedBindings;
 }
 
-void ScopedPropertyBag::Set(unsigned token, const Result & value) {
-	ref(token);
-	ref(value);
-
-	assert(false);		// Not implemented
+void ScopedPropertyBag::Set (unsigned token, const Result & value) {
+	m_thisBag->Set(token, value);
 }
 
 bool ScopedPropertyBag::ResolveToken (unsigned scope, unsigned token, std::string * out) const {

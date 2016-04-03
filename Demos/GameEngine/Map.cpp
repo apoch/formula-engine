@@ -27,7 +27,7 @@ Map::Map (unsigned width, unsigned height)
 // Owned units are destroyed as part of this process
 //
 Map::~Map () {
-	for(auto & unit : m_ownedUnits)
+	for (auto & unit : m_ownedUnits)
 		delete unit;
 }
 
@@ -48,7 +48,7 @@ void Map::AddUnit (Unit * unit) {
 // Forwards the notification to all owned units.
 //
 void Map::AdvanceTick () {
-	for(auto & unit : m_ownedUnits)
+	for (auto & unit : m_ownedUnits)
 		unit->AdvanceTick();
 }
 

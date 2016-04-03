@@ -1,5 +1,6 @@
 #include "Pch.h"
 
+#include "Interfaces.h"
 #include "Formula.h"
 #include "Actions.h"
 #include "TokenPool.h"
@@ -80,14 +81,14 @@ Scriptable * Scriptable::Instantiate() const {
 }
 
 
-void Scriptable::OnListMembershipAdded(unsigned listToken, IActionPerformer * owner) const {
+void Scriptable::OnListMembershipAdded(unsigned listToken, IListContainer * owner) const {
 	Membership membership;
 	membership.owner = owner;
 	membership.token = listToken;
 	m_listMemberships.push_back(membership);
 }
 
-void Scriptable::OnListMembershipRemoved(unsigned listToken, IActionPerformer * owner) const {
+void Scriptable::OnListMembershipRemoved(unsigned listToken, IListContainer * owner) const {
 	for(auto iter = m_listMemberships.begin(); iter != m_listMemberships.end(); ) {
 		if(iter->owner == owner && iter->token == listToken)
 			iter = m_listMemberships.erase(iter);

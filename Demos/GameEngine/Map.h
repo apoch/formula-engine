@@ -24,16 +24,16 @@ public:			// Construction and destruction
 	virtual ~Map ();
 
 public:			// Game simulation advancement
-	void AdvanceTick();
+	void AdvanceTick ();
 
 public:			// Unit interaction interface
-	void AddUnit(Unit * unit);
+	void AddUnit (Unit * unit);
 
-	unsigned GetMaxX() const {
+	unsigned GetMaxX () const {
 		return m_maxX;
 	}
 
-	unsigned GetMaxY() const {
+	unsigned GetMaxY () const {
 		return m_maxY;
 	}
 
@@ -42,11 +42,11 @@ public:			// Unit interaction interface
 	// present in a specified grid cell.
 	//
 	template <typename FilterT>
-	void GetUnitsByPosition(unsigned x, unsigned y, const FilterT & filter, std::vector<const Unit *> * out) const {
+	void GetUnitsByPosition (unsigned x, unsigned y, const FilterT & filter, std::vector<const Unit *> * out) const {
 		out->clear();
-		for(auto & unit : m_ownedUnits) {
+		for (auto & unit : m_ownedUnits) {
 			auto & pos = unit->GetCoordinates();
-			if(unsigned(pos.x) == x && unsigned(pos.y) == y && filter(unit))
+			if (unsigned(pos.x) == x && unsigned(pos.y) == y && filter(unit))
 				out->push_back(unit);
 		}
 	}

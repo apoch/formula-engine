@@ -263,11 +263,9 @@ public:			// ITerminalEvaluator interface
 		if(param.code != RESULT_CODE_OK)
 			return param;
 
-		std::uniform_real_distribution<double> distribution(0.0, 1.0);
+		std::uniform_real_distribution<double> distribution(0.0, param.value);
 		ret.value = distribution(m_generator);
 		ret.code = RESULT_CODE_OK;
-
-		// TODO - whut. This doesn't respect param?!
 
 		return ret;
 	}

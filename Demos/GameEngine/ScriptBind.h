@@ -145,10 +145,10 @@ private:		// Internal state
 //
 class Binder : public IEngineBinder {
 public:			// Construction
-	explicit Binder(TokenPool * pool, Map * map);
+	explicit Binder (TokenPool * pool, Map * map);
 
 public:			// Binding interface
-	IEngineBinding * CreateBinding(Scriptable * scriptable, ScriptWorld * world, unsigned token) override;
+	IEngineBinding * CreateBinding (Scriptable * scriptable, ScriptWorld * world, unsigned token) override;
 
 private:		// Internal state
 	Map * m_map;

@@ -10,6 +10,7 @@
 #include "Unit.h"
 
 
+#include "FormulaEngine/Interfaces.h"
 #include "FormulaEngine/Formula.h"
 #include "FormulaEngine/TokenPool.h"
 #include "FormulaEngine/Actions.h"

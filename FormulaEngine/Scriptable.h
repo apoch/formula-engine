@@ -1,7 +1,7 @@
 #pragma once
 
 
-struct IActionPerformer;
+struct IListContainer;
 struct IEngineBinder;
 struct IEngineBinding;
 
@@ -33,12 +33,12 @@ public:			// Archetype support
 	Scriptable * Instantiate() const;
 
 public:			// Membership notification interface
-	void OnListMembershipAdded(unsigned listToken, IActionPerformer * owner) const;
-	void OnListMembershipRemoved(unsigned listToken, IActionPerformer * owner) const;
+	void OnListMembershipAdded(unsigned listToken, IListContainer * owner) const;
+	void OnListMembershipRemoved(unsigned listToken, IListContainer * owner) const;
 
 private:		// Internal helper structures
 	struct Membership {
-		IActionPerformer * owner;
+		IListContainer * owner;
 		unsigned token;
 	};
 

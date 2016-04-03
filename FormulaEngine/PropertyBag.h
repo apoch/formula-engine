@@ -89,7 +89,7 @@ private:		// Internal state
 };
 
 
-class ScopedPropertyBag : public IFormulaPropertyBag, public IActionPerformer {
+class ScopedPropertyBag : public IFormulaPropertyBag, public IListContainer {
 public:			// Construction and destruction
 	explicit ScopedPropertyBag (ScriptWorld * world = nullptr);
 	ScopedPropertyBag (ScopedPropertyBag && other);
@@ -119,14 +119,11 @@ public:			// Configuration interface
 public:			// Archetype support
 	void InstantiateFrom(const ScopedPropertyBag & other);
 	
-public:			// IActionPerformer interface
-	void SetProperty(unsigned token, const Result & value) override;
-	void SetFormula(unsigned token, const Formula & formula) override;
+public:			// Script action support
+	void SetFormula (unsigned token, const Formula & formula);
 
-	void ListAddEntry(unsigned listToken, Scriptable * entry) override;
-	void ListRemoveEntry(unsigned listToken, const Scriptable & entry) override;
-
-	const IFormulaContext & GetProperties() const override		{ return *m_thisBag; }
+	void ListAddEntry (unsigned listToken, Scriptable * entry);
+	void ListRemoveEntry (unsigned listToken, const Scriptable & entry);
 
 public:
 	void Set(unsigned token, const Result & value) override;

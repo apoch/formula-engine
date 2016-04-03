@@ -1,5 +1,28 @@
+//
+// FormulaEngine Project
+// By Mike Lewis - 2016
+//
+// Declarations for script action classes
+//
+// Script actions are the fundamental tools for making changes
+// to the running state of the simulation world. They are most
+// often executed in sequences or "sets" in order to support a
+// composable language of sorts.
+//
+// In general, script actions ought to be generic and reusable
+// rather than custom-tailored to a particular simulation need
+// or feature. This serves dual purposes. First, it prevents a
+// needless proliferation of script actions that are difficult
+// to distinguish and easy to misapply. Second, it reduces the
+// need for programming maintenance, since a richer simulation
+// does not require direct updates to the action vocabulary as
+// often.
+//
+
 #pragma once
 
+
+// Forward declarations
 struct IFormulaPropertyBag;
 struct IFormulaContext;
 class ActionSet;
@@ -10,46 +33,57 @@ class Scriptable;
 class ScriptWorld;
 
 
-struct IActionPerformer {
-	virtual void SetProperty(unsigned targetToken, const Result & value) = 0;
-	virtual void SetFormula(unsigned targetToken, const Formula & formula) = 0;
-
-	virtual void ListAddEntry(unsigned listToken, Scriptable * entry) = 0;
-	virtual void ListRemoveEntry(unsigned listToken, const Scriptable & entry) = 0;
-
-	virtual const IFormulaContext & GetProperties() const = 0;
-};
-
-
+//
+// Base interface for all actions supported by the engine
+//
+// This design allows us to store flat arrays of actions in a
+// uniform way, and also allows single actions to encompass a
+// series of "nested" actions (see ActionSet below). Overall,
+// the execution overhead is measurable but not terrible.
+//
+// In principle any form of interpreter/VM-style architecture
+// could work fine in place of this style; the specifics will
+// vary based on game implementation anyways and don't really
+// matter too much in the abstract.
+//
+// In short, if you have an execution engine style that might
+// be preferable, try it out; this was purely a path of least
+// resistance sort of design decision.
+//
 struct IAction {
-	virtual ~IAction() { }
-	virtual IAction * Clone() const = 0;
-	virtual ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const = 0;
+	virtual ~IAction () { }
+	virtual ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const = 0;
 };
 
 
-
-
-
+//
+// Aggregation of multiple actions into a single sequence
+//
+// Each action in the container is executed in turn, given the
+// context, parameters, etc. provided by the caller. Acts as a
+// building block for creating complex flow-control logic like
+// conditionals and loops.
+//
 class ActionSet {
 public:			// Construction and destruction
-	ActionSet();
-	ActionSet(ActionSet && other);
-	ActionSet(const ActionSet & other);
-	~ActionSet();
+	ActionSet ();
+	ActionSet (ActionSet && other);
+	~ActionSet ();
 
+public:			// Non-copyable
+	ActionSet (const ActionSet & other) = delete;
 	ActionSet & operator= (const ActionSet & other) = delete;
 
 public:			// Setup interface
-	void AddAction(IAction * action);
+	void AddAction (IAction * action);
 
 public:			// Execution interface
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IFormulaPropertyBag * optionalContext) const;
-	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
+	ResultCode Execute (ScriptWorld * world, Scriptable * target, unsigned contextScope, const IFormulaPropertyBag * optionalContext) const;
+	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const;
 
 private:		// Internal state
 	std::vector<IAction *> m_actions;
-	ScopedPropertyBag * m_scopeCache;
+	ScopedPropertyBag * m_scopeCache;		// TODO - revisit this; optimize?
 };
 
 
@@ -59,7 +93,6 @@ public:
 	ActionEventTrigger(unsigned eventToken, unsigned targetToken, FormulaPropertyBag * parambagptr, Formula && delayFormula);
 	~ActionEventTrigger();
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -74,7 +107,6 @@ public:
 	ActionEventRepeat(unsigned eventToken, Formula && repeatFormula, FormulaPropertyBag * parambagptr);
 	~ActionEventRepeat();
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -88,7 +120,6 @@ class ActionSetProperty : public IAction {
 public:
 	ActionSetProperty (unsigned targetToken, Formula && payload, unsigned scopeToken);
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -101,7 +132,6 @@ class ActionListAddEntry : public IAction {
 public:
 	ActionListAddEntry(Formula && objectToken, unsigned listToken, unsigned targetToken);
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -115,7 +145,6 @@ public:
 	ActionListSpawnEntry(unsigned listToken, unsigned archetypeToken, FormulaPropertyBag * paramBagPtr);
 	~ActionListSpawnEntry();
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -128,7 +157,6 @@ class ActionSetGoalState : public IAction {
 public:
 	ActionSetGoalState(unsigned scopeToken, unsigned targetToken, Formula && formula);
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -142,7 +170,6 @@ class ActionConditionalBlock : public IAction {
 public:
 	ActionConditionalBlock(Formula && condition, ActionSet && actions, ActionSet && elseActions);
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -156,7 +183,6 @@ class ActionListForEach : public IAction {
 public:
 	ActionListForEach(Formula && scriptableToken, unsigned listToken, ActionSet && loopActions);
 
-	IAction * Clone() const override;
 	ResultCode Execute(ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -170,7 +196,6 @@ class ActionListTransfer : public IAction {
 public:
 	ActionListTransfer (Formula && condition, Formula && originToken, unsigned originListToken, Formula && targetToken, unsigned targetListToken);
 
-	IAction * Clone () const override;
 	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:
@@ -186,7 +211,6 @@ class ActionListRemove : public IAction {
 public:
 	ActionListRemove (Formula && condition, Formula && originToken, unsigned originListToken);
 
-	IAction * Clone () const override;
 	ResultCode Execute (ScriptWorld * world, Scriptable * target, const ScopedPropertyBag & scopes) const override;
 
 private:

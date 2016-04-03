@@ -21,6 +21,7 @@
 
 #include "Tests.h"
 
+#include "FormulaEngine/Interfaces.h"
 #include "FormulaEngine/Formula.h"
 #include "FormulaEngine/Actions.h"
 #include "FormulaEngine/Parser.h"
@@ -39,7 +40,7 @@ namespace {
 //
 // Assertion helper for tests; does not compile out in Release
 //
-void test_assert(bool condition) {
+void test_assert (bool condition) {
 	if (!condition)
 		terminate();
 }
