@@ -59,7 +59,7 @@ private:		// Internal state
 
 class BindingPropertyBag : public IFormulaContext {
 public:			// Construction
-	explicit BindingPropertyBag(const Scriptable * scriptable);
+	explicit BindingPropertyBag (const Scriptable * scriptable);
 
 public:			// IFormulaContext interface
 	Result ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const override;
@@ -92,8 +92,11 @@ private:		// Internal state
 class ScopedPropertyBag : public IFormulaPropertyBag, public IListContainer {
 public:			// Construction and destruction
 	explicit ScopedPropertyBag (ScriptWorld * world = nullptr);
-	ScopedPropertyBag (ScopedPropertyBag && other);
 	~ScopedPropertyBag ();
+
+public:			// Move semantics
+	ScopedPropertyBag (ScopedPropertyBag && other);
+	ScopedPropertyBag & operator = (ScopedPropertyBag && other) = delete;	
 
 private:		// Non-copyable
 	ScopedPropertyBag(const ScopedPropertyBag & other) = delete;

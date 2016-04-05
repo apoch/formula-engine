@@ -162,6 +162,7 @@
     <ClInclude Include="Tests.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Utilities.cpp" />
     <ClCompile Include="Demos.cpp" />
     <ClCompile Include="GameEngine\Map.cpp" />
     <ClCompile Include="GameEngine\ScriptBind.cpp" />

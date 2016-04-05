@@ -10,7 +10,10 @@
 #include "Console.h"
 
 
-int main() {
+
+namespace {
+
+void RunMud () {
 	TokenPool tokens;
 
 	Game::CommandTable commands("Data\\CommandList.json", &tokens);
@@ -44,6 +47,18 @@ int main() {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(sleep));
 	}
+}
+
+}
+
+
+
+int main() {
+
+	// Optional memory leak checking
+	Utilities::LeakCheck();
+
+	RunMud();
 
     return 0;
 }

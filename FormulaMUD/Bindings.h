@@ -107,6 +107,10 @@ public:
 		m_table(bindingTable)
 	{ }
 
+	~Binding () {
+		delete m_bound;
+	}
+
 public:
 	void SetGoalState(unsigned token, unsigned tokenValue) override {
 		m_table->Dispatch(token, m_bound, tokenValue);

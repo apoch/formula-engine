@@ -144,11 +144,11 @@ void FormulaPropertyBag::Set(unsigned token, const Result & value) {
 
 
 
-void ScopeResolver::AddScope(unsigned token, const IFormulaContext & context) {
+void ScopeResolver::AddScope (unsigned token, const IFormulaContext & context) {
 	m_bag[token] = &context;
 }
 
-const IFormulaContext * ScopeResolver::GetScope(unsigned token) const {
+const IFormulaContext * ScopeResolver::GetScope (unsigned token) const {
 	auto iter = m_bag.find(token);
 	if(iter == m_bag.end())
 		return nullptr;
@@ -156,7 +156,7 @@ const IFormulaContext * ScopeResolver::GetScope(unsigned token) const {
 	return iter->second;
 }
 
-void ScopeResolver::Clear() {
+void ScopeResolver::Clear () {
 	m_bag.clear();
 }
 
@@ -168,7 +168,7 @@ ScopedPropertyBag::ScopedPropertyBag (ScriptWorld * world) {
 	m_world = world;
 }
 
-ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
+ScopedPropertyBag::ScopedPropertyBag (ScopedPropertyBag && other) {
 	m_bindingBag = nullptr;
 
 	std::swap(m_lists, other.m_lists);
@@ -178,13 +178,13 @@ ScopedPropertyBag::ScopedPropertyBag(ScopedPropertyBag && other) {
 	std::swap(m_world, other.m_world);
 	
 	m_thisBag = &m_builtInBag;
-	if(other.m_thisBag != &other.m_builtInBag)
+	if (other.m_thisBag != &other.m_builtInBag)
 		m_thisBag = other.m_thisBag;
 }
 
-ScopedPropertyBag::~ScopedPropertyBag() {
-	for(auto & pair : m_lists) {
-		for(auto & member : pair.second) {
+ScopedPropertyBag::~ScopedPropertyBag () {
+	for (auto & pair : m_lists) {
+		for (auto & member : pair.second) {
 			member->OnListMembershipRemoved(pair.first, this);
 		}
 	}
@@ -302,15 +302,16 @@ ListResult ScopedPropertyBag::ResolveList(const IFormulaContext & context, unsig
 	return ret;
 }
 
-void ScopedPropertyBag::SetFormula(unsigned token, const Formula & formula) {
+void ScopedPropertyBag::SetFormula (unsigned token, const Formula & formula) {
 	m_thisBag->Set(token, formula);
 }
 
-void ScopedPropertyBag::SetProperties(FormulaPropertyBag * refbag) {
+void ScopedPropertyBag::SetProperties (FormulaPropertyBag * refbag) {
 	m_thisBag = refbag;
 }
 
-void ScopedPropertyBag::SetBindings(const BindingPropertyBag & refBag) {
+void ScopedPropertyBag::SetBindings (const BindingPropertyBag & refBag) {
+	delete m_bindingBag;
 	m_bindingBag = new BindingPropertyBag(refBag);
 }
 

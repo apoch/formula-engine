@@ -163,6 +163,7 @@
     <ClInclude Include="WorldState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Utilities.cpp" />
     <ClCompile Include="Bindings.cpp" />
     <ClCompile Include="CommandTable.cpp" />
     <ClCompile Include="Console.cpp" />
