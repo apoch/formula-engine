@@ -1,3 +1,10 @@
+//
+// FormulaEngine Project
+// By Mike Lewis - 2016
+//
+// Implementation of engine-to-script binding mechanisms
+//
+
 #include "Pch.h"
 
 #include "Bindings.h"
@@ -9,7 +16,13 @@
 
 namespace Game {
 
-Binder::Binder(TokenPool * pool, WorldState * worldState)
+//
+// Construct and initialize a binding factory
+//
+// Sets up the binding tables for mapping script token identifiers to
+// internal native functions for binding properties and goal states.
+//
+Binder::Binder (TokenPool * pool, WorldState * worldState)
 	: m_tokens(pool),
 	  m_worldState(worldState)
 {
@@ -23,8 +36,13 @@ Binder::Binder(TokenPool * pool, WorldState * worldState)
 }
 
 
-
-IEngineBinding * Binder::CreateBinding(Scriptable * scriptable, ScriptWorld * world, unsigned token) {
+//
+// Actual factory method for creating binding records
+//
+// Handles the logic for creating a backing engine-side object as well as
+// linking up the binding record to the appropriate binding table obejct.
+//
+IEngineBinding * Binder::CreateBinding (Scriptable * scriptable, ScriptWorld * world, unsigned token) {
 	if (!m_tokens)
 		return nullptr;
 
