@@ -111,19 +111,22 @@ void TestScopedBag () {
 	TokenPool pool;
 	FormulaParser parser;
 
-	FormulaPropertyBag eventbag;
-	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
-
-	ScopedPropertyBag scopes(nullptr);
-	scopes.GetScopes().AddScope(pool.AddToken("event"), eventbag);
-
 	Result hr;
 	hr.value = 100.0;
 
-	scopes.GetProperties().Set(pool.AddToken("health"), hr);
+	FormulaPropertyBag mybag;
+	mybag.Set(pool.AddToken("health"), hr);
 
-	Formula modifiedHealth = parser.Parse("health - event:damageAmount", &pool);
+	ScopedPropertyBag eventbag;
+	eventbag.GetProperties().Set(pool.AddToken("damageAmount"), parser.Parse("my:health * 0.1", &pool));
+	eventbag.GetScopes().AddScope(pool.AddToken("my"), mybag);
 
+
+	ScopedPropertyBag scopes;
+	scopes.GetScopes().AddScope(pool.AddToken("event"), eventbag);
+	scopes.GetScopes().AddScope(pool.AddToken("my"), mybag);
+
+	Formula modifiedHealth = parser.Parse("my:health - event:damageAmount", &pool);
 	double val = modifiedHealth.Evaluate(&scopes).value;
 
 	test_assert(val == 90.0);
@@ -148,7 +151,7 @@ void TestActionSets () {
 	actions.AddAction(new ActionSetProperty(pool.AddToken("health"), parser.Parse("health - event:damageAmount", &pool), 0));
 
 	FormulaPropertyBag eventbag;
-	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("health * 0.1", &pool));
+	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("10", &pool));
 
 	Result hr;
 	hr.value = 100.0;
