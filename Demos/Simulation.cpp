@@ -87,7 +87,7 @@ void RunKingdomWar () {
 //
 // Run the Flocking demo
 //
-void RunFlocking () {
+void RunFlocking (bool allowConsoleOutput) {
 	// TODO - use the world params in the JSON instead of hard coding them here
 	const unsigned worldWidth = 60;
 	const unsigned worldHeight = 20;
@@ -102,7 +102,9 @@ void RunFlocking () {
 
 	world.QueueBroadcastEvent("OnCreate");
 
-	for (unsigned i = 0; i < 10000; ++i) {
+	unsigned limit = allowConsoleOutput ? 10000 : 300000;
+
+	for (unsigned i = 0; i < limit; ++i) {
 		while (world.DispatchEvents());
 
 		std::vector<const Unit *> buffer;
@@ -112,22 +114,26 @@ void RunFlocking () {
 			for (unsigned x = 0; x < worldWidth; ++x) {
 				worldMap.GetUnitsByPosition(x, y, [](const Unit *) { return true; }, &buffer);
 
-				if (buffer.size() >= 10)
-					std::cout << "O";
-				else if (buffer.size() >= 3)
-					std::cout << "o";
-				else if (buffer.size() > 0)
-					std::cout << ".";
-				else
-					std::cout << " ";
+				if (allowConsoleOutput) {
+					if (buffer.size() >= 10)
+						std::cout << "O";
+					else if (buffer.size() >= 3)
+						std::cout << "o";
+					else if (buffer.size() > 0)
+						std::cout << ".";
+					else
+						std::cout << " ";
+				}
 			}
 
-			std::cout << "\n";
+			if (allowConsoleOutput)
+				std::cout << "\n";
 		}
 
 		worldMap.AdvanceTick();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		if (allowConsoleOutput)
+			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 }
 

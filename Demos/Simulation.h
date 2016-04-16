@@ -22,7 +22,7 @@ void RunKingdomWar ();
 
 
 // Run a simulation of the "Flocking" example
-void RunFlocking ();
+void RunFlocking (bool allowConsoleOutput);
 
 
 }

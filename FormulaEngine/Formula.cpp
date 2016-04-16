@@ -5,7 +5,7 @@
 
 
 Formula::Formula() {
-	m_terms.reserve(2);
+	m_terms.reserve(10);
 }
 
 

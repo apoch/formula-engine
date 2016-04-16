@@ -23,32 +23,37 @@
 // Add a string into the pool and get its token back
 //
 unsigned TokenPool::AddToken(const char token[]) {
-	for(unsigned i = 0; i < m_pool.size(); ++i) {
-		if(m_pool[i] == token)
-			return i + 1;
-	}
+	auto iter = m_fastLookup.find(token);
+	if (iter != m_fastLookup.end())
+		return iter->second;
 
 	m_pool.emplace_back(token);
-	return static_cast<unsigned>(m_pool.size());
+
+	unsigned id = static_cast<unsigned>(m_pool.size());
+	m_fastLookup.emplace(token, id);
+
+	return id;
 }
 
 
 unsigned TokenPool::AddToken(const std::string & token) {
-	for(unsigned i = 0; i < m_pool.size(); ++i) {
-		if(m_pool[i] == token)
-			return i + 1;
-	}
+	auto iter = m_fastLookup.find(token);
+	if (iter != m_fastLookup.end())
+		return iter->second;
 
 	m_pool.emplace_back(token);
-	return static_cast<unsigned>(m_pool.size());
+
+	unsigned id = static_cast<unsigned>(m_pool.size());
+	m_fastLookup.emplace(token, id);
+
+	return id;
 }
 
 
 unsigned TokenPool::FindToken (const std::string & token) {
-	for (unsigned i = 0; i < m_pool.size(); ++i) {
-		if (m_pool[i] == token)
-			return i + 1;
-	}
+	auto iter = m_fastLookup.find(token);
+	if (iter != m_fastLookup.end())
+		return iter->second;
 
 	return 0;
 }

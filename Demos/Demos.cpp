@@ -37,7 +37,7 @@ int _tmain () {
 	// Run the simulation
 	//
 	//Simulation::RunKingdomWar();
-	Simulation::RunFlocking();
+	Simulation::RunFlocking(false);
 
 
 
