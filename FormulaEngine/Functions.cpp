@@ -335,19 +335,19 @@ public:			// ITerminalEvaluator interface
 
 static class FunctionVector : public ITerminalEvaluator {
 public:			// ITerminalEvaluator interface
-	Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
+	Result Evaluate (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const override {
 		Result ret;
 
 		--(*pindex);
 
 		Result xparam = termSource.EvaluateSubexpression(context, pindex);
-		if(xparam.code != RESULT_CODE_OK)
+		if (xparam.code != RESULT_CODE_OK)
 			return xparam;
 
 		--(*pindex);
 
 		Result yparam = termSource.EvaluateSubexpression(context, pindex);
-		if(yparam.code != RESULT_CODE_OK)
+		if (yparam.code != RESULT_CODE_OK)
 			return yparam;
 
 		// These are inverted because parameters to the function are
@@ -362,11 +362,11 @@ public:			// ITerminalEvaluator interface
 
 
 
-const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
-	if(!std::strcmp(str, "Between"))
+const ITerminalEvaluator * GetFunctionEvaluatorByName (const char str[]) {
+	if (!std::strcmp(str, "Between"))
 		return &s_functionBetween;
 
-	if(!std::strcmp(str, "Distance"))
+	if (!std::strcmp(str, "Distance"))
 		return &s_functionDistance;
 
 	if (!std::strcmp(str, "Equal"))
@@ -378,22 +378,22 @@ const ITerminalEvaluator * GetFunctionEvaluatorByName(const char str[]) {
 	if (!std::strcmp(str, "Less"))
 		return &s_functionLess;
 
-	if(!std::strcmp(str, "Limit"))
+	if (!std::strcmp(str, "Limit"))
 		return &s_functionLimit;
 
-	if(!std::strcmp(str, "Normalize"))
+	if (!std::strcmp(str, "Normalize"))
 		return &s_functionNormalize;
 
-	if(!std::strcmp(str, "Random"))
+	if (!std::strcmp(str, "Random"))
 		return &s_functionRandom;
 
 	if (!std::strcmp(str, "Round"))
 		return &s_functionRound;
 
-	if(!std::strcmp(str, "SumOf"))
+	if (!std::strcmp(str, "SumOf"))
 		return &s_functionSumOfList;
 
-	if(!std::strcmp(str, "Vec"))
+	if (!std::strcmp(str, "Vec"))
 		return &s_functionVector;
 
 	return nullptr;

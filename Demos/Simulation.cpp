@@ -103,18 +103,19 @@ void RunFlocking (bool allowConsoleOutput) {
 	world.QueueBroadcastEvent("OnCreate");
 
 	unsigned limit = allowConsoleOutput ? 10000 : 300000;
+	std::vector<const Unit *> buffer;
+	buffer.reserve(500);
 
 	for (unsigned i = 0; i < limit; ++i) {
 		while (world.DispatchEvents());
 
-		std::vector<const Unit *> buffer;
-		buffer.reserve(500);
+		buffer.clear();
 
-		for (unsigned y = 0; y < worldHeight; ++y) {
-			for (unsigned x = 0; x < worldWidth; ++x) {
-				worldMap.GetUnitsByPosition(x, y, [](const Unit *) { return true; }, &buffer);
+		if (allowConsoleOutput) {
+			for (unsigned y = 0; y < worldHeight; ++y) {
+				for (unsigned x = 0; x < worldWidth; ++x) {
+					worldMap.GetUnitsByPosition(x, y, [](const Unit *) { return true; }, &buffer);
 
-				if (allowConsoleOutput) {
 					if (buffer.size() >= 10)
 						std::cout << "O";
 					else if (buffer.size() >= 3)
@@ -124,10 +125,10 @@ void RunFlocking (bool allowConsoleOutput) {
 					else
 						std::cout << " ";
 				}
-			}
 
-			if (allowConsoleOutput)
-				std::cout << "\n";
+				if (allowConsoleOutput)
+					std::cout << "\n";
+			}
 		}
 
 		worldMap.AdvanceTick();
@@ -135,6 +136,9 @@ void RunFlocking (bool allowConsoleOutput) {
 		if (allowConsoleOutput)
 			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
+
+	if (!allowConsoleOutput)
+		std::cout << "Evaluation count: " << Formula::GetEvaluationCounter() << std::endl;
 }
 
 

@@ -110,7 +110,13 @@ private:		// Internal helper structures
 	};
 
 private:		// Internal state
-	std::vector<Term> m_terms;
+	Term m_termBuffer[20];			// TODO - growth support?
+	unsigned m_termCount;
+
+private:		// Shared state
+	static unsigned s_evaluationCounter;
+public:
+	static unsigned GetEvaluationCounter ();
 };
 
 
