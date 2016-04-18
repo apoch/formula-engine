@@ -25,6 +25,7 @@
 #include <atomic>
 #include <thread>
 #include <chrono>
+#include <unordered_map>
 
 // Third party library includes
 #include "Shared/PicoJSON.h"

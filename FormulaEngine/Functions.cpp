@@ -362,39 +362,46 @@ public:			// ITerminalEvaluator interface
 
 
 
+struct HashFunc {
+	int operator() (const char * str) const {
+		int seed = 131;
+		int hash = 0;
+
+		while (*str) {
+			hash = (hash * seed) + (*str);
+			++str;
+		}
+
+		return (hash & 0x7fffffff);
+	}
+};
+
+struct EqualityFunc {
+	bool operator() (const char * a, const char * b) const {
+		return (std::strcmp(a, b) == 0);
+	}
+};
+
+
 const ITerminalEvaluator * GetFunctionEvaluatorByName (const char str[]) {
-	if (!std::strcmp(str, "Between"))
-		return &s_functionBetween;
+	static const std::unordered_map<const char *, const ITerminalEvaluator *, HashFunc, EqualityFunc> evalNames = 
+	{
+		{ "Between",	&s_functionBetween		},
+		{ "Distance",	&s_functionDistance		},
+		{ "Equal",		&s_functionEqual		},
+		{ "FuzzyMatch", &s_functionFuzzyMatch	},
+		{ "Less",		&s_functionLess			},
+		{ "Limit",		&s_functionLimit		},
+		{ "Normalize",	&s_functionNormalize	},
+		{ "Random",		&s_functionRandom		},
+		{ "Round",		&s_functionRound		},
+		{ "SumOf",		&s_functionSumOfList	},
+		{ "Vec",		&s_functionVector		},
+	};
 
-	if (!std::strcmp(str, "Distance"))
-		return &s_functionDistance;
-
-	if (!std::strcmp(str, "Equal"))
-		return &s_functionEqual;
-
-	if (!std::strcmp(str, "FuzzyMatch"))
-		return &s_functionFuzzyMatch;
-
-	if (!std::strcmp(str, "Less"))
-		return &s_functionLess;
-
-	if (!std::strcmp(str, "Limit"))
-		return &s_functionLimit;
-
-	if (!std::strcmp(str, "Normalize"))
-		return &s_functionNormalize;
-
-	if (!std::strcmp(str, "Random"))
-		return &s_functionRandom;
-
-	if (!std::strcmp(str, "Round"))
-		return &s_functionRound;
-
-	if (!std::strcmp(str, "SumOf"))
-		return &s_functionSumOfList;
-
-	if (!std::strcmp(str, "Vec"))
-		return &s_functionVector;
+	auto iter = evalNames.find(str);
+	if (iter != evalNames.end())
+		return iter->second;
 
 	return nullptr;
 }
