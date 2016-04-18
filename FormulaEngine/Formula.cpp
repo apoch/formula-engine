@@ -38,7 +38,7 @@ Result Formula::Evaluate (const IFormulaContext * context) const {
 
 
 Result Formula::EvaluateFunction (const IFormulaContext * context, unsigned * pindex) const {
-	return m_termBuffer[*pindex].payload.evaluator->Evaluate(context, *this, pindex);
+	return m_termBuffer[*pindex].payload.evaluator(context, *this, pindex);
 }
 
 Result Formula::EvaluateSubexpression (const IFormulaContext * context, unsigned * pindex) const {
@@ -170,9 +170,9 @@ void Formula::Push (double literalValue) {
 	++m_termCount;		//  TODO - ensure that the Push() overloads don't overflow the buffer
 }
 
-void Formula::Push (const ITerminalEvaluator & evaluator) {
+void Formula::Push (FTerminalEvaluator evaluator) {
 	m_termBuffer[m_termCount].type = Term::TERM_TYPE_EVALUATOR;
-	m_termBuffer[m_termCount].payload.evaluator = const_cast<ITerminalEvaluator *>(&evaluator);
+	m_termBuffer[m_termCount].payload.evaluator = evaluator;
 
 	++m_termCount;
 }

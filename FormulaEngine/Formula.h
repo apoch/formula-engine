@@ -50,10 +50,7 @@ struct IFormulaContext {
 };
 
 
-struct ITerminalEvaluator {
-	virtual ~ITerminalEvaluator() { }
-	virtual Result Evaluate(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) const = 0;
-};
+typedef Result (*FTerminalEvaluator)(const IFormulaContext * context, const class Formula & termSource, unsigned * pindex);
 
 
 
@@ -73,7 +70,7 @@ public:			// Enumerations
 
 public:			// Setup interface
 	void Push (double literalValue);
-	void Push (const ITerminalEvaluator & evaluator);	// Does not take ownership
+	void Push (FTerminalEvaluator evaluator);
 	void Push (Operator op);
 	void Push (unsigned scope, unsigned token);
 
@@ -97,7 +94,7 @@ private:		// Internal helper structures
 
 		union PayloadUnion {
 			double				 literalValue;
-			ITerminalEvaluator * evaluator;
+			FTerminalEvaluator   evaluator;
 			Operator			 op;
 
 			struct ScopedToken {

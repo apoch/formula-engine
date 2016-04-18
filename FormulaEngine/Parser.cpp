@@ -171,7 +171,7 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 		}
 
 		std::string rawToken(startpos, *iter);
-		const ITerminalEvaluator * eval = GetFunctionEvaluatorByName(rawToken.c_str());
+		FTerminalEvaluator eval = GetFunctionEvaluatorByName(rawToken.c_str());
 		if(eval) {
 			Token t;
 			t.op = 0;

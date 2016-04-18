@@ -1,9 +1,8 @@
 #pragma once
 
+typedef struct Result (*FTerminalEvaluator)(const struct IFormulaContext * context, const class Formula & termSource, unsigned * pindex);
 
-struct ITerminalEvaluator;
 
-
-const ITerminalEvaluator * GetFunctionEvaluatorByName (const char str[]);
+FTerminalEvaluator GetFunctionEvaluatorByName (const char str[]);
 
 

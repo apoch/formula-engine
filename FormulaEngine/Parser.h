@@ -3,7 +3,9 @@
 
 class Formula;
 class TokenPool;
-struct ITerminalEvaluator;
+
+typedef struct Result (*FTerminalEvaluator)(const struct IFormulaContext * context, const class Formula & termSource, unsigned * pindex);
+
 
 
 class FormulaParser {
@@ -16,7 +18,7 @@ private:		// Internal helpers
 private:		// Internal helper structures
 	struct Token {
 		char op;
-		const ITerminalEvaluator * eval;
+		FTerminalEvaluator eval;
 	};
 
 private:		// Internal state
