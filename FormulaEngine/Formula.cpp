@@ -14,6 +14,30 @@ Formula::Formula ()
 }
 
 
+Formula::Formula (Formula && other)
+	: m_termCount(other.m_termCount)
+{
+	for (unsigned i = 0; i < m_termCount; ++i)
+		m_termBuffer[i] = other.m_termBuffer[i];
+}
+
+Formula::Formula (const Formula & other)
+	: m_termCount(other.m_termCount)
+{
+	for (unsigned i = 0; i < m_termCount; ++i)
+		m_termBuffer[i] = other.m_termBuffer[i];
+}
+
+
+Formula & Formula::operator= (const Formula & other) {
+	m_termCount = other.m_termCount;
+	for (unsigned i = 0; i < m_termCount; ++i)
+		m_termBuffer[i] = other.m_termBuffer[i];
+
+	return *this;
+}
+
+
 Result Formula::Evaluate (const IFormulaContext * context) const {
 	Result ret;
 

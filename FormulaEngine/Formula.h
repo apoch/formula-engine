@@ -59,6 +59,12 @@ class Formula {
 public:			// Construction
 	Formula();
 
+	Formula (Formula && other);
+	Formula (const Formula & other);
+
+public:			// Assignment
+	Formula & operator= (const Formula & other);
+
 public:			// Enumerations
 	enum Operator {
 		OPERATOR_ADD,
