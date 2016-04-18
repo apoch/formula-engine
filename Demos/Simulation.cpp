@@ -106,6 +106,9 @@ void RunFlocking (bool allowConsoleOutput) {
 	std::vector<const Unit *> buffer;
 	buffer.reserve(500);
 
+	std::chrono::time_point<std::chrono::system_clock> startT, endT;
+	startT = std::chrono::system_clock::now();
+
 	for (unsigned i = 0; i < limit; ++i) {
 		while (world.DispatchEvents());
 
@@ -137,8 +140,17 @@ void RunFlocking (bool allowConsoleOutput) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	}
 
-	if (!allowConsoleOutput)
-		std::cout << "Evaluation count: " << Formula::GetEvaluationCounter() << std::endl;
+	endT = std::chrono::system_clock::now();
+
+	if (!allowConsoleOutput) {
+		std::chrono::duration<double> delta = endT - startT;
+
+		std::cout << "Evaluation count: " << Formula::GetEvaluationCounter() << "\n";
+		std::cout << "Time delta: " << delta.count() << " seconds\n";
+
+		std::cout.precision(4);
+		std::cout << "Evals per second: " << std::fixed << static_cast<double>(Formula::GetEvaluationCounter()) / delta.count() << std::endl;
+	}
 }
 
 
