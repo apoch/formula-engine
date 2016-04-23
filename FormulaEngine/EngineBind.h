@@ -38,12 +38,12 @@ struct IEngineBinding {
 	virtual ~IEngineBinding () { }
 
 	virtual void SetGoalState (unsigned token, unsigned tokenValue) = 0;
-	virtual void SetGoalState (unsigned token, double state) = 0;
-	virtual void SetGoalState (unsigned token, double statex, double statey) = 0;
+	virtual void SetGoalState (unsigned token, ValueT state) = 0;
+	virtual void SetGoalState (unsigned token, ValueT statex, ValueT statey) = 0;
 
 	virtual bool HasPropertyBinding (unsigned token) const = 0;
 	virtual unsigned GetPropertyBinding (unsigned token, unsigned * out) const = 0;
-	virtual unsigned GetPropertyBinding (unsigned token, double * out1, double * out2) const = 0;
+	virtual unsigned GetPropertyBinding (unsigned token, ValueT * out1, ValueT * out2) const = 0;
 };
 
 

@@ -46,8 +46,10 @@ ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, const Sc
 ResultCode ActionSet::Execute(ScriptWorld * world, Scriptable * target, unsigned contextScope, const IFormulaPropertyBag * optionalContext) const {
 	m_scopeCache->Clear();
 	m_scopeCache->SetProperties(&target->GetScopes().GetProperties());
+
 	BindingPropertyBag bag(target);
 	m_scopeCache->SetBindings(bag);
+
 	if (optionalContext) {
 		m_scopeCache->GetScopes().AddScope(contextScope, *optionalContext);
 		optionalContext->PopulateNamedBindings(m_scopeCache);
@@ -105,11 +107,11 @@ ResultCode ActionSetGoalState::Execute(ScriptWorld * world, Scriptable * target,
 
 		if (binding) {
 			if(result.type == RESULT_TYPE_SCALAR)
-				binding->SetGoalState(m_targetToken, result.value);
+				binding->SetGoalState(m_targetToken, result.payload.num.value);
 			else if(result.type == RESULT_TYPE_VECTOR2)
-				binding->SetGoalState(m_targetToken, result.value, result.value2);
+				binding->SetGoalState(m_targetToken, result.payload.num.value, result.payload.num.value2);
 			else if(result.type == RESULT_TYPE_TOKEN)
-				binding->SetGoalState(m_targetToken, result.token);
+				binding->SetGoalState(m_targetToken, result.payload.txt.token);
 		}
 	}
 	
@@ -138,10 +140,10 @@ ResultCode ActionEventTrigger::Execute(ScriptWorld * world, Scriptable * scripta
 		m_paramBag->Flatten(bagptr, &scopes);
 	}
 
-	double delaySeconds = 0.0;
+	ValueT delaySeconds = 0.0;
 	Result delayResult = m_delay.Evaluate(&scopes);
 	if (delayResult.code == RESULT_CODE_OK)
-		delaySeconds = delayResult.value;
+		delaySeconds = delayResult.payload.num.value;
 
 	if (m_targetToken) {
 		if (delaySeconds > 0.0)
@@ -178,7 +180,7 @@ ResultCode ActionEventRepeat::Execute(ScriptWorld * world, Scriptable * target, 
 	if(result.code != RESULT_CODE_OK)
 		return result.code;
 
-	unsigned counter = unsigned(result.value);
+	unsigned counter = unsigned(result.payload.num.value);
 	for(unsigned i = 0; i < counter; ++i) {
 		SimplePropertyBag * bagptr = nullptr;
 		if(m_paramBag) {
@@ -250,7 +252,7 @@ ResultCode ActionConditionalBlock::Execute(ScriptWorld * world, Scriptable * tar
 	if(cond.code != RESULT_CODE_OK)
 		return cond.code;
 
-	if(cond.value == 0.0)
+	if(cond.payload.num.value == 0.0)
 		return m_else.Execute(world, target, scopes);
 
 	return m_actions.Execute(world, target, scopes);
@@ -268,7 +270,7 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 	unsigned token = 0;
 	Result originRes = m_scriptableToken.Evaluate(&scopes);
 	if (originRes.code == RESULT_CODE_OK)
-		token = originRes.token;
+		token = originRes.payload.txt.token;
 
 	Scriptable * scriptable = world->GetScriptable(token);
 	if (!scriptable)
@@ -305,7 +307,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	unsigned token = 0;
 	Result originRes = m_originToken.Evaluate(&scopes);
 	if (originRes.code == RESULT_CODE_OK)
-		token = originRes.token;
+		token = originRes.payload.txt.token;
 
 	Scriptable * originScriptable = world->GetScriptable(token);
 	if (!originScriptable)
@@ -314,7 +316,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
   unsigned targetToken = 0;
   Result targetRes = m_targetToken.Evaluate(&scopes);
   if (targetRes.code == RESULT_CODE_OK)
-    targetToken = targetRes.token;
+    targetToken = targetRes.payload.txt.token;
 
 	Scriptable * targetScriptable = world->GetScriptable(targetToken);
 	if (!targetScriptable)
@@ -324,7 +326,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	unsigned targetListToken = m_targetListToken;
 
 	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](Scriptable * member) {
-		unsigned otherscope = world->GetTokenPool().AddToken("other");
+		unsigned otherscope = world->GetTokenPool().AddToken("other");		// TODO - cache
 
 		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);
@@ -338,7 +340,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 		if (cond.code != RESULT_CODE_OK)
 			return false;
 
-		if (cond.value == 0.0)
+		if (cond.payload.num.value == 0.0)
 			return false;
 
 		targetScriptable->GetScopes().ListAddEntry(targetListToken, member);
@@ -359,7 +361,7 @@ ResultCode ActionListRemove::Execute (ScriptWorld * world, Scriptable * target, 
 	unsigned token = 0;
 	Result originRes = m_originToken.Evaluate(&scopes);
 	if (originRes.code == RESULT_CODE_OK)
-		token = originRes.token;
+		token = originRes.payload.txt.token;
 
 	Scriptable * originScriptable = world->GetScriptable(token);
 	if (!originScriptable)
@@ -379,7 +381,7 @@ ResultCode ActionListRemove::Execute (ScriptWorld * world, Scriptable * target, 
 		if (cond.code != RESULT_CODE_OK)
 			return false;
 
-		if (cond.value == 0.0)
+		if (cond.payload.num.value == 0.0)
 			return false;
 
 		return true;

@@ -11,43 +11,46 @@
 
 
 
-ScriptWorld::ScriptWorld(TokenPool * pool, IEngineBinder * binder)
+ScriptWorld::ScriptWorld (TokenPool * pool, IEngineBinder * binder)
 	: m_binder(binder),
 	  m_tokens(pool)
 {
 	assert(m_tokens != nullptr);
+
+	if (pool)
+		m_magicTokenEvent = pool->AddToken("event");
 }
 
 
-ScriptWorld::~ScriptWorld() {
-	for(auto & instance : m_instances)
+ScriptWorld::~ScriptWorld () {
+	for (auto & instance : m_instances)
 		delete instance;
 }
 
 
 
-void ScriptWorld::AddArchetype(const std::string & name, Scriptable && archetype) {
+void ScriptWorld::AddArchetype (const std::string & name, Scriptable && archetype) {
 	unsigned token = m_tokens->AddToken(name);
 	assert(m_archetypes.find(token) == m_archetypes.end());
 
-	m_archetypes.emplace(std::make_pair(token, std::move(archetype)));
+	m_archetypes.emplace(token, std::move(archetype));
 }
 
 
-void ScriptWorld::AddScriptable(const std::string & name, Scriptable && scriptable) {
+void ScriptWorld::AddScriptable (const std::string & name, Scriptable && scriptable) {
 	unsigned token = m_tokens->AddToken(name);
 	assert(m_scriptables.find(token) == m_scriptables.end());
 		
-	m_scriptables.emplace(std::make_pair(token, std::move(scriptable)));
+	m_scriptables.emplace(token, std::move(scriptable));
 }
 
 
-void ScriptWorld::AddMagicBag(unsigned token) {
-	m_magicBags[token] = TextPropertyBag(token);
+void ScriptWorld::AddMagicBag (unsigned token) {
+	m_magicBags.emplace_back(token, TextPropertyBag(token));
 }
 
 
-void ScriptWorld::DispatchEvent(Scriptable * target, unsigned eventToken, const IFormulaPropertyBag * paramBag) {
+void ScriptWorld::DispatchEvent (Scriptable * target, unsigned eventToken, const IFormulaPropertyBag * paramBag) {
 	// TODO - this is a giant HACK
 	target->GetScopes().SetWorld(this);
 
@@ -90,7 +93,7 @@ bool ScriptWorld::DispatchEvents () {
 }
 
 
-void ScriptWorld::DumpOverview() const {
+void ScriptWorld::DumpOverview () const {
 	std::cout << "----- Scripting world " << this << " -----\n";
 	std::cout << "Contains " << m_scriptables.size() << " objects and " << m_archetypes.size() << " archetypes\n";
 	std::cout << "Instantiated " << m_instances.size() << " objects\n";
@@ -98,35 +101,36 @@ void ScriptWorld::DumpOverview() const {
 }
 
 
-Scriptable * ScriptWorld::GetArchetype(unsigned token) {
+Scriptable * ScriptWorld::GetArchetype (unsigned token) {
 	auto iter = m_archetypes.find(token);
-	if(iter == m_archetypes.end())
+	if (iter == m_archetypes.end())
 		return nullptr;
 
 	return &iter->second;
 }
 
-Scriptable * ScriptWorld::GetScriptable(unsigned token) {
+Scriptable * ScriptWorld::GetScriptable (unsigned token) {
 	auto iter = m_scriptables.find(token);
-	if(iter == m_scriptables.end())
+	if (iter == m_scriptables.end())
 		return nullptr;
 
 	return &iter->second;
 }
 
 
-TextPropertyBag * ScriptWorld::GetMagicBag(unsigned token) {
-	auto iter = m_magicBags.find(token);
-	if(iter == m_magicBags.end())
-		return nullptr;
+TextPropertyBag * ScriptWorld::GetMagicBag (unsigned token) {
+	for (auto & pair : m_magicBags) {
+		if (pair.first == token)
+			return &pair.second;
+	}
 
-	return &iter->second;
+	return nullptr;
 }
 
 
-Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IFormulaPropertyBag * paramBag) {
+Scriptable * ScriptWorld::InstantiateArchetype (unsigned token, IFormulaPropertyBag * paramBag) {
 	Scriptable * archetype = GetArchetype(token);
-	if(!archetype)
+	if (!archetype)
 		return nullptr;
 
 	Scriptable * instance = archetype->Instantiate();
@@ -139,9 +143,9 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned token, IFormulaPropertyB
 	return instance;
 }
 
-Scriptable * ScriptWorld::InstantiateArchetype(unsigned nameOfInstance, unsigned token, IFormulaPropertyBag * paramBag) {
+Scriptable * ScriptWorld::InstantiateArchetype (unsigned nameOfInstance, unsigned token, IFormulaPropertyBag * paramBag) {
 	Scriptable * archetype = GetArchetype(token);
-	if(!archetype)
+	if (!archetype)
 		return nullptr;
 
 	Scriptable * instance = archetype->Instantiate();
@@ -158,11 +162,11 @@ Scriptable * ScriptWorld::InstantiateArchetype(unsigned nameOfInstance, unsigned
 	return GetScriptable(nameOfInstance);
 }
 
-void ScriptWorld::QueueBroadcastEvent(const std::string & eventName) {
+void ScriptWorld::QueueBroadcastEvent (const std::string & eventName) {
 	QueueEvent(0, eventName);
 }
 
-void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName) {
+void ScriptWorld::QueueEvent (unsigned targetToken, const std::string & eventName) {
 	Event e;
 	e.nameToken = m_tokens->AddToken(eventName);
 	e.targetToken = targetToken;
@@ -172,7 +176,7 @@ void ScriptWorld::QueueEvent(unsigned targetToken, const std::string & eventName
 	m_eventQueue.push_back(e);
 }
 
-void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IFormulaPropertyBag * bag) {
+void ScriptWorld::QueueEvent (Scriptable * target, unsigned eventToken, IFormulaPropertyBag * bag) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = 0;
@@ -182,7 +186,7 @@ void ScriptWorld::QueueEvent(Scriptable * target, unsigned eventToken, IFormulaP
 	m_eventQueue.push_back(e);
 }
 
-void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds) {
+void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, IFormulaPropertyBag * paramBag, ValueT delaySeconds) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = targetToken;
@@ -194,7 +198,7 @@ void ScriptWorld::QueueDelayedEvent (unsigned targetToken, unsigned eventToken, 
 	m_eventQueueTimed.push_back(e);
 }
 
-void ScriptWorld::QueueDelayedEvent (Scriptable * target, unsigned eventToken, IFormulaPropertyBag * paramBag, double delaySeconds) {
+void ScriptWorld::QueueDelayedEvent (Scriptable * target, unsigned eventToken, IFormulaPropertyBag * paramBag, ValueT delaySeconds) {
 	Event e;
 	e.nameToken = eventToken;
 	e.targetToken = 0;
@@ -208,7 +212,7 @@ void ScriptWorld::QueueDelayedEvent (Scriptable * target, unsigned eventToken, I
 
 
 void ScriptWorld::TransferTimedEvents () {
-	auto iter = std::stable_partition(m_eventQueueTimed.begin(), m_eventQueueTimed.end(), [](const Event & e){
+	auto iter = std::stable_partition(m_eventQueueTimed.begin(), m_eventQueueTimed.end(), [](const Event & e) {
 		return (e.timestamp > std::chrono::system_clock::now());
 	});
 

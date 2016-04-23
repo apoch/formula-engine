@@ -143,13 +143,13 @@ void RunFlocking (bool allowConsoleOutput) {
 	endT = std::chrono::system_clock::now();
 
 	if (!allowConsoleOutput) {
-		std::chrono::duration<double> delta = endT - startT;
+		std::chrono::duration<ValueT> delta = endT - startT;
 
 		std::cout << "Evaluation count: " << Formula::GetEvaluationCounter() << "\n";
 		std::cout << "Time delta: " << delta.count() << " seconds\n";
 
 		std::cout.precision(4);
-		std::cout << "Evals per second: " << std::fixed << static_cast<double>(Formula::GetEvaluationCounter()) / delta.count() << std::endl;
+		std::cout << "Evals per second: " << std::fixed << static_cast<ValueT>(Formula::GetEvaluationCounter()) / delta.count() << std::endl;
 	}
 }
 

@@ -78,8 +78,8 @@ bool CommandTable::DispatchCommandToWorld(const std::string & command, std::stri
 		Result r;
 		r.code = RESULT_CODE_OK;
 		r.type = RESULT_TYPE_TOKEN;
-		r.token = valuetoken;
-		r.scope = world->GetTokenPool().AddToken("event");
+		r.payload.txt.token = valuetoken;
+		r.payload.txt.scope = world->GetTokenPool().AddToken("event");
 		
 		bag->Set(world->GetTokenPool().AddToken(param), r);
 	}

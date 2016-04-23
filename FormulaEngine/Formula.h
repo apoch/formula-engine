@@ -2,31 +2,44 @@
 
 
 
-enum ResultCode {
+enum ResultCode : unsigned {
 	RESULT_CODE_OK,
 	RESULT_CODE_SYNTAX_ERROR,
 	RESULT_CODE_MISSING_DEFINITION,
 	RESULT_CODE_TYPE_ERROR,
 };
 
-enum ResultType {
+enum ResultType : unsigned {
 	RESULT_TYPE_TOKEN,
 	RESULT_TYPE_SCALAR,
 	RESULT_TYPE_VECTOR2,
 };
 
 struct Result {
+	Result () {
+		type = RESULT_TYPE_SCALAR;
+		payload.num.value = 0;
+	}
+
 	ResultCode code;
-	ResultType type   = RESULT_TYPE_SCALAR;
-	double     value  = 0.0;
-	double     value2 = 0.0;
-	unsigned   token  = 0;
-	unsigned   scope  = 0;
+	ResultType type;
+
+	union ResultPayload {
+		struct NumericPayload {
+			ValueT     value;
+			ValueT     value2;
+		} num;
+
+		struct TextPayload {
+			unsigned   token;
+			unsigned   scope;
+		} txt;
+	} payload;
 };
 
 struct ListResult {
 	ResultCode code;
-	std::vector<double> values;
+	std::vector<ValueT> values;
 };
 
 
@@ -58,11 +71,13 @@ typedef Result (*FTerminalEvaluator)(const IFormulaContext * context, const clas
 class Formula {
 public:			// Construction
 	Formula();
+	~Formula();
 
 	Formula (Formula && other);
 	Formula (const Formula & other);
 
 public:			// Assignment
+	Formula & operator= (Formula && other);
 	Formula & operator= (const Formula & other);
 
 public:			// Enumerations
@@ -75,7 +90,7 @@ public:			// Enumerations
 	};
 
 public:			// Setup interface
-	void Push (double literalValue);
+	void Push (ValueT literalValue);
 	void Push (FTerminalEvaluator evaluator);
 	void Push (Operator op);
 	void Push (unsigned scope, unsigned token);
@@ -85,21 +100,17 @@ public:			// Evaluation interface
 	Result EvaluateSubexpression (const IFormulaContext * context, unsigned * pindex) const;
 	bool EvaluateScopedToken (unsigned index, unsigned * outScope, unsigned * outToken) const;
 
-private:		// Internal helpers
-	Result EvaluateFunction (const IFormulaContext * context, unsigned * pindex) const;
-	Result EvaluateTerminal (const IFormulaContext * context, unsigned index) const;
-
 private:		// Internal helper structures
 	struct Term {
-		enum Type {
+		enum Type : unsigned {
 			TERM_TYPE_LITERAL,
 			TERM_TYPE_EVALUATOR,
 			TERM_TYPE_OPERATOR,
 			TERM_TYPE_TOKEN,
-		};
+		} type;
 
 		union PayloadUnion {
-			double				 literalValue;
+			ValueT				 literalValue;
 			FTerminalEvaluator   evaluator;
 			Operator			 op;
 
@@ -108,13 +119,13 @@ private:		// Internal helper structures
 				unsigned token;
 			} scopedToken;
 		} payload;
-
-		Type type;
 	};
 
 private:		// Internal state
-	Term m_termBuffer[20];			// TODO - growth support?
 	unsigned m_termCount;
+	Term * m_termBuffer;			// TODO - growth support?
+
+	friend class FormulaTermScratchBuffer;
 
 private:		// Shared state
 	static unsigned s_evaluationCounter;

@@ -83,7 +83,7 @@ public:			// Execution interface
 
 private:		// Internal state
 	std::vector<IAction *> m_actions;
-	ScopedPropertyBag * m_scopeCache;		// TODO - revisit this; optimize?
+	ScopedPropertyBag * m_scopeCache;
 };
 
 

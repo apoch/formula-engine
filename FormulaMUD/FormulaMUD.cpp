@@ -53,8 +53,7 @@ void RunMud () {
 
 
 
-int main() {
-
+int main () {
 	// Optional memory leak checking
 	Utilities::LeakCheck();
 

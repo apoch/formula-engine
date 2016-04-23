@@ -85,7 +85,7 @@ bool FormulaParser::ParseToken(Formula * formula, std::string::const_iterator * 
 
 		std::string str(startpos, *iter);
 		std::istringstream convert(str);
-		double value = 0.0;
+		ValueT value = 0.0;
 		if(!(convert >> value))
 			return false;
 

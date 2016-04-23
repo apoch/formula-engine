@@ -16,7 +16,7 @@ public:			// Dispatch interface
 	void TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IFormulaPropertyBag * paramBag) const;
 
 private:		// Internal state
-	std::multimap<unsigned, ActionSet> m_eventHandlers;
+	std::map<unsigned, ActionSet> m_eventHandlers;
 	std::atomic<unsigned> m_refCount = 1;
 };
 

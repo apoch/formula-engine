@@ -32,6 +32,7 @@
 
 // Utility includes
 #include "Shared/Utilities.h"
+#include "Shared/ValueT.h"
 
 
 // FormulaEngine dependencies

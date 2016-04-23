@@ -26,7 +26,7 @@ Result FunctionBetween (const IFormulaContext * context, const class Formula & t
 	if(t.code != RESULT_CODE_OK)
 		return t;
 
-	ret.value = (v1.value < t.value && t.value < v2.value) ? 1.0 : 0.0;
+	ret.payload.num.value = (v1.payload.num.value < t.payload.num.value && t.payload.num.value < v2.payload.num.value) ? ValueT(1.0) : ValueT(0.0);
 	ret.code = RESULT_CODE_OK;
 	return ret;
 }
@@ -38,24 +38,24 @@ Result FunctionDistance (const IFormulaContext * context, const class Formula & 
 
 	--(*pindex);
 	Result v2 = termSource.EvaluateSubexpression(context, pindex);
-	if(v2.code != RESULT_CODE_OK)
+	if (v2.code != RESULT_CODE_OK)
 		return v2;
 
 	--(*pindex);
 	Result v1 = termSource.EvaluateSubexpression(context, pindex);
-	if(v1.code != RESULT_CODE_OK)
+	if (v1.code != RESULT_CODE_OK)
 		return v1;
 
-	double x1 = v1.value;
-	double y1 = v1.value2;
+	ValueT x1 = v1.payload.num.value;
+	ValueT y1 = v1.payload.num.value2;
 
-	double x2 = v2.value;
-	double y2 = v2.value2;
+	ValueT x2 = v2.payload.num.value;
+	ValueT y2 = v2.payload.num.value2;
 
-	double dx = x2 - x1;
-	double dy = y2 - y1;
+	ValueT dx = x2 - x1;
+	ValueT dy = y2 - y1;
 
-	ret.value = sqrt((dx * dx) + (dy * dy));
+	ret.payload.num.value = sqrt((dx * dx) + (dy * dy));
 	ret.code = RESULT_CODE_OK;
 	return ret;
 }
@@ -64,7 +64,7 @@ Result FunctionEqual (const IFormulaContext * context, const class Formula & ter
 	Result ret;
 	ret.type = RESULT_TYPE_SCALAR;
 	ret.code = RESULT_CODE_OK;
-	ret.value = 0.0f;
+	ret.payload.num.value = 0.0f;
 
 	--(*pindex);
 	Result v2 = termSource.EvaluateSubexpression(context, pindex);
@@ -79,18 +79,18 @@ Result FunctionEqual (const IFormulaContext * context, const class Formula & ter
 	if (v1.type == v2.type) {
 		switch (v1.type) {
 		case RESULT_TYPE_SCALAR:
-			if (v1.value == v2.value)
-				ret.value = 1.0f;
+			if (v1.payload.num.value == v2.payload.num.value)
+				ret.payload.num.value = 1.0f;
 			break;
 
 		case RESULT_TYPE_TOKEN:
-			if (v1.token == v2.token)
-				ret.value = 1.0f;
+			if (v1.payload.txt.token == v2.payload.txt.token)
+				ret.payload.num.value = 1.0f;
 			break;
 
 		case RESULT_TYPE_VECTOR2:
-			if (v1.value == v2.value && v1.value2 == v2.value2)
-				ret.value = 1.0f;
+			if (v1.payload.num.value == v2.payload.num.value && v1.payload.num.value2 == v2.payload.num.value2)
+				ret.payload.num.value = 1.0f;
 			break;
 
 		default:
@@ -107,7 +107,7 @@ Result FunctionFuzzyMatch (const IFormulaContext * context, const class Formula 
 	Result ret;
 	ret.type = RESULT_TYPE_SCALAR;
 	ret.code = RESULT_CODE_OK;
-	ret.value = 0.0f;
+	ret.payload.num.value = 0.0f;
 
 	--(*pindex);
 	Result v2 = termSource.EvaluateSubexpression(context, pindex);
@@ -122,9 +122,9 @@ Result FunctionFuzzyMatch (const IFormulaContext * context, const class Formula 
 	if (v1.type == v2.type) {
 		if (v1.type == RESULT_TYPE_TOKEN) {
 			std::string token1, token2;
-			if (context->ResolveToken(v1.scope, v1.token, &token1) && context->ResolveToken(v2.scope, v2.token, &token2)) {
+			if (context->ResolveToken(v1.payload.txt.scope, v1.payload.txt.token, &token1) && context->ResolveToken(v2.payload.txt.scope, v2.payload.txt.token, &token2)) {
 				if (token2.length() > 0 && token1.find(token2) != std::string::npos)
-					ret.value = 1.0f;
+					ret.payload.num.value = 1.0f;
 
 				// TODO - richer fuzzy text matching?
 			}
@@ -139,7 +139,7 @@ Result FunctionLess (const IFormulaContext * context, const class Formula & term
 	Result ret;
 	ret.type = RESULT_TYPE_SCALAR;
 	ret.code = RESULT_CODE_OK;
-	ret.value = 0.0f;
+	ret.payload.num.value = 0.0f;
 
 	--(*pindex);
 	Result v2 = termSource.EvaluateSubexpression(context, pindex);
@@ -154,8 +154,8 @@ Result FunctionLess (const IFormulaContext * context, const class Formula & term
 	if (v1.type == v2.type) {
 		switch (v1.type) {
 		case RESULT_TYPE_SCALAR:
-			if (v1.value < v2.value)
-				ret.value = 1.0f;
+			if (v1.payload.num.value < v2.payload.num.value)
+				ret.payload.num.value = 1.0f;
 			break;
 
 		default:
@@ -180,22 +180,22 @@ Result FunctionLimit (const IFormulaContext * context, const class Formula & ter
 
 	// TODO - type checking in all functions
 
-	double x = v.value;
-	double y = v.value2;
+	ValueT x = v.payload.num.value;
+	ValueT y = v.payload.num.value2;
 
-	double mag = sqrt((x * x) + (y * y));
-	if(mag <= lim.value)
+	ValueT mag = sqrt((x * x) + (y * y));
+	if(mag <= lim.payload.num.value)
 		return v;
 
-	double scale = lim.value / mag;
+	ValueT scale = lim.payload.num.value / mag;
 	x *= scale;
 	y *= scale;
 
 	Result ret;
 	ret.code = RESULT_CODE_OK;
 	ret.type = RESULT_TYPE_VECTOR2;
-	ret.value = x;
-	ret.value2 = y;
+	ret.payload.num.value = x;
+	ret.payload.num.value2 = y;
 
 	return ret;
 }
@@ -207,18 +207,18 @@ Result FunctionNormalize (const IFormulaContext * context, const class Formula &
 
 	--(*pindex);
 	Result v1 = termSource.EvaluateSubexpression(context, pindex);
-	if(v1.code != RESULT_CODE_OK)
+	if (v1.code != RESULT_CODE_OK)
 		return v1;
 
-	double x1 = v1.value;
-	double y1 = v1.value2;
+	ValueT x1 = v1.payload.num.value;
+	ValueT y1 = v1.payload.num.value2;
 
-	double mag = sqrt((x1 * x1) + (y1 * y1));
+	ValueT mag = sqrt((x1 * x1) + (y1 * y1));
 	x1 /= mag;
 	y1 /= mag;
 
-	ret.value = x1;
-	ret.value2 = y1;
+	ret.payload.num.value = x1;
+	ret.payload.num.value2 = y1;
 	ret.type = RESULT_TYPE_VECTOR2;
 	ret.code = RESULT_CODE_OK;
 	return ret;
@@ -232,11 +232,11 @@ Result FunctionRandom (const IFormulaContext * context, const class Formula & te
 	--(*pindex);
 
 	Result param = termSource.EvaluateSubexpression(context, pindex);
-	if(param.code != RESULT_CODE_OK)
+	if (param.code != RESULT_CODE_OK)
 		return param;
 
-	std::uniform_real_distribution<double> distribution(0.0, param.value);
-	ret.value = distribution(s_generator);
+	std::uniform_real_distribution<ValueT> distribution(0.0, param.payload.num.value);
+	ret.payload.num.value = distribution(s_generator);
 	ret.code = RESULT_CODE_OK;
 
 	return ret;
@@ -250,11 +250,11 @@ Result FunctionRound (const IFormulaContext * context, const class Formula & ter
 	--(*pindex);
 
 	Result param = termSource.EvaluateSubexpression(context, pindex);
-	if(param.code != RESULT_CODE_OK)
+	if (param.code != RESULT_CODE_OK)
 		return param;
 
 	ret.code = RESULT_CODE_OK;
-	ret.value = std::round(param.value);
+	ret.payload.num.value = std::round(param.payload.num.value);
 
 	return ret;
 }
@@ -269,26 +269,26 @@ Result FunctionSumOfList (const IFormulaContext * context, const class Formula &
 	unsigned parameterListName = 0;
 	if (!termSource.EvaluateScopedToken(*pindex, &parameterListScope, &parameterListName)) {
 		ret.code = RESULT_CODE_SYNTAX_ERROR;
-		ret.value = 0.0;
+		ret.payload.num.value = 0.0;
 		return ret;
 	}
 
 	if (!context) {
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
-		ret.value = 0.0;
+		ret.payload.num.value = 0.0;
 		return ret;
 	}
 
 	ListResult listresult = context->ResolveList(*context, parameterListScope, parameterListName);
 	if (listresult.code != RESULT_CODE_OK) {
 		ret.code = listresult.code;
-		ret.value = 0.0;
+		ret.payload.num.value = 0.0;
 		return ret;
 	}
 
-	ret.value = 0.0;
+	ret.payload.num.value = 0.0;
 	for (auto val : listresult.values)
-		ret.value += val;
+		ret.payload.num.value += val;
 
 	ret.code = RESULT_CODE_OK;
 	return ret;
@@ -296,26 +296,19 @@ Result FunctionSumOfList (const IFormulaContext * context, const class Formula &
 
 
 Result FunctionVector (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) {
-	Result ret;
+	// Always retrieve parameter values right to left
 
 	--(*pindex);
-
-	Result xparam = termSource.EvaluateSubexpression(context, pindex);
-	if (xparam.code != RESULT_CODE_OK)
-		return xparam;
-
-	--(*pindex);
-
 	Result yparam = termSource.EvaluateSubexpression(context, pindex);
-	if (yparam.code != RESULT_CODE_OK)
-		return yparam;
 
-	// These are inverted because parameters to the function are
-	// obtained in reverse order, due to internal notation.
+	--(*pindex);
+	Result xparam = termSource.EvaluateSubexpression(context, pindex);
+
+	Result ret;
 	ret.code = RESULT_CODE_OK;
 	ret.type = RESULT_TYPE_VECTOR2;
-	ret.value = yparam.value;
-	ret.value2 = xparam.value;
+	ret.payload.num.value = xparam.payload.num.value;
+	ret.payload.num.value2 = yparam.payload.num.value;
 	return ret;
 }
 

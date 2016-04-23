@@ -124,13 +124,13 @@ Result Scriptable::ResolveBinding(const IFormulaContext & context, unsigned scop
 
 	ret.code = RESULT_CODE_OK;
 
-	unsigned arity = binding->GetPropertyBinding(token, &ret.token);
+	unsigned arity = binding->GetPropertyBinding(token, &ret.payload.txt.token);
 	if (arity == 1) {
 		ret.type = RESULT_TYPE_TOKEN;
 		return ret;
 	}
 
-	arity = binding->GetPropertyBinding(token, &ret.value, &ret.value2);
+	arity = binding->GetPropertyBinding(token, &ret.payload.num.value, &ret.payload.num.value2);
 	if(arity == 0)
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
 	else if(arity == 1)

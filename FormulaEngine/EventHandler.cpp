@@ -12,13 +12,15 @@
 
 
 void EventHandlerSet::AddHandler (unsigned eventToken, ActionSet && actions) {
-	m_eventHandlers.emplace(std::make_pair(eventToken, std::move(actions)));
+	assert(m_eventHandlers.find(eventToken) == m_eventHandlers.end());
+
+	m_eventHandlers.emplace(eventToken, std::move(actions));
 }
 
 void EventHandlerSet::TriggerHandlers (ScriptWorld * world, unsigned eventToken, Scriptable * target, const IFormulaPropertyBag * paramBag) const {
-	unsigned magic = world->GetTokenPool().AddToken("event");		// TODO - improve
-	auto range = m_eventHandlers.equal_range(eventToken);
-	for(auto iter = range.first; iter != range.second; ++iter) {
+	auto iter = m_eventHandlers.find(eventToken);
+	if (iter != m_eventHandlers.end()) {
+		unsigned magic = world->GetMagicTokenForEvent();
 		iter->second.Execute(world, target, magic, paramBag);
 	}
 }
@@ -29,7 +31,7 @@ void EventHandlerSet::IncRef() {
 }
 
 void EventHandlerSet::DecRef() {
-	if(--m_refCount == 0)
+	if (--m_refCount == 0)
 		delete this;
 }
 

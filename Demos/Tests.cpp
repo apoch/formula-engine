@@ -63,7 +63,7 @@ void TestSimpleFormulaBag () {
 	FormulaParser parser;
 
 	Result hr;
-	hr.value = 20.0;
+	hr.payload.num.value = 20.0;
 
 	SimplePropertyBag bag;
 	bag.Set(pool.AddToken("twenty"), hr);
@@ -72,7 +72,7 @@ void TestSimpleFormulaBag () {
 	Result res = f.Evaluate(&bag);
 
 	test_assert(res.code == RESULT_CODE_OK);
-	test_assert(res.value == 42.0);
+	test_assert(res.payload.num.value == 42.0);
 }
 
 //
@@ -93,7 +93,7 @@ void TestFormulas () {
 	fbag.Set(pool.AddToken("alpha"), parser.Parse("32.0 + 5.0", &pool));
 	fbag.Set(pool.AddToken("beta"), parser.Parse("alpha + 5.0", &pool));
 
-	double val = fbag.ResolveNumber(fbag, 0, pool.AddToken("beta")).value;
+	ValueT val = fbag.ResolveNumber(fbag, 0, pool.AddToken("beta")).payload.num.value;
 
 	test_assert(val == 42.0);
 }
@@ -112,7 +112,7 @@ void TestScopedBag () {
 	FormulaParser parser;
 
 	Result hr;
-	hr.value = 100.0;
+	hr.payload.num.value = 100.0;
 
 	FormulaPropertyBag mybag;
 	mybag.Set(pool.AddToken("health"), hr);
@@ -127,7 +127,7 @@ void TestScopedBag () {
 	scopes.GetScopes().AddScope(pool.AddToken("my"), mybag);
 
 	Formula modifiedHealth = parser.Parse("my:health - event:damageAmount", &pool);
-	double val = modifiedHealth.Evaluate(&scopes).value;
+	ValueT val = modifiedHealth.Evaluate(&scopes).payload.num.value;
 
 	test_assert(val == 90.0);
 }
@@ -154,7 +154,7 @@ void TestActionSets () {
 	eventbag.Set(pool.AddToken("damageAmount"), parser.Parse("10", &pool));
 
 	Result hr;
-	hr.value = 100.0;
+	hr.payload.num.value = 100.0;
 
 	Scriptable scriptable;
 	scriptable.GetScopes().GetProperties().Set(pool.AddToken("health"), hr);
@@ -163,7 +163,7 @@ void TestActionSets () {
 	actions.Execute(nullptr, &scriptable, pool.AddToken("event"), &eventbag);
 
 
-	double val = scriptable.GetScopes().ResolveNumber(scriptable.GetScopes(), 0, pool.AddToken("health")).value;
+	ValueT val = scriptable.GetScopes().ResolveNumber(scriptable.GetScopes(), 0, pool.AddToken("health")).payload.num.value;
 	test_assert(val == 90.0);
 }
 
@@ -183,14 +183,14 @@ void TestListsAndFunctions () {
 	Scriptable test;
 
 	Result hr;
-	hr.value = 10.0;
+	hr.payload.num.value = 10.0;
 
 	Scriptable tenbag;
 	tenbag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 	test.GetScopes().ListAddEntry(pool.AddToken("testlist"), &tenbag);
 
 
-	hr.value = 30.0;
+	hr.payload.num.value = 30.0;
 
 	Scriptable thirtybag;
 	thirtybag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
@@ -199,17 +199,17 @@ void TestListsAndFunctions () {
 	test.GetScopes().GetProperties().Set(pool.AddToken("computed"), parser.Parse("SumOf(testlist:value)", &pool));
 
 	{
-		hr.value = 2.0;
+		hr.payload.num.value = 2.0;
 
 		Scriptable twobag;
 		twobag.GetScopes().GetProperties().Set(pool.AddToken("value"), hr);
 		test.GetScopes().ListAddEntry(pool.AddToken("testlist"), &twobag);
 
-		double val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
+		ValueT val1 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).payload.num.value;
 		test_assert(val1 == 42.0);
 	}
 
-	double val2 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
+	ValueT val2 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).payload.num.value;
 	test_assert(val2 == 40.0);
 
 	Scriptable twobagalso;
@@ -221,7 +221,7 @@ void TestListsAndFunctions () {
 	actions.AddAction(new ActionListAddEntry(pool.AddToken("testlist"), twobagalso));
 	actions.Execute(nullptr, &test, 0, nullptr);
 
-	double val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
+	ValueT val3 = test.GetScopes().ResolveNumber(test.GetScopes(), 0, pool.AddToken("computed")).value;
 	test_assert(val3 == 42.0);
 	*/
 }
@@ -249,7 +249,7 @@ void TestDeserialization () {
 	test_assert(world.GetScriptable(testToken) != nullptr);
 
 	auto & scopes = world.GetScriptable(testToken)->GetScopes();
-	double val = scopes.ResolveNumber(scopes, 0, computedToken).value;
+	ValueT val = scopes.ResolveNumber(scopes, 0, computedToken).payload.num.value;
 
 	test_assert(val == 42.0);
 }
@@ -270,16 +270,16 @@ void TestVectors () {
 	Result res = formula.Evaluate(nullptr);
 	test_assert(res.code == RESULT_CODE_OK);
 	test_assert(res.type == RESULT_TYPE_VECTOR2);
-	test_assert(res.value == 2.0);
-	test_assert(res.value2 == 8.0);
+	test_assert(res.payload.num.value == 2.0);
+	test_assert(res.payload.num.value2 == 8.0);
 
 
 	Formula summation = parser.Parse("Vec(1, 7) + Vec(1, 1)", nullptr);
 	Result sum = summation.Evaluate(nullptr);
 	test_assert(sum.code == RESULT_CODE_OK);
 	test_assert(sum.type == RESULT_TYPE_VECTOR2);
-	test_assert(sum.value == 2.0);
-	test_assert(sum.value2 == 8.0);
+	test_assert(sum.payload.num.value == 2.0);
+	test_assert(sum.payload.num.value2 == 8.0);
 }
 
 

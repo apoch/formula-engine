@@ -22,9 +22,9 @@ public:			// IO interface
 	void EnterConnectedRoom (unsigned directionIdToken);
 
 	void SendMessage (unsigned message);
-	void SendRoomDescription (double ignored);
+	void SendRoomDescription (ValueT ignored);
 
-	void PollInput (double ignored);
+	void PollInput (ValueT ignored);
 
 public:			// Properties
 	void GetCurrentRoomNameToken (unsigned * outToken) const;

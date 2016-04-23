@@ -22,7 +22,7 @@
 //
 // Add a string into the pool and get its token back
 //
-unsigned TokenPool::AddToken(const char token[]) {
+unsigned TokenPool::AddToken (const char token[]) {
 	auto iter = m_fastLookup.find(token);
 	if (iter != m_fastLookup.end())
 		return iter->second;
@@ -36,7 +36,7 @@ unsigned TokenPool::AddToken(const char token[]) {
 }
 
 
-unsigned TokenPool::AddToken(const std::string & token) {
+unsigned TokenPool::AddToken (const std::string & token) {
 	auto iter = m_fastLookup.find(token);
 	if (iter != m_fastLookup.end())
 		return iter->second;
@@ -62,7 +62,7 @@ unsigned TokenPool::FindToken (const std::string & token) {
 //
 // Given a token, look up the original string for it
 //
-const std::string & TokenPool::GetStringFromToken(unsigned token) const {
+const std::string & TokenPool::GetStringFromToken (unsigned token) const {
 	assert(token != 0);
 	
 	unsigned index = token - 1;

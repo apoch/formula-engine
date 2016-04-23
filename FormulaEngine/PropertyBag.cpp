@@ -18,19 +18,19 @@ void SimplePropertyBag::MaintainSorted() {
 }
 
 void SimplePropertyBag::Set(unsigned token, const Result & value) {
-	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, double> & item) {
+	auto iter = std::remove_if(std::begin(m_bag), std::end(m_bag), [token](const std::pair<unsigned, ValueT> & item) {
 		return item.first == token;
 	});
 	m_bag.erase(iter, m_bag.end());
 
-	m_bag.emplace_back(std::make_pair(token, value.value));
+	m_bag.emplace_back(token, value.payload.num.value);
 	MaintainSorted();
 }
 
 Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigned scope, unsigned token) const {
 	Result ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
-	ret.value = 0.0;
+	ret.payload.num.value = 0.0;
 
 	if(scope != 0) {
 		if(&context != this)
@@ -44,7 +44,7 @@ Result SimplePropertyBag::ResolveNumber(const IFormulaContext & context, unsigne
 	});
 	if(iter != m_bag.end() && iter->first == token) {
 		ret.code = RESULT_CODE_OK;
-		ret.value = iter->second;
+		ret.payload.num.value = iter->second;
 	}
 
 	return ret;
@@ -108,17 +108,16 @@ void FormulaPropertyBag::Set (unsigned token, const Formula & formula) {
 
 Result FormulaPropertyBag::ResolveNumber (const IFormulaContext & context, unsigned scope, unsigned token) const {
 	if (scope == 0) {
-		auto iter = std::lower_bound(std::begin(m_bag), std::end(m_bag), token, [](const BagPair & l, unsigned token) {
-			return l.first < token;
-		});
-
-		if (iter != m_bag.end() && iter->first == token)
-			return iter->second.Evaluate(&context);
+		for (const auto & pair : m_bag) {
+			if (pair.first == token) {
+				return pair.second.Evaluate(&context);
+			}
+		}
 	}
 
 	Result ret;
 	ret.code = RESULT_CODE_MISSING_DEFINITION;
-	ret.value = 0.0;
+	ret.payload.num.value = 0.0;
 	return ret;
 }
 
@@ -136,10 +135,10 @@ ListResult FormulaPropertyBag::ResolveList (const IFormulaContext & context, uns
 void FormulaPropertyBag::Set(unsigned token, const Result & value) {
 	Formula f;
 	if(value.type == RESULT_TYPE_SCALAR)
-		f.Push(value.value);
+		f.Push(value.payload.num.value);
 	else if(value.type == RESULT_TYPE_VECTOR2) {
-		f.Push(value.value);
-		f.Push(value.value2);
+		f.Push(value.payload.num.value);
+		f.Push(value.payload.num.value2);
 		f.Push(*GetFunctionEvaluatorByName("Vec"));
 	}
 
@@ -149,15 +148,16 @@ void FormulaPropertyBag::Set(unsigned token, const Result & value) {
 
 
 void ScopeResolver::AddScope (unsigned token, const IFormulaContext & context) {
-	m_bag[token] = &context;
+	m_bag.emplace_back(token, &context);
 }
 
 const IFormulaContext * ScopeResolver::GetScope (unsigned token) const {
-	auto iter = m_bag.find(token);
-	if(iter == m_bag.end())
-		return nullptr;
+	for (const auto & pair : m_bag) {
+		if (pair.first == token)
+			return pair.second;
+	}
 
-	return iter->second;
+	return nullptr;
 }
 
 void ScopeResolver::Clear () {
@@ -197,7 +197,7 @@ ScopedPropertyBag::~ScopedPropertyBag () {
 }
 
 
-void ScopedPropertyBag::Clear() {
+void ScopedPropertyBag::Clear () {
 	m_lists.clear();
 	m_builtInBag.Clear();
 	m_resolver.Clear();
@@ -249,7 +249,7 @@ const IFormulaContext * ScopedPropertyBag::ResolveContext (unsigned scope) const
 	return m_resolver.GetScope(scope);
 }
 
-Result ScopedPropertyBag::ResolveNumber(const IFormulaContext & originalContext, unsigned scope, unsigned token) const {
+Result ScopedPropertyBag::ResolveNumber (const IFormulaContext & originalContext, unsigned scope, unsigned token) const {
 	if (m_world && scope) {
 		TextPropertyBag  * magic = m_world->GetMagicBag(scope);
 		if (magic)
@@ -261,15 +261,15 @@ Result ScopedPropertyBag::ResolveNumber(const IFormulaContext & originalContext,
 	}
 
 	auto resolved = scope ? m_resolver.GetScope(scope) : m_thisBag;
-	if(resolved == nullptr) {
+	if (resolved == nullptr) {
 		Result ret;
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
-		ret.value = 0.0;
+		ret.payload.num.value = 0.0;
 		return ret;
 	}
 
 	Result ret = resolved->ResolveNumber(originalContext, 0, token);
-	if(ret.code != RESULT_CODE_OK) {
+	if (ret.code != RESULT_CODE_OK) {
 		if(m_bindingBag)
 			return m_bindingBag->ResolveNumber(originalContext, 0, token);
 	}
@@ -295,7 +295,7 @@ ListResult ScopedPropertyBag::ResolveList(const IFormulaContext & context, unsig
 					break;
 				}
 
-				ret.values.push_back(result.value);
+				ret.values.push_back(result.payload.num.value);
 			}
 		}
 
@@ -321,15 +321,16 @@ void ScopedPropertyBag::SetBindings (const BindingPropertyBag & refBag) {
 
 
 void ScopedPropertyBag::SetNamedBinding (unsigned token, Scriptable * binding) {
-	m_namedBindings[token] = binding;
+	m_namedBindings.emplace_back(token, binding);
 }
 
 Scriptable * ScopedPropertyBag::GetNamedBinding (unsigned token) const {
-	auto iter = m_namedBindings.find(token);
-	if (iter == m_namedBindings.end())
-		return nullptr;
+	for (const auto & pair : m_namedBindings) {
+		if (pair.first == token)
+			return pair.second;
+	}
 
-	return iter->second;
+	return nullptr;
 }
 
 void ScopedPropertyBag::PopulateNamedBindings (ScopedPropertyBag * other) const {
@@ -404,8 +405,8 @@ Result TextPropertyBag::ResolveNumber(const IFormulaContext & context, unsigned 
 	Result ret;
 	ret.type = RESULT_TYPE_TOKEN;
 	ret.code = RESULT_CODE_OK;
-	ret.token = token;
-	ret.scope = m_scope;
+	ret.payload.txt.token = token;
+	ret.payload.txt.scope = m_scope;
 
 	return ret;
 }
@@ -436,7 +437,7 @@ Result TokenPropertyBag::ResolveNumber (const IFormulaContext & context, unsigne
 	auto iter = m_bag.find(token);
 	if (iter == m_bag.end()) {
 		ret.code = RESULT_CODE_MISSING_DEFINITION;
-		ret.value = 0.0;
+		ret.payload.num.value = 0.0;
 		return ret;
 	}
 

@@ -17,8 +17,8 @@ class ScriptWorld;
 // Helper structure for representing coordinates
 //
 struct Coords {
-	double x;
-	double y;
+	ValueT x;
+	ValueT y;
 };
 
 
@@ -32,11 +32,11 @@ struct Coords {
 class Unit {
 public:			// Construction
 	Unit (unsigned x, unsigned y, unsigned maxX, unsigned maxY, Scriptable * boundScriptable, ScriptWorld * world) {
-		m_location.x = double(x);
-		m_location.y = double(y);
+		m_location.x = ValueT(x);
+		m_location.y = ValueT(y);
 
-		m_bounds.x = double(maxX);
-		m_bounds.y = double(maxY);
+		m_bounds.x = ValueT(maxX);
+		m_bounds.y = ValueT(maxY);
 
 		m_desired = m_location;
 
@@ -49,26 +49,26 @@ public:			// Simulation advancement
 
 public:			// Coordinates
 	const Coords & GetCoordinates () const			{ return m_location; }
-	void GetCoordinatesForScript (double * x, double * y) const {
+	void GetCoordinatesForScript (ValueT * x, ValueT * y) const {
 		*x = m_location.x;
 		*y = m_location.y;
 	}
 	
-	void MoveDirection (double xDir, double yDir);
-	void Teleport (double x, double y);
+	void MoveDirection (ValueT xDir, ValueT yDir);
+	void Teleport (ValueT x, ValueT y);
 
 public:			// Additional stuff
 	bool IsBlue () const							{ return m_blue > 0.0; }
-	void SetBlueColor (double blue);
+	void SetBlueColor (ValueT blue);
 
 private:		// Internal helpers
-	void SetLocationClamped (double x, double y);
+	void SetLocationClamped (ValueT x, ValueT y);
 
 private:		// Internal state
 	Coords m_location;
 	Coords m_desired;
 	Coords m_bounds;
-	double m_blue = -1.0;
+	ValueT m_blue = -1.0;
 
 	Scriptable * m_scriptable;
 	ScriptWorld * m_world;

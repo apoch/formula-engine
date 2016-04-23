@@ -39,28 +39,28 @@ void Unit::AdvanceTick () {
 //
 // Set the desired location to a grid cell in the given direction
 //
-void Unit::MoveDirection (double xDir, double yDir) {
+void Unit::MoveDirection (ValueT xDir, ValueT yDir) {
 	SetLocationClamped(m_location.x + xDir, m_location.y + yDir);
 }
 
 //
 // Set the desired location to the given grid cell
 //
-void Unit::Teleport (double x, double y) {
+void Unit::Teleport (ValueT x, ValueT y) {
 	SetLocationClamped(x, y);
 }
 
 //
 // Stash a color value (used for tagging units in some demos)
 //
-void Unit::SetBlueColor (double blue) {
+void Unit::SetBlueColor (ValueT blue) {
 	m_blue = blue;
 }
 
 //
 // Register desire to move to the given grid cell, clamped to map bounds
 //
-void Unit::SetLocationClamped (double x, double y) {
+void Unit::SetLocationClamped (ValueT x, ValueT y) {
 	if (x < 0.0)
 		x = m_bounds.x;
 	else if (x >= m_bounds.x)

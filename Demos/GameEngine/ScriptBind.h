@@ -32,14 +32,14 @@ namespace Game {
 template <typename BoundT>
 class BindingTable {
 public:			// Type shortcuts
-	typedef void (BoundT::*GoalStateFunctionDouble)(double);
-	typedef void (BoundT::*GoalStateFunctionVector)(double, double);
+	typedef void (BoundT::*GoalStateFunctionValueT)(ValueT);
+	typedef void (BoundT::*GoalStateFunctionVector)(ValueT, ValueT);
 
-	typedef void (BoundT::*PropertyFunctionVector)(double *, double *) const;
+	typedef void (BoundT::*PropertyFunctionVector)(ValueT *, ValueT *) const;
 
 public:			// Binding interface
-	void BindTokenToFunction (unsigned token, GoalStateFunctionDouble func) {
-		m_doubleMap[token] = func;
+	void BindTokenToFunction (unsigned token, GoalStateFunctionValueT func) {
+		m_valueTMap[token] = func;
 	}
 
 	void BindTokenToFunction (unsigned token, GoalStateFunctionVector func) {
@@ -50,15 +50,15 @@ public:			// Binding interface
 		m_propertyVectorMap[token] = func;
 	}
 
-	void Dispatch (unsigned token, BoundT * boundObject, double value) {
-		if (m_doubleMap.find(token) == m_doubleMap.end())
+	void Dispatch (unsigned token, BoundT * boundObject, ValueT value) {
+		if (m_valueTMap.find(token) == m_valueTMap.end())
 			return;
 
-		GoalStateFunctionDouble func = m_doubleMap[token];
+		GoalStateFunctionValueT func = m_valueTMap[token];
 		((boundObject)->*func)(value);
 	}
 
-	void Dispatch (unsigned token, BoundT * boundObject, double valuex, double valuey) {
+	void Dispatch (unsigned token, BoundT * boundObject, ValueT valuex, ValueT valuey) {
 		if (m_vectorMap.find(token) == m_vectorMap.end())
 			return;
 
@@ -71,7 +71,7 @@ public:			// Binding interface
 		return m_propertyVectorMap.find(token) != m_propertyVectorMap.end();
 	}
 
-	unsigned DispatchProperty (unsigned token, BoundT * boundObject, double * outX, double * outY) {
+	unsigned DispatchProperty (unsigned token, BoundT * boundObject, ValueT * outX, ValueT * outY) {
 		if (m_propertyVectorMap.find(token) == m_propertyVectorMap.end())
 			return 0;
 
@@ -81,7 +81,7 @@ public:			// Binding interface
 	}
 
 private:		// Internal state
-	std::map<unsigned, GoalStateFunctionDouble> m_doubleMap;
+	std::map<unsigned, GoalStateFunctionValueT> m_valueTMap;
 	std::map<unsigned, GoalStateFunctionVector> m_vectorMap;
 
 	std::map<unsigned, PropertyFunctionVector> m_propertyVectorMap;
@@ -110,11 +110,11 @@ public:			// Goal state and property interface
 		assert(false);		// Not implemented
 	}
 
-	void SetGoalState (unsigned token, double state) override {
+	void SetGoalState (unsigned token, ValueT state) override {
 		m_table->Dispatch(token, m_bound, state);
 	}
 
-	void SetGoalState (unsigned token, double statex, double statey) override {
+	void SetGoalState (unsigned token, ValueT statex, ValueT statey) override {
 		m_table->Dispatch(token, m_bound, statex, statey);
 	}
 
@@ -128,7 +128,7 @@ public:			// Goal state and property interface
 		return 0;			// Not implemented
 	}
 
-	unsigned GetPropertyBinding (unsigned token, double * out1, double * out2) const override {
+	unsigned GetPropertyBinding (unsigned token, ValueT * out1, ValueT * out2) const override {
 		return m_table->DispatchProperty(token, m_bound, out1, out2);
 	}
 

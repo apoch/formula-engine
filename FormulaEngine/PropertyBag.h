@@ -25,7 +25,7 @@ private:
 	void MaintainSorted();
 
 private:		// Internal state
-	typedef std::pair<unsigned, double> BagPair;
+	typedef std::pair<unsigned, ValueT> BagPair;
 	std::vector<BagPair> m_bag;
 };
 
@@ -72,10 +72,10 @@ private:		// Internal state
 
 class ScopeResolver {
 public:			// Configuration interface
-	void AddScope(unsigned token, const IFormulaContext & context);
-	const IFormulaContext * GetScope(unsigned token) const;
+	void AddScope (unsigned token, const IFormulaContext & context);
+	const IFormulaContext * GetScope (unsigned token) const;
 
-	void Clear();
+	void Clear ();
 
 	template <typename FunctorT>
 	void EnumScopes (FunctorT callback) const {
@@ -85,7 +85,7 @@ public:			// Configuration interface
 	}
 
 private:		// Internal state
-	std::map<unsigned, const IFormulaContext *> m_bag;
+	std::vector<std::pair<unsigned, const IFormulaContext *>> m_bag;
 };
 
 
@@ -174,7 +174,7 @@ private:		// Internal state
 	FormulaPropertyBag m_builtInBag;
 	ScopeResolver m_resolver;
 
-	std::map<unsigned, Scriptable *> m_namedBindings;
+	std::vector<std::pair<unsigned, Scriptable *>> m_namedBindings;
 
 	ScriptWorld * m_world;
 };

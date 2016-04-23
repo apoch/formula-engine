@@ -50,7 +50,7 @@ void User::EnterRoom (unsigned roomIdToken) {
 	UpdateRoom();
 }
 
-void User::SendRoomDescription (double) {
+void User::SendRoomDescription (ValueT) {
 	assert(m_room != nullptr);
 
 	std::cout << m_room->GetDescription() << "\n" << std::endl;
@@ -83,9 +83,9 @@ void User::SendMessage (unsigned tokenId) {
 			unsigned placeholderToken = m_world->GetTokenPool().AddToken(formatter.substr(phindex + 1, phendindex - phindex - 1));
 			Result res = m_scriptable->GetScopes().GetProperties().ResolveNumber(m_scriptable->GetScopes(), 0, placeholderToken);
 			if (res.code != RESULT_CODE_OK)
-				res.value = 0.0;
+				res.payload.num.value = 0.0;
 
-			std::cout << res.value;
+			std::cout << res.payload.num.value;
 
 			outindex = phendindex;
 
@@ -100,7 +100,7 @@ void User::SendMessage (unsigned tokenId) {
 }
 
 	
-void User::PollInput (double) {
+void User::PollInput (ValueT) {
 	
 	std::string buffer;
 	if (!Console::ReadLine(&buffer))
