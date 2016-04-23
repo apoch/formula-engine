@@ -17,8 +17,10 @@ ScriptWorld::ScriptWorld (TokenPool * pool, IEngineBinder * binder)
 {
 	assert(m_tokens != nullptr);
 
-	if (pool)
+	if (pool) {
 		m_magicTokenEvent = pool->AddToken("event");
+		m_magicTokenOther = pool->AddToken("other");
+	}
 }
 
 

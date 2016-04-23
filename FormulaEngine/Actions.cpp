@@ -278,8 +278,8 @@ ResultCode ActionListForEach::Execute(ScriptWorld * world, Scriptable * target, 
 
 	const ActionSet * myActions = &m_loopActions;
 
-	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](Scriptable * member){
-		unsigned otherscope = world->GetTokenPool().AddToken("other");
+	return scriptable->GetScopes().ListEnumerate(m_listToken, [world, target, &scopes, myActions](Scriptable * member) {
+		unsigned otherscope = world->GetMagicTokenForOther();
 
 		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);
@@ -326,7 +326,7 @@ ResultCode ActionListTransfer::Execute (ScriptWorld * world, Scriptable * target
 	unsigned targetListToken = m_targetListToken;
 
 	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes, targetScriptable, targetListToken](Scriptable * member) {
-		unsigned otherscope = world->GetTokenPool().AddToken("other");		// TODO - cache
+		unsigned otherscope = world->GetMagicTokenForOther();
 
 		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);
@@ -370,7 +370,7 @@ ResultCode ActionListRemove::Execute (ScriptWorld * world, Scriptable * target, 
 	const Formula * condition = &m_condition;
 
 	return originScriptable->GetScopes().ListRemoveIf(m_originListToken, [world, condition, &scopes](Scriptable * member) {
-		unsigned otherscope = world->GetTokenPool().AddToken("other");
+		unsigned otherscope = world->GetMagicTokenForOther();
 
 		ScopedPropertyBag newScopes(world);
 		newScopes.InstantiateFrom(scopes);

@@ -39,6 +39,10 @@ public:			// Event pump interface
 		return m_magicTokenEvent;
 	}
 
+	unsigned GetMagicTokenForOther () const {
+		return m_magicTokenOther;
+	}
+
 
 public:			// Debugging interface
 	void DumpOverview() const;
@@ -71,6 +75,7 @@ private:		// Internal state
 	IEngineBinder * m_binder;
 
 	unsigned m_magicTokenEvent = 0;
+	unsigned m_magicTokenOther = 0;
 };
 
 

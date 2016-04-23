@@ -296,6 +296,8 @@ Result FunctionSumOfList (const IFormulaContext * context, const class Formula &
 
 
 Result FunctionVector (const IFormulaContext * context, const class Formula & termSource, unsigned * pindex) {
+	Result ret;
+
 	// Always retrieve parameter values right to left
 
 	--(*pindex);
@@ -304,7 +306,6 @@ Result FunctionVector (const IFormulaContext * context, const class Formula & te
 	--(*pindex);
 	Result xparam = termSource.EvaluateSubexpression(context, pindex);
 
-	Result ret;
 	ret.code = RESULT_CODE_OK;
 	ret.type = RESULT_TYPE_VECTOR2;
 	ret.payload.num.value = xparam.payload.num.value;

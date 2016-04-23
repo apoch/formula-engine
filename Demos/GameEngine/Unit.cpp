@@ -21,6 +21,25 @@
 
 
 //
+// Construct and initialize a unit object
+//
+Unit::Unit (unsigned x, unsigned y, unsigned maxX, unsigned maxY, Scriptable * boundScriptable, ScriptWorld * world) {
+	m_location.x = ValueT(x);
+	m_location.y = ValueT(y);
+
+	m_bounds.x = ValueT(maxX);
+	m_bounds.y = ValueT(maxY);
+
+	m_desired = m_location;
+
+	m_scriptable = boundScriptable;
+	m_world = world;
+
+	m_arrivalToken = m_world->GetTokenPool().AddToken("OnArrive");
+}
+
+
+//
 // Advance the world simulation by one tick
 //
 // Units generate an arrival event for scripts to handle when they
@@ -32,7 +51,7 @@
 void Unit::AdvanceTick () {
 	if (m_location.x != m_desired.x || m_location.y != m_desired.y) {
 		m_location = m_desired;
-		m_world->QueueEvent(m_scriptable, m_world->GetTokenPool().AddToken("OnArrive"), nullptr);
+		m_world->QueueEvent(m_scriptable, m_arrivalToken, nullptr);
 	}
 }
 

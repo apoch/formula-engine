@@ -31,18 +31,7 @@ struct Coords {
 //
 class Unit {
 public:			// Construction
-	Unit (unsigned x, unsigned y, unsigned maxX, unsigned maxY, Scriptable * boundScriptable, ScriptWorld * world) {
-		m_location.x = ValueT(x);
-		m_location.y = ValueT(y);
-
-		m_bounds.x = ValueT(maxX);
-		m_bounds.y = ValueT(maxY);
-
-		m_desired = m_location;
-
-		m_scriptable = boundScriptable;
-		m_world = world;
-	}
+	Unit (unsigned x, unsigned y, unsigned maxX, unsigned maxY, Scriptable * boundScriptable, ScriptWorld * world);
 
 public:			// Simulation advancement
 	void AdvanceTick ();
@@ -72,5 +61,7 @@ private:		// Internal state
 
 	Scriptable * m_scriptable;
 	ScriptWorld * m_world;
+
+	unsigned m_arrivalToken;
 };
 
