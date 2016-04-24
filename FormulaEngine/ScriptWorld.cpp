@@ -156,7 +156,7 @@ Scriptable * ScriptWorld::InstantiateArchetype (unsigned nameOfInstance, unsigne
 		
 	instance->BindAll(m_binder, this);
 
-	m_scriptables.emplace(std::make_pair(nameOfInstance, std::move(*instance)));
+	m_scriptables.emplace(nameOfInstance, std::move(*instance));
 	delete instance;
 
 	QueueEvent(GetScriptable(nameOfInstance), m_tokens->AddToken("OnCreate"), paramBag);

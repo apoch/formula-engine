@@ -5,4 +5,4 @@ typedef struct Result (*FTerminalEvaluator)(const struct IFormulaContext * conte
 
 FTerminalEvaluator GetFunctionEvaluatorByName (const char str[]);
 
-
+FTerminalEvaluator GetFunctionEvaluatorMakeVector ();

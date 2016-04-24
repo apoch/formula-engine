@@ -132,14 +132,14 @@ ListResult FormulaPropertyBag::ResolveList (const IFormulaContext & context, uns
 }
 
 
-void FormulaPropertyBag::Set(unsigned token, const Result & value) {
+void FormulaPropertyBag::Set (unsigned token, const Result & value) {
 	Formula f;
-	if(value.type == RESULT_TYPE_SCALAR)
+	if (value.type == RESULT_TYPE_SCALAR)
 		f.Push(value.payload.num.value);
-	else if(value.type == RESULT_TYPE_VECTOR2) {
+	else if (value.type == RESULT_TYPE_VECTOR2) {
 		f.Push(value.payload.num.value);
 		f.Push(value.payload.num.value2);
-		f.Push(*GetFunctionEvaluatorByName("Vec"));
+		f.Push(GetFunctionEvaluatorMakeVector());
 	}
 
 	Set(token, std::move(f));
@@ -222,11 +222,11 @@ void ScopedPropertyBag::ListAddEntry(unsigned listToken, Scriptable * entry) {
 
 void ScopedPropertyBag::ListRemoveEntry(unsigned listToken, const Scriptable & entry) {
 	auto iter = m_lists.find(listToken);
-	if(iter == m_lists.end())
+	if (iter == m_lists.end())
 		return;
 
 	auto memberiter = std::find(std::begin(iter->second), std::end(iter->second), &entry);
-	if(memberiter == std::end(iter->second))
+	if (memberiter == std::end(iter->second))
 		return;
 
 	iter->second.erase(memberiter);
@@ -270,26 +270,26 @@ Result ScopedPropertyBag::ResolveNumber (const IFormulaContext & originalContext
 
 	Result ret = resolved->ResolveNumber(originalContext, 0, token);
 	if (ret.code != RESULT_CODE_OK) {
-		if(m_bindingBag)
+		if (m_bindingBag)
 			return m_bindingBag->ResolveNumber(originalContext, 0, token);
 	}
 
 	return ret;
 }
 
-ListResult ScopedPropertyBag::ResolveList(const IFormulaContext & context, unsigned scope, unsigned token) const {
+ListResult ScopedPropertyBag::ResolveList (const IFormulaContext & context, unsigned scope, unsigned token) const {
 	ListResult ret;
 
 	auto iter = m_lists.find(scope);
-	if(iter != m_lists.end()) {
+	if (iter != m_lists.end()) {
 		ret.code = RESULT_CODE_OK;
 
-		if(!iter->second.empty()) {
+		if (!iter->second.empty()) {
 			ret.values.reserve(iter->second.size());
 
-			for(const auto & scriptable : iter->second) {
+			for (const auto & scriptable : iter->second) {
 				Result result = scriptable->GetScopes().ResolveNumber(context, 0, token);
-				if(result.code != RESULT_CODE_OK) {
+				if (result.code != RESULT_CODE_OK) {
 					ret.code = result.code;
 					ret.values.clear();
 					break;
@@ -315,8 +315,10 @@ void ScopedPropertyBag::SetProperties (FormulaPropertyBag * refbag) {
 }
 
 void ScopedPropertyBag::SetBindings (const BindingPropertyBag & refBag) {
-	delete m_bindingBag;
-	m_bindingBag = new BindingPropertyBag(refBag);
+	if (m_bindingBag)
+		*m_bindingBag = refBag;
+	else
+		m_bindingBag = new BindingPropertyBag(refBag);
 }
 
 

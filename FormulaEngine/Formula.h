@@ -71,7 +71,6 @@ typedef Result (*FTerminalEvaluator)(const IFormulaContext * context, const clas
 class Formula {
 public:			// Construction
 	Formula();
-	~Formula();
 
 	Formula (Formula && other);
 	Formula (const Formula & other);
@@ -123,9 +122,7 @@ private:		// Internal helper structures
 
 private:		// Internal state
 	unsigned m_termCount;
-	Term * m_termBuffer;			// TODO - growth support?
-
-	friend class FormulaTermScratchBuffer;
+	Term m_termBuffer[16];
 
 private:		// Shared state
 	static unsigned s_evaluationCounter;

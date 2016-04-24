@@ -8,70 +8,20 @@ unsigned Formula::s_evaluationCounter = 0;
 
 
 
-static class FormulaTermScratchBuffer {
-public:
-	Formula::Term * AllocDefault () {
-		Prewarm();
-
-		Formula::Term * ret = &m_freePages.back()->buffer[0];
-		m_freePages.pop_back();
-		return ret;
-	}
-
-	void Reclaim (Formula::Term * ptr) {
-		if (!ptr)
-			return;
-
-		m_freePages.push_back(MakePageFromPtr(ptr));
-	}
-
-private:
-	struct Page {
-		Formula::Term buffer[16];
-	};
-
-	Page * MakePageFromPtr (Formula::Term * ptr) {
-		return reinterpret_cast<Page *>(ptr);
-	}
-
-	void Prewarm () {
-		if (m_freePages.empty()) {
-			for (unsigned i = 0; i < 16; ++i) {
-				m_pages.emplace_back();
-				m_freePages.push_back(&m_pages.back());
-			}
-		}
-	}
-
-	std::deque<Page> m_pages;
-	std::vector<Page *> m_freePages;
-} s_scratch;
-
-
-
-
 Formula::Formula ()
-	: m_termCount(0),
-	  m_termBuffer(nullptr)
+	: m_termCount(0)
 {
 }
-
-Formula::~Formula () {
-	s_scratch.Reclaim(m_termBuffer);
-}
-
 
 Formula::Formula (Formula && other)
-	: m_termCount(other.m_termCount),
-	  m_termBuffer(other.m_termBuffer)
+	: m_termCount(other.m_termCount)
 {
-	other.m_termCount = 0;
-	other.m_termBuffer = nullptr;
+	for (unsigned i = 0; i < m_termCount; ++i)
+		m_termBuffer[i] = other.m_termBuffer[i];
 }
 
 Formula::Formula (const Formula & other)
-	: m_termCount(other.m_termCount),
-	  m_termBuffer(s_scratch.AllocDefault())
+	: m_termCount(other.m_termCount)
 {
 	for (unsigned i = 0; i < m_termCount; ++i)
 		m_termBuffer[i] = other.m_termBuffer[i];
@@ -79,13 +29,9 @@ Formula::Formula (const Formula & other)
 
 
 Formula & Formula::operator= (Formula && other) {
-	s_scratch.Reclaim(m_termBuffer);
-
 	m_termCount = other.m_termCount;
-	m_termBuffer = other.m_termBuffer;
-
-	other.m_termCount = 0;
-	other.m_termBuffer = nullptr;
+	for (unsigned i = 0; i < m_termCount; ++i)
+		m_termBuffer[i] = other.m_termBuffer[i];
 
 	return *this;
 }
@@ -214,7 +160,6 @@ Result Formula::EvaluateSubexpression (const IFormulaContext * context, unsigned
 			break;
 	}
 
-	assert(ret.code == RESULT_CODE_OK);
 	return ret;
 }
 
@@ -232,9 +177,6 @@ bool Formula::EvaluateScopedToken (unsigned index, unsigned * outScope, unsigned
 
 
 void Formula::Push (ValueT literalValue) {
-	if (!m_termBuffer)
-		m_termBuffer = s_scratch.AllocDefault();
-
 	m_termBuffer[m_termCount].type = Term::TERM_TYPE_LITERAL;
 	m_termBuffer[m_termCount].payload.literalValue = literalValue;
 
@@ -242,9 +184,6 @@ void Formula::Push (ValueT literalValue) {
 }
 
 void Formula::Push (FTerminalEvaluator evaluator) {
-	if (!m_termBuffer)
-		m_termBuffer = s_scratch.AllocDefault();
-
 	m_termBuffer[m_termCount].type = Term::TERM_TYPE_EVALUATOR;
 	m_termBuffer[m_termCount].payload.evaluator = evaluator;
 
@@ -252,9 +191,6 @@ void Formula::Push (FTerminalEvaluator evaluator) {
 }
 
 void Formula::Push (Operator op) {
-	if (!m_termBuffer)
-		m_termBuffer = s_scratch.AllocDefault();
-
 	m_termBuffer[m_termCount].type = Term::TERM_TYPE_OPERATOR;
 	m_termBuffer[m_termCount].payload.op = op;
 
@@ -262,9 +198,6 @@ void Formula::Push (Operator op) {
 }
 
 void Formula::Push (unsigned scope, unsigned token) {
-	if (!m_termBuffer)
-		m_termBuffer = s_scratch.AllocDefault();
-
 	m_termBuffer[m_termCount].type = Term::TERM_TYPE_TOKEN;
 	m_termBuffer[m_termCount].payload.scopedToken.scope = scope;
 	m_termBuffer[m_termCount].payload.scopedToken.token = token;

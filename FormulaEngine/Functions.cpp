@@ -359,3 +359,7 @@ FTerminalEvaluator GetFunctionEvaluatorByName (const char str[]) {
 }
 
 
+FTerminalEvaluator GetFunctionEvaluatorMakeVector () {
+	return &FunctionVector;
+}
+
