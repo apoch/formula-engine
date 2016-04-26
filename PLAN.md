@@ -1,5 +1,13 @@
 ## formula-engine plans
 
+### Apr. 26, 2016
+GDC presentation went well and there's been an uptick in followers to the repo, so I'm still keen on working on this and maintaining/improving the code. Recent efforts have been focused on optimization of the core FormulaEngine logic for evaluating formulas and looking up identifiers. Current benchmarks have the code running roughly 30 million formulas evaluated per second, as tested in the Flocking demo. I'm pretty satisfied with that.
+
+Next steps include a lot more documentation and cleanup, and probably extending FormulaMUD a bit along the way.
+
+<br>
+
+
 ### Feb. 10, 2016
 FormulaEdit has undergone a substantial polish and usability pass. There's still plenty of stuff to do, including populating fields with hints when possible, but the basics are looking fairly solid.
 
